@@ -41,6 +41,14 @@ header.site .inner {
   padding-top: 16px;
   padding-bottom: 14px;
 }
+header.site strong::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 10px;
+  background: var(--accent);
+}
 header.site strong {
   font-size: 0.74rem;
   font-weight: 600;
@@ -118,7 +126,7 @@ code { font-size: 0.86em; background: var(--note); padding: 1px 5px; border-radi
 }
 .kpis {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 0 28px;
   margin: 22px 0;
 }
@@ -201,3 +209,31 @@ button:hover { background: var(--accent); border-color: var(--accent); }
 .offer { border: 1px solid var(--ink); border-radius: 4px; padding: 22px 24px; }
 .offer h3 { margin-top: 0; font-family: var(--serif); font-size: 1.3rem; font-weight: 500; }
 .err { color: var(--neg); font-size: 0.9rem; }
+
+/* page d'accueil */
+.hero { padding-bottom: 36px; margin-bottom: 36px; border-bottom: 1px solid var(--ink); }
+.hero h1 { font-size: clamp(2.1rem, 6vw, 3.1rem); margin-bottom: 22px; }
+.standfirst { font-family: var(--serif); font-size: 1.22rem; line-height: 1.55; color: #3a3d44; margin-bottom: 22px; }
+.meta { font-size: 0.8rem; color: var(--muted); margin: 0; }
+
+/* figures */
+figure { margin: 34px 0 8px; }
+figure svg { display: block; width: 100%; height: auto; }
+figcaption { font-size: 0.8rem; color: var(--muted); margin-top: 10px; }
+svg .axis { stroke: var(--line); stroke-width: 1; }
+svg .range { stroke: var(--ink); stroke-width: 2; }
+svg .dot { fill: var(--ink); }
+svg .dot.accent { fill: var(--accent); }
+svg .dot.hollow { fill: var(--bg); stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 2; }
+svg .bar { fill: var(--ink); }
+svg .bar.neg { fill: var(--neg); }
+svg text { font-family: var(--sans); fill: var(--ink); }
+svg .val { font-family: var(--serif); font-size: 17px; }
+svg .val.neg { fill: var(--neg); }
+svg .lab { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+svg .sub { font-size: 11.5px; fill: var(--muted); }
+
+@media print {
+  header.site { position: static; }
+  .todo { border: 1px solid var(--line); }
+}
