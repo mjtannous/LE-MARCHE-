@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La mesure — Dossier Deliveroo</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site"><div class="inner">
+  <strong>Dossier Deliveroo</strong>
+  <nav>
+    <a href="index.html">La question</a>
+    <a href="entreprise.html">L'entreprise</a>
+    <a href="marche.html">Le marché</a>
+    <a href="mesure.html" aria-current="page">La mesure</a>
+    <a href="proposition.html">La proposition</a>
+    <a href="methode.html">Sources et IA</a>
+  </nav>
+</div></header>
+<main>
+  <p class="eyebrow">Attendu 3 sur 4 · Le prix psychologique, mesuré auprès de vraies personnes</p>
+  <h1>La mesure : le prix que les clients acceptent</h1>
+  <p class="lead">Un questionnaire anonyme, deux versions tirées au sort, une seule différence entre elles.</p>
+  <p><a href="questionnaire.html">Ouvrir le questionnaire</a></p>
+
+  <h2>Ce que nous mesurons</h2>
+  <p>Le prix mensuel que des clients de la livraison de repas acceptent pour Deliveroo Plus Or, et l'effet sur ce prix d'une seule variation : montrer ou non le prix du concurrent.</p>
+
+  <h2>Le test A/B</h2>
+  <div class="table-wrap"><table>
+    <tr><th></th><th>Version A</th><th>Version B</th></tr>
+    <tr><td>Description de l'offre</td><td>Deliveroo Plus Or : livraison offerte dès 12 €, frais de service réduits, offres réservées</td><td>Identique, au mot près</td></tr>
+    <tr><td>La seule différence</td><td>Rien de plus</td><td>Une phrase en plus : « À titre de comparaison, l'abonnement équivalent d'Uber Eats, Uber One, est affiché à 5,99 € par mois. »</td></tr>
+  </table></div>
+  <p><strong>Notre hypothèse.</strong> Le prix du concurrent sert de prix de référence (effet d'ancrage, vu au CM 1) : les répondants de la version B devraient accepter un prix plus élevé. Si c'est le cas, Deliveroo peut accompagner une hausse en affichant la comparaison avec Uber One.</p>
+  <p><strong>Le tirage.</strong> La version est tirée au sort, une chance sur deux, à l'ouverture de la page, et enregistrée avec les réponses dans la colonne <code>version</code>.</p>
+  <p><strong>La question de contrôle.</strong> « La description mentionnait-elle le prix d'un abonnement concurrent ? » vérifie que la différence a été vue.</p>
+
+  <h2>Le parcours du répondant</h2>
+  <ol>
+    <li>Accueil : objet de l'étude, anonymat, consentement.</li>
+    <li>Filtre : avoir commandé un repas livré par une application dans les trois derniers mois.</li>
+    <li>L'offre, en version A ou B.</li>
+    <li>Van Westendorp : quatre questions à réponse libre en euros, toujours dans l'ordre trop bon marché, bon marché, cher, trop cher.</li>
+    <li>Gabor-Granger : cinq prix présentés en ordre croissant à tout le monde, 2,49 €, 3,49 €, 4,49 €, 5,99 € et 6,99 €, avec « je m'abonnerais » ou non. Ils encadrent le prix actuel (3,49 €) et le plafond concurrent (5,99 €).</li>
+    <li>Contrôle.</li>
+    <li>Profil : âge, situation, nombre de commandes sur 30 jours, abonnements déjà détenus.</li>
+  </ol>
+  <p>Nous n'avons pas retenu l'étape optionnelle d'échelles de Likert, pour garder un questionnaire de trois minutes.</p>
+
+  <h2>Les données</h2>
+  <p>Une ligne par répondant, des colonnes fixes. Aucun nom, aucune adresse e-mail, aucune adresse IP.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Colonne</th><th>Contenu</th></tr>
+    <tr><td><code>id</code>, <code>horodatage</code></td><td>Identifiant aléatoire et date de la réponse</td></tr>
+    <tr><td><code>version</code></td><td>A ou B</td></tr>
+    <tr><td><code>vw_trop_bon_marche</code>, <code>vw_bon_marche</code>, <code>vw_cher</code>, <code>vw_trop_cher</code></td><td>Les quatre réponses de Van Westendorp, en euros par mois</td></tr>
+    <tr><td><code>vw_coherent</code></td><td>1 si les quatre réponses montent, 0 sinon</td></tr>
+    <tr><td><code>gg_2_49</code> à <code>gg_6_99</code></td><td>1 si le répondant s'abonnerait à ce prix, 0 sinon</td></tr>
+    <tr><td><code>gg_coherent</code></td><td>0 si un prix est accepté après le refus d'un prix plus bas</td></tr>
+    <tr><td><code>controle</code></td><td>oui, non ou nsp</td></tr>
+    <tr><td><code>age</code>, <code>statut</code>, <code>commandes_30j</code>, <code>abonnements</code></td><td>Profil</td></tr>
+  </table></div>
+
+  <h2>Le nettoyage prévu</h2>
+  <ul>
+    <li>Écarter les répondants dont <code>vw_coherent</code> ou <code>gg_coherent</code> vaut 0, et dire combien.</li>
+    <li>Signaler les réponses aberrantes (0 € ou plusieurs dizaines d'euros) sans les effacer en silence.</li>
+    <li>Vérifier que les groupes A et B se ressemblent sur l'âge, la situation et le nombre de commandes.</li>
+  </ul>
+
+  <h2>Ce que la mesure vaut</h2>
+  <p>C'est du déclaratif : dire qu'on s'abonnerait n'est pas s'abonner. Notre échantillon sera surtout étudiant et clermontois, et les étudiants ont accès gratuitement à Deliveroo Plus Argent : leurs réponses risquent de sous-estimer le prix accepté par les autres clients. Nous confronterons donc le résultat au prix d'Uber One, et nous comparerons surtout A et B, ce que le tirage au sort rend valide.</p>
+
+  <h2>Calendrier</h2>
+  <ul>
+    <li>Avant le 12 octobre : essai auprès de quelques personnes extérieures au groupe, corrections.</li>
+    <li>Du 12 au 21 octobre : collecte.</li>
+    <li>21 octobre : traitement des réponses en Analyse de données.</li>
+  </ul>
+
+  <h2>Les résultats</h2>
+  <div class="todo"><strong>À compléter après la collecte</strong> Nombre de réponses reçues, écartées, gardées par version ; profil des répondants ; courbes de Van Westendorp et fourchette de prix acceptable ; courbe de demande de Gabor-Granger et recette par prix ; comparaison A / B ; part des répondants B ayant vu la mention du concurrent.</div>
+</main>
+<footer>Dossier de groupe — chaque chiffre porte sa source et sa date de consultation.</footer>
+</body>
+</html>

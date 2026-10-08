@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Questionnaire — abonnement de livraison de repas</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <p id="testmode" class="todo" hidden><strong>Mode test</strong> Aucune adresse d'enregistrement n'est configurée : les réponses restent dans ce navigateur. Voir le fichier LISEZMOI.</p>
+
+  <!-- 1. Accueil et consentement -->
+  <section class="step active" data-step="accueil">
+    <h1>Votre avis sur un abonnement de livraison de repas</h1>
+    <p>Nous sommes des étudiants du M1 Marketing de l'IAE Clermont Auvergne. Ce questionnaire sert à un projet de cours sur les prix. Il dure environ trois minutes.</p>
+    <p>Il est anonyme : nous ne demandons ni nom, ni adresse e-mail, et nous n'enregistrons pas votre adresse IP. Les réponses servent uniquement à ce projet et à un cours d'analyse de données. Vous pouvez arrêter à tout moment en fermant la page.</p>
+    <div class="opts"><label><input type="checkbox" id="consent"> J'ai lu ces informations et j'accepte de répondre.</label></div>
+    <p class="err" id="err-accueil" hidden>Cochez la case pour continuer.</p>
+    <button type="button" data-next="accueil">Commencer</button>
+  </section>
+
+  <!-- 2. Filtre -->
+  <section class="step" data-step="filtre">
+    <label class="q">Au cours des trois derniers mois, avez-vous commandé un repas livré par une application (Deliveroo, Uber Eats, Just Eat ou autre) ?</label>
+    <div class="opts">
+      <label><input type="radio" name="filtre" value="oui"> Oui</label>
+      <label><input type="radio" name="filtre" value="non"> Non</label>
+    </div>
+    <p class="err" id="err-filtre" hidden>Choisissez une réponse.</p>
+    <button type="button" data-next="filtre">Continuer</button>
+  </section>
+
+  <!-- 3. L'offre (version A ou B, tirée au sort) -->
+  <section class="step" data-step="offre">
+    <h2>Lisez attentivement cette offre</h2>
+    <div class="card offer">
+      <h3>Deliveroo Plus Or</h3>
+      <p>Un abonnement mensuel à l'application de livraison Deliveroo, sans engagement, résiliable à tout moment.</p>
+      <ul>
+        <li>Frais de livraison offerts dès 12 € d'achat, dans les restaurants et les commerces.</li>
+        <li>Frais de service réduits sur chaque commande.</li>
+        <li>Offres et récompenses réservées aux abonnés.</li>
+      </ul>
+      <p id="ancre" hidden>À titre de comparaison, l'abonnement équivalent d'Uber Eats, Uber One, est affiché à 5,99 € par mois.</p>
+    </div>
+    <button type="button" data-next="offre">J'ai lu l'offre</button>
+  </section>
+
+  <!-- 4. Van Westendorp -->
+  <section class="step" data-step="vw">
+    <h2>Le prix de cet abonnement</h2>
+    <p>Répondez en euros par mois. Les centimes sont acceptés.</p>
+    <label class="q" for="vw1">À partir de quel prix mensuel trouveriez-vous cet abonnement si bon marché que vous douteriez de sa qualité ?</label>
+    <input type="number" id="vw1" min="0" step="0.01" inputmode="decimal"> € par mois
+    <label class="q" for="vw2">À quel prix mensuel trouveriez-vous cet abonnement bon marché, une bonne affaire ?</label>
+    <input type="number" id="vw2" min="0" step="0.01" inputmode="decimal"> € par mois
+    <label class="q" for="vw3">À quel prix mensuel commenceriez-vous à trouver cet abonnement cher, sans exclure de le prendre ?</label>
+    <input type="number" id="vw3" min="0" step="0.01" inputmode="decimal"> € par mois
+    <label class="q" for="vw4">À partir de quel prix mensuel trouveriez-vous cet abonnement trop cher pour envisager de le prendre ?</label>
+    <input type="number" id="vw4" min="0" step="0.01" inputmode="decimal"> € par mois
+    <p class="err" id="err-vw" hidden>Répondez aux quatre questions par un montant.</p>
+    <button type="button" data-next="vw">Continuer</button>
+  </section>
+
+  <!-- 5. Gabor-Granger : prix présentés en ordre croissant, le même pour tous -->
+  <section class="step" data-step="gg">
+    <h2>À chacun de ces prix, vous abonneriez-vous ?</h2>
+    <div id="gg-list"></div>
+    <p class="err" id="err-gg" hidden>Répondez pour chaque prix.</p>
+    <button type="button" data-next="gg">Continuer</button>
+  </section>
+
+  <!-- 6. Question de contrôle -->
+  <section class="step" data-step="controle">
+    <label class="q">La description de l'offre que vous avez lue mentionnait-elle le prix d'un abonnement concurrent ?</label>
+    <div class="opts">
+      <label><input type="radio" name="controle" value="oui"> Oui</label>
+      <label><input type="radio" name="controle" value="non"> Non</label>
+      <label><input type="radio" name="controle" value="nsp"> Je ne sais plus</label>
+    </div>
+    <p class="err" id="err-controle" hidden>Choisissez une réponse.</p>
+    <button type="button" data-next="controle">Continuer</button>
+  </section>
+
+  <!-- 7. Profil -->
+  <section class="step" data-step="profil">
+    <h2>Pour finir, quelques questions sur vous</h2>
+    <label class="q" for="age">Votre âge</label>
+    <select id="age">
+      <option value="">—</option>
+      <option>Moins de 18 ans</option><option>18 à 24 ans</option><option>25 à 34 ans</option>
+      <option>35 à 49 ans</option><option>50 ans et plus</option>
+    </select>
+    <label class="q" for="statut">Votre situation</label>
+    <select id="statut">
+      <option value="">—</option>
+      <option>Étudiant</option><option>En emploi</option><option>En recherche d'emploi</option><option>Autre</option>
+    </select>
+    <label class="q" for="freq">Combien de repas vous êtes-vous fait livrer par une application au cours des 30 derniers jours ?</label>
+    <input type="number" id="freq" min="0" step="1" inputmode="numeric"> commandes
+    <label class="q">Avez-vous actuellement un de ces abonnements ? (plusieurs réponses possibles)</label>
+    <div class="opts">
+      <label><input type="checkbox" name="abo" value="deliveroo_plus"> Deliveroo Plus</label>
+      <label><input type="checkbox" name="abo" value="uber_one"> Uber One</label>
+      <label><input type="checkbox" name="abo" value="autre"> Un autre abonnement de livraison</label>
+      <label><input type="checkbox" name="abo" value="aucun"> Aucun</label>
+    </div>
+    <p class="err" id="err-profil" hidden>Répondez à toutes les questions.</p>
+    <button type="button" data-next="profil">Envoyer mes réponses</button>
+  </section>
+
+  <section class="step" data-step="fin">
+    <h1>Merci !</h1>
+    <p id="fin-msg">Vos réponses sont enregistrées. Vous pouvez fermer cette page.</p>
+  </section>
+
+  <section class="step" data-step="exclu">
+    <h1>Merci !</h1>
+    <p>Ce questionnaire s'adresse aux personnes qui ont commandé récemment un repas en livraison. Vous pouvez fermer cette page.</p>
+  </section>
+</main>
+
+<script>
+// Adresse de l'application web Google Apps Script qui enregistre les réponses
+// dans la feuille Google Sheets du groupe (voir LISEZMOI.md). Vide = mode test.
+const ENDPOINT = "";
+
+// Prix soumis dans Gabor-Granger, en ordre croissant, le même pour tous :
+// du prix actuel moins un euro jusqu'au-dessus du plafond concurrent (5,99 €).
+const GG_PRICES = [2.49, 3.49, 4.49, 5.99, 6.99];
+
+const answers = {
+  id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+  horodatage: new Date().toISOString(),
+  // Tirage au sort de la version à l'ouverture du questionnaire.
+  version: Math.random() < 0.5 ? "A" : "B"
+};
+
+if (!ENDPOINT) document.getElementById("testmode").hidden = false;
+if (answers.version === "B") document.getElementById("ancre").hidden = false;
+
+const euro = p => p.toFixed(2).replace(".", ",") + " €";
+document.getElementById("gg-list").innerHTML = GG_PRICES.map((p, i) => `
+  <label class="q">${euro(p)} par mois</label>
+  <div class="opts">
+    <label><input type="radio" name="gg${i}" value="1"> Oui, je m'abonnerais</label>
+    <label><input type="radio" name="gg${i}" value="0"> Non</label>
+  </div>`).join("");
+
+const radio = name => {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : null;
+};
+const num = id => {
+  const v = document.getElementById(id).value;
+  return v === "" || isNaN(Number(v)) ? null : Number(v);
+};
+
+function show(step) {
+  document.querySelectorAll(".step").forEach(s => s.classList.toggle("active", s.dataset.step === step));
+  window.scrollTo(0, 0);
+}
+function fail(step) {
+  document.getElementById("err-" + step).hidden = false;
+}
+
+const handlers = {
+  accueil() {
+    if (!document.getElementById("consent").checked) return fail("accueil");
+    show("filtre");
+  },
+  filtre() {
+    const v = radio("filtre");
+    if (!v) return fail("filtre");
+    answers.filtre = v;
+    show(v === "oui" ? "offre" : "exclu");
+  },
+  offre() { show("vw"); },
+  vw() {
+    const v = ["vw1", "vw2", "vw3", "vw4"].map(num);
+    if (v.some(x => x === null)) return fail("vw");
+    [answers.vw_trop_bon_marche, answers.vw_bon_marche, answers.vw_cher, answers.vw_trop_cher] = v;
+    // Les quatre réponses doivent monter ; sinon le répondant sera écarté à l'analyse.
+    answers.vw_coherent = v[0] <= v[1] && v[1] <= v[2] && v[2] <= v[3] ? 1 : 0;
+    show("gg");
+  },
+  gg() {
+    const v = GG_PRICES.map((_, i) => radio("gg" + i));
+    if (v.some(x => x === null)) return fail("gg");
+    GG_PRICES.forEach((p, i) => { answers["gg_" + p.toFixed(2).replace(".", "_")] = Number(v[i]); });
+    // Accepter un prix élevé après avoir refusé un prix plus bas est une incohérence.
+    answers.gg_coherent = v.join("").includes("01") ? 0 : 1;
+    show("controle");
+  },
+  controle() {
+    const v = radio("controle");
+    if (!v) return fail("controle");
+    answers.controle = v;
+    show("profil");
+  },
+  profil() {
+    const age = document.getElementById("age").value;
+    const statut = document.getElementById("statut").value;
+    const freq = num("freq");
+    const abo = [...document.querySelectorAll('input[name="abo"]:checked')].map(e => e.value);
+    if (!age || !statut || freq === null || !abo.length) return fail("profil");
+    Object.assign(answers, { age, statut, commandes_30j: freq, abonnements: abo.join("+") });
+    send();
+  }
+};
+
+document.querySelectorAll("button[data-next]").forEach(b =>
+  b.addEventListener("click", () => handlers[b.dataset.next]()));
+
+async function send() {
+  show("fin");
+  if (!ENDPOINT) {
+    const all = JSON.parse(localStorage.getItem("reponses_test") || "[]");
+    all.push(answers);
+    localStorage.setItem("reponses_test", JSON.stringify(all));
+    document.getElementById("fin-msg").textContent =
+      "Mode test : réponse gardée dans ce navigateur seulement (version " + answers.version + ").";
+    return;
+  }
+  try {
+    // text/plain + no-cors : Apps Script n'accepte pas les requêtes préliminaires CORS.
+    await fetch(ENDPOINT, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(answers)
+    });
+  } catch (e) {
+    document.getElementById("fin-msg").textContent =
+      "L'envoi a échoué. Vérifiez votre connexion et rechargez la page pour recommencer.";
+  }
+}
+</script>
+</body>
+</html>

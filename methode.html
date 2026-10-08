@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sources et IA — Dossier Deliveroo</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site"><div class="inner">
+  <strong>Dossier Deliveroo</strong>
+  <nav>
+    <a href="index.html">La question</a>
+    <a href="entreprise.html">L'entreprise</a>
+    <a href="marche.html">Le marché</a>
+    <a href="mesure.html">La mesure</a>
+    <a href="proposition.html">La proposition</a>
+    <a href="methode.html" aria-current="page">Sources et IA</a>
+  </nav>
+</div></header>
+<main>
+  <p class="eyebrow">Règle du module · Chaque chiffre porte sa source, l'usage de l'IA est déclaré</p>
+  <h1>Sources et usage de l'IA</h1>
+
+  <h2>Les sources</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Ce que nous y avons pris</th><th>Source</th><th>Consultée le</th></tr>
+    <tr><td>Identité de Deliveroo France SAS : SIREN, date de création, siège, effectif</td><td><a href="https://annuaire-entreprises.data.gouv.fr/entreprise/810365817">Annuaire des entreprises</a></td><td>8 octobre 2026</td></tr>
+    <tr><td>Chiffre d'affaires, EBE, résultat d'exploitation, résultat net et ratios de Deliveroo France, 2021 à 2025</td><td><a href="https://data.economie.gouv.fr/explore/dataset/ratios_inpi_bce/table/?q=810365817">Ratios financiers BCE / INPI, data.economie.gouv.fr</a></td><td>8 octobre 2026</td></tr>
+    <tr><td>Mêmes indicateurs pour Uber Eats France, Eat On Line, Domino's Pizza France, Picard Surgelés, Too Good To Go France</td><td><a href="https://data.economie.gouv.fr/explore/dataset/ratios_inpi_bce/table/">Même jeu de données</a>, recherche par SIREN</td><td>8 octobre 2026</td></tr>
+    <tr><td>SIREN des concurrents</td><td><a href="https://recherche-entreprises.api.gouv.fr/docs/">API recherche-entreprises</a></td><td>8 octobre 2026</td></tr>
+    <tr><td>Prix et contenu de Deliveroo Plus Or et Plus Argent</td><td><a href="https://deliveroo.fr/fr/plus">deliveroo.fr/fr/plus</a></td><td>8 octobre 2026</td></tr>
+    <tr><td>Règles des frais de livraison et de service, conditions d'accès à Plus Argent</td><td><a href="https://deliveroo.fr/fr/faq">FAQ Deliveroo</a></td><td>8 octobre 2026</td></tr>
+    <tr><td>Prix et contenu d'Uber One</td><td><a href="https://www.uber.com/fr/fr/uber-one/">uber.com/fr/fr/uber-one</a></td><td>8 octobre 2026</td></tr>
+  </table></div>
+  <div class="todo"><strong>À faire</strong> Ajouter les comptes annuels en PDF (INPI ou Pappers) une fois téléchargés, les captures d'écran datées des paniers, les liens Wayback Machine des pages de tarifs, et les articles de presse.</div>
+
+  <h2>Ce que nous avons constaté, et ce que nous supposons</h2>
+  <ul>
+    <li><strong>Constaté :</strong> les tarifs affichés et les chiffres des comptes cités ci-dessus.</li>
+    <li><strong>Calculé par le groupe :</strong> les ratios résultat net / chiffre d'affaires, les variations, les seuils de neutralité.</li>
+    <li><strong>Supposé :</strong> que Uber One est une offre « au moins équivalente » à Deliveroo Plus Or ; que la recette d'abonnement est la seule touchée par une hausse (première approche, corrigée dans la proposition).</li>
+  </ul>
+
+  <h2>À quoi l'IA nous a servi</h2>
+  <p>Nous avons utilisé Claude (Anthropic), dans Claude Code, pour : lire les consignes du cours et en tirer la liste des attendus ; interroger les données ouvertes (API recherche-entreprises, jeu de données des ratios financiers) et relever les pages de tarifs ; rédiger une première version des pages de ce site ; écrire le code du questionnaire et de son tirage au sort.</p>
+  <div class="todo"><strong>À compléter honnêtement</strong> Ce que le groupe a vérifié lui-même à la source, chiffre par chiffre, ce qu'il a modifié dans les textes, et les autres usages de l'IA d'ici la soutenance.</div>
+</main>
+<footer>Dossier de groupe — chaque chiffre porte sa source et sa date de consultation.</footer>
+</body>
+</html>
