@@ -22,10 +22,10 @@ Tant que `ENDPOINT` est vide dans `questionnaire.html`, le questionnaire est en 
 2. Menu Extensions, puis Apps Script. Remplacer le code par celui-ci :
 
 ```javascript
-const COLONNES = ["id", "horodatage", "version", "filtre",
+const COLONNES = ["id", "horodatage", "version", "appli",
   "vw_trop_bon_marche", "vw_bon_marche", "vw_cher", "vw_trop_cher", "vw_coherent",
   "gg_2_49", "gg_3_49", "gg_4_49", "gg_5_99", "gg_6_99", "gg_coherent",
-  "controle", "age", "statut", "commandes_30j", "abonnements"];
+  "choix", "controle", "age", "statut", "commandes_30j", "abonnements"];
 
 function doPost(e) {
   const feuille = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];

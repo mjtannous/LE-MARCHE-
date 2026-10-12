@@ -14,22 +14,25 @@
   <!-- 1. Accueil et consentement -->
   <section class="step active" data-step="accueil">
     <h1>Votre avis sur un abonnement de livraison de repas</h1>
-    <p>Ce questionnaire est réalisé par des étudiants du M1 Marketing de l'IAE Clermont Auvergne, dans le cadre d'un projet de cours sur les prix. Il dure environ trois minutes.</p>
+    <p>Ce questionnaire est réalisé par des étudiants du M1 Marketing de l'IAE Clermont Auvergne, dans le cadre d'un projet de cours sur les prix. Il dure environ trois minutes et s'adresse à toute personne majeure, qu'elle se fasse livrer des repas ou non.</p>
     <p>Il est anonyme : aucun nom, aucune adresse e-mail et aucune adresse IP ne sont enregistrés. Les réponses servent uniquement à ce projet et à un cours d'analyse de données. Vous pouvez arrêter à tout moment en fermant la page.</p>
-    <div class="opts"><label><input type="checkbox" id="consent"> J'ai lu ces informations et j'accepte de répondre.</label></div>
+    <div class="opts"><label><input type="checkbox" id="consent"> J'ai lu ces informations, j'ai 18 ans ou plus et j'accepte de répondre.</label></div>
     <p class="err" id="err-accueil" hidden>Cochez la case pour continuer.</p>
     <button type="button" data-next="accueil">Commencer</button>
   </section>
 
-  <!-- 2. Filtre -->
-  <section class="step" data-step="filtre">
-    <label class="q">Au cours des trois derniers mois, avez-vous commandé un repas livré par une application (Deliveroo, Uber Eats, Just Eat ou autre) ?</label>
+  <!-- 2. Usage : personne n'est exclu, la réponse sert à comparer les profils -->
+  <section class="step" data-step="usage">
+    <label class="q">Quelle application de livraison de repas utilisez-vous le plus souvent ?</label>
     <div class="opts">
-      <label><input type="radio" name="filtre" value="oui"> Oui</label>
-      <label><input type="radio" name="filtre" value="non"> Non</label>
+      <label><input type="radio" name="appli" value="uber_eats"> Uber Eats</label>
+      <label><input type="radio" name="appli" value="deliveroo"> Deliveroo</label>
+      <label><input type="radio" name="appli" value="just_eat"> Just Eat</label>
+      <label><input type="radio" name="appli" value="autre"> Une autre application</label>
+      <label><input type="radio" name="appli" value="aucune"> Aucune, je ne me fais pas livrer de repas</label>
     </div>
-    <p class="err" id="err-filtre" hidden>Choisissez une réponse.</p>
-    <button type="button" data-next="filtre">Continuer</button>
+    <p class="err" id="err-usage" hidden>Choisissez une réponse.</p>
+    <button type="button" data-next="usage">Continuer</button>
   </section>
 
   <!-- 3. L'offre (version A ou B, tirée au sort) -->
@@ -37,13 +40,13 @@
     <h2>Lisez attentivement cette offre</h2>
     <div class="card offer">
       <h3>Deliveroo Plus Or</h3>
-      <p>Un abonnement mensuel à l'application de livraison Deliveroo, sans engagement, résiliable à tout moment.</p>
+      <p>Un abonnement mensuel à l'application de livraison de repas Deliveroo, sans engagement, résiliable à tout moment.</p>
       <ul>
         <li>Frais de livraison offerts dès 12 € d'achat, dans les restaurants et les commerces.</li>
         <li>Frais de service réduits sur chaque commande.</li>
         <li>Offres et récompenses réservées aux abonnés.</li>
+        <li id="garantie" hidden>Garantie retard : 3 € crédités automatiquement sur votre compte si une commande arrive avec plus de 15 minutes de retard.</li>
       </ul>
-      <p id="ancre" hidden>À titre de comparaison, l'abonnement équivalent d'Uber Eats, Uber One, est affiché à 5,99 € par mois.</p>
     </div>
     <button type="button" data-next="offre">J'ai lu l'offre</button>
   </section>
@@ -72,9 +75,21 @@
     <button type="button" data-next="gg">Continuer</button>
   </section>
 
-  <!-- 6. Question de contrôle -->
+  <!-- 6. Choix face au concurrent -->
+  <section class="step" data-step="choix">
+    <label class="q">Uber Eats propose un abonnement comparable, Uber One, à 5,99 € par mois. Si l'abonnement Deliveroo Plus Or que vous avez lu coûtait 4,99 € par mois, que choisiriez-vous ?</label>
+    <div class="opts">
+      <label><input type="radio" name="choix" value="deliveroo"> Deliveroo Plus Or à 4,99 €</label>
+      <label><input type="radio" name="choix" value="uber_one"> Uber One à 5,99 €</label>
+      <label><input type="radio" name="choix" value="aucun"> Aucun des deux</label>
+    </div>
+    <p class="err" id="err-choix" hidden>Choisissez une réponse.</p>
+    <button type="button" data-next="choix">Continuer</button>
+  </section>
+
+  <!-- 7. Question de contrôle -->
   <section class="step" data-step="controle">
-    <label class="q">La description de l'offre que vous avez lue mentionnait-elle le prix d'un abonnement concurrent ?</label>
+    <label class="q">L'offre Deliveroo Plus Or que vous avez lue prévoyait-elle une compensation en cas de retard de livraison ?</label>
     <div class="opts">
       <label><input type="radio" name="controle" value="oui"> Oui</label>
       <label><input type="radio" name="controle" value="non"> Non</label>
@@ -84,13 +99,13 @@
     <button type="button" data-next="controle">Continuer</button>
   </section>
 
-  <!-- 7. Profil -->
+  <!-- 8. Profil -->
   <section class="step" data-step="profil">
     <h2>Pour finir, quelques questions sur vous</h2>
     <label class="q" for="age">Votre âge</label>
     <select id="age">
       <option value="">—</option>
-      <option>Moins de 18 ans</option><option>18 à 24 ans</option><option>25 à 34 ans</option>
+      <option>18 à 24 ans</option><option>25 à 34 ans</option>
       <option>35 à 49 ans</option><option>50 ans et plus</option>
     </select>
     <label class="q" for="statut">Votre situation</label>
@@ -98,7 +113,7 @@
       <option value="">—</option>
       <option>Étudiant</option><option>En emploi</option><option>En recherche d'emploi</option><option>Autre</option>
     </select>
-    <label class="q" for="freq">Combien de repas vous êtes-vous fait livrer par une application au cours des 30 derniers jours ?</label>
+    <label class="q" for="freq">Combien de repas vous êtes-vous fait livrer par une application au cours des 30 derniers jours ? (0 si aucun)</label>
     <input type="number" id="freq" min="0" step="1" inputmode="numeric"> commandes
     <label class="q">Avez-vous actuellement un de ces abonnements ? (plusieurs réponses possibles)</label>
     <div class="opts">
@@ -115,11 +130,6 @@
     <h1>Merci !</h1>
     <p id="fin-msg">Vos réponses sont enregistrées. Vous pouvez fermer cette page.</p>
   </section>
-
-  <section class="step" data-step="exclu">
-    <h1>Merci !</h1>
-    <p>Ce questionnaire s'adresse aux personnes qui ont commandé récemment un repas en livraison. Vous pouvez fermer cette page.</p>
-  </section>
 </main>
 
 <script>
@@ -135,11 +145,12 @@ const answers = {
   id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
   horodatage: new Date().toISOString(),
   // Tirage au sort de la version à l'ouverture du questionnaire.
+  // A : offre actuelle. B : la même, avec la garantie retard en plus.
   version: Math.random() < 0.5 ? "A" : "B"
 };
 
 if (!ENDPOINT) document.getElementById("testmode").hidden = false;
-if (answers.version === "B") document.getElementById("ancre").hidden = false;
+if (answers.version === "B") document.getElementById("garantie").hidden = false;
 
 const euro = p => p.toFixed(2).replace(".", ",") + " €";
 document.getElementById("gg-list").innerHTML = GG_PRICES.map((p, i) => `
@@ -165,18 +176,20 @@ function show(step) {
 function fail(step) {
   document.getElementById("err-" + step).hidden = false;
 }
+// Étape à une seule question fermée : enregistre la réponse puis passe à la suivante.
+function single(step, name, next) {
+  const v = radio(name);
+  if (!v) return fail(step);
+  answers[name] = v;
+  show(next);
+}
 
 const handlers = {
   accueil() {
     if (!document.getElementById("consent").checked) return fail("accueil");
-    show("filtre");
+    show("usage");
   },
-  filtre() {
-    const v = radio("filtre");
-    if (!v) return fail("filtre");
-    answers.filtre = v;
-    show(v === "oui" ? "offre" : "exclu");
-  },
+  usage() { single("usage", "appli", "offre"); },
   offre() { show("vw"); },
   vw() {
     const v = ["vw1", "vw2", "vw3", "vw4"].map(num);
@@ -192,14 +205,10 @@ const handlers = {
     GG_PRICES.forEach((p, i) => { answers["gg_" + p.toFixed(2).replace(".", "_")] = Number(v[i]); });
     // Accepter un prix élevé après avoir refusé un prix plus bas est une incohérence.
     answers.gg_coherent = v.join("").includes("01") ? 0 : 1;
-    show("controle");
+    show("choix");
   },
-  controle() {
-    const v = radio("controle");
-    if (!v) return fail("controle");
-    answers.controle = v;
-    show("profil");
-  },
+  choix() { single("choix", "choix", "controle"); },
+  controle() { single("controle", "controle", "profil"); },
   profil() {
     const age = document.getElementById("age").value;
     const statut = document.getElementById("statut").value;

@@ -25,29 +25,40 @@
   <p><a href="questionnaire.html">Ouvrir le questionnaire</a></p>
 
   <h2>Ce qui est mesuré</h2>
-  <p>Le prix mensuel que des clients de la livraison de repas acceptent pour Deliveroo Plus Or, et l'effet sur ce prix d'une seule variation : montrer ou non le prix du concurrent.</p>
+  <p>Trois choses, qui correspondent aux trois termes de <a href="index.html">la question</a> :</p>
+  <ul>
+    <li><strong>Le prix accepté</strong> pour Deliveroo Plus Or, afin de le situer entre le <a href="index.html#plancher">plancher estimé de 4,60 €</a> et le plafond de <a href="https://www.uber.com/fr/fr/uber-one/">5,99 €</a>.</li>
+    <li><strong>L'effet d'un avantage ajouté</strong>, la garantie retard, sur ce prix accepté.</li>
+    <li><strong>Le choix face à Uber One</strong>, pour savoir si l'offre prend des clients au concurrent.</li>
+  </ul>
 
   <h2>Le test A/B</h2>
   <div class="table-wrap"><table>
     <tr><th></th><th>Version A</th><th>Version B</th></tr>
-    <tr><td>Description de l'offre</td><td>Deliveroo Plus Or : livraison offerte dès 12 €, frais de service réduits, offres réservées</td><td>Identique, au mot près</td></tr>
-    <tr><td>La seule différence</td><td>Rien de plus</td><td>Une phrase en plus : « À titre de comparaison, l'abonnement équivalent d'Uber Eats, Uber One, est affiché à 5,99 € par mois. »</td></tr>
+    <tr><td>Description de l'offre</td><td>Deliveroo Plus Or tel qu'il est <a href="https://deliveroo.fr/fr/plus">affiché aujourd'hui</a> : livraison offerte dès 12 €, frais de service réduits, offres réservées</td><td>Identique, au mot près</td></tr>
+    <tr><td>La seule différence</td><td>Rien de plus</td><td>Un avantage en plus : « Garantie retard : 3 € crédités automatiquement sur votre compte si une commande arrive avec plus de 15 minutes de retard. »</td></tr>
+    <tr><td>Ce que la version représente</td><td>Le levier prix : la même offre, à vendre moins cher qu'Uber One</td><td>Le levier avantages : une offre enrichie, à vendre plus cher</td></tr>
   </table></div>
-  <p><strong>L'hypothèse.</strong> Le prix du concurrent sert de prix de référence (effet d'ancrage, vu au CM 1) : les répondants de la version B devraient accepter un prix plus élevé. Si c'est le cas, Deliveroo peut accompagner une hausse en affichant la comparaison avec Uber One.</p>
+  <p><strong>L'hypothèse.</strong> La garantie augmente la valeur perçue de l'abonnement : les répondants de la version B devraient accepter un prix plus élevé et choisir plus souvent Deliveroo face à Uber One. La question est de savoir si l'écart dépasse ce que la garantie coûte, soit <a href="index.html#plancher">0,90 € à 2,70 € par abonné et par mois</a> selon la part de commandes en retard.</p>
   <p><strong>Le tirage.</strong> La version est tirée au sort, une chance sur deux, à l'ouverture de la page, et enregistrée avec les réponses dans la colonne <code>version</code>.</p>
-  <p><strong>La question de contrôle.</strong> « La description mentionnait-elle le prix d'un abonnement concurrent ? » vérifie que la différence a été vue.</p>
+  <p><strong>La question de contrôle.</strong> « L'offre prévoyait-elle une compensation en cas de retard de livraison ? » vérifie que la différence a été vue.</p>
+
+  <h2>La population interrogée</h2>
+  <p>Le questionnaire s'adresse à toute personne majeure. Personne n'est écarté : les utilisateurs d'Uber Eats sont la cible à conquérir, ceux de Deliveroo la base à conserver, et les non-utilisateurs des clients possibles. La première question, « quelle application utilisez-vous le plus souvent ? », sert à comparer ces profils, pas à filtrer.</p>
+  <p>Une première version n'acceptait que les personnes ayant commandé dans les trois derniers mois. Ce filtre a été retiré : il réduisait l'échantillon et excluait une partie de la cible.</p>
 
   <h2>Le parcours du répondant</h2>
   <ol>
     <li>Accueil : objet de l'étude, anonymat, consentement.</li>
-    <li>Filtre : avoir commandé un repas livré par une application dans les trois derniers mois.</li>
+    <li>Application de livraison la plus utilisée (Uber Eats, Deliveroo, Just Eat, autre, aucune).</li>
     <li>L'offre, en version A ou B.</li>
     <li>Van Westendorp : quatre questions à réponse libre en euros, toujours dans l'ordre trop bon marché, bon marché, cher, trop cher.</li>
-    <li>Gabor-Granger : cinq prix présentés en ordre croissant à tout le monde, 2,49 €, 3,49 €, 4,49 €, 5,99 € et 6,99 €, avec « je m'abonnerais » ou non. Ils encadrent le prix actuel (3,49 €) et le plafond concurrent (5,99 €).</li>
+    <li>Gabor-Granger : cinq prix présentés en ordre croissant à tout le monde, 2,49 €, 3,49 €, 4,49 €, 5,99 € et 6,99 €, avec « je m'abonnerais » ou non.</li>
+    <li>Choix face au concurrent : Deliveroo Plus Or à 4,99 €, Uber One à 5,99 €, ou aucun des deux.</li>
     <li>Contrôle.</li>
     <li>Profil : âge, situation, nombre de commandes sur 30 jours, abonnements déjà détenus.</li>
   </ol>
-  <p>L'étape optionnelle d'échelles de Likert n'a pas été retenue, afin de garder un questionnaire de trois minutes.</p>
+  <p>Le prix d'Uber One n'apparaît qu'à l'étape 6, après les questions de prix, pour ne pas servir d'ancre aux réponses précédentes. L'étape optionnelle d'échelles de Likert n'a pas été retenue, afin de garder un questionnaire de trois minutes.</p>
 
   <h2>Les données</h2>
   <p>Une ligne par répondant, des colonnes fixes. Aucun nom, aucune adresse e-mail, aucune adresse IP.</p>
@@ -55,10 +66,12 @@
     <tr><th>Colonne</th><th>Contenu</th></tr>
     <tr><td><code>id</code>, <code>horodatage</code></td><td>Identifiant aléatoire et date de la réponse</td></tr>
     <tr><td><code>version</code></td><td>A ou B</td></tr>
+    <tr><td><code>appli</code></td><td>Application la plus utilisée : uber_eats, deliveroo, just_eat, autre, aucune</td></tr>
     <tr><td><code>vw_trop_bon_marche</code>, <code>vw_bon_marche</code>, <code>vw_cher</code>, <code>vw_trop_cher</code></td><td>Les quatre réponses de Van Westendorp, en euros par mois</td></tr>
     <tr><td><code>vw_coherent</code></td><td>1 si les quatre réponses montent, 0 sinon</td></tr>
     <tr><td><code>gg_2_49</code> à <code>gg_6_99</code></td><td>1 si le répondant s'abonnerait à ce prix, 0 sinon</td></tr>
     <tr><td><code>gg_coherent</code></td><td>0 si un prix est accepté après le refus d'un prix plus bas</td></tr>
+    <tr><td><code>choix</code></td><td>deliveroo, uber_one ou aucun</td></tr>
     <tr><td><code>controle</code></td><td>oui, non ou nsp</td></tr>
     <tr><td><code>age</code>, <code>statut</code>, <code>commandes_30j</code>, <code>abonnements</code></td><td>Profil</td></tr>
   </table></div>
@@ -67,21 +80,22 @@
   <ul>
     <li>Écarter les répondants dont <code>vw_coherent</code> ou <code>gg_coherent</code> vaut 0, et dire combien.</li>
     <li>Signaler les réponses aberrantes (0 € ou plusieurs dizaines d'euros) sans les effacer en silence.</li>
-    <li>Vérifier que les groupes A et B se ressemblent sur l'âge, la situation et le nombre de commandes.</li>
+    <li>Vérifier que les groupes A et B se ressemblent sur l'âge, la situation, l'application utilisée et le nombre de commandes.</li>
   </ul>
 
   <h2>Ce que la mesure vaut</h2>
-  <p>C'est du déclaratif : dire qu'on s'abonnerait n'est pas s'abonner. L'échantillon sera surtout étudiant et clermontois, et les étudiants ont accès gratuitement à Deliveroo Plus Argent : leurs réponses risquent de sous-estimer le prix accepté par les autres clients. Le résultat sera donc confronté au prix d'Uber One, et l'analyse portera surtout sur la comparaison entre A et B, que le tirage au sort rend valide.</p>
+  <p>C'est du déclaratif : dire qu'on s'abonnerait n'est pas s'abonner. L'échantillon restera surtout étudiant et clermontois, et les étudiants ont accès gratuitement à <a href="https://deliveroo.fr/fr/faq">Deliveroo Plus Argent</a> : leurs réponses risquent de sous-estimer le prix accepté par les autres clients. Le résultat sera donc confronté aux prix du marché, et l'analyse portera surtout sur la comparaison entre A et B, que le tirage au sort rend valide.</p>
+  <p>Les réponses fourniront aussi deux hypothèses du <a href="index.html#plancher">calcul du plancher</a> : le nombre de commandes par mois des abonnés et celui des non-abonnés.</p>
 
   <h2>Calendrier</h2>
   <ul>
-    <li>Avant le 12 octobre : essai auprès de quelques personnes extérieures au groupe, corrections.</li>
-    <li>Du 12 au 21 octobre : collecte.</li>
+    <li>Avant le lancement : essai auprès de quelques personnes extérieures au groupe, corrections.</li>
+    <li>Jusqu'au 21 octobre : collecte.</li>
     <li>21 octobre : traitement des réponses en Analyse de données.</li>
   </ul>
 
   <h2>Les résultats</h2>
-  <div class="todo"><strong>À compléter après la collecte</strong> Nombre de réponses reçues, écartées, gardées par version ; profil des répondants ; courbes de Van Westendorp et fourchette de prix acceptable ; courbe de demande de Gabor-Granger et recette par prix ; comparaison A / B ; part des répondants B ayant vu la mention du concurrent.</div>
+  <div class="todo"><strong>À compléter après la collecte</strong> Nombre de réponses reçues, écartées, gardées par version ; profil des répondants et application utilisée ; courbes de Van Westendorp et fourchette de prix acceptable, par version ; courbe de demande de Gabor-Granger, par version ; part de répondants choisissant Deliveroo face à Uber One, par version et chez les utilisateurs d'Uber Eats ; part des répondants B ayant vu la garantie.</div>
 </main>
 <footer>Dossier de groupe · M1 Marketing, IAE Clermont Auvergne · Chaque chiffre porte sa source et sa date de consultation.</footer>
 </body>
