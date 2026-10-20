@@ -24,7 +24,8 @@ Tant que `ENDPOINT` est vide dans `questionnaire.html`, le questionnaire est en 
 ```javascript
 const COLONNES = ["id", "horodatage", "version", "prix_affiche",
   "usage_uber_eats", "usage_deliveroo", "usage_just_eat", "usage_autre",
-  "plan_choisi", "prix_choisi", "souscription_deliveroo", "plans_consultes",
+  "plan_premier_choix", "prix_premier_choix", "souscription_deliveroo",
+  "plan_choisi", "prix_choisi", "choix_modifie", "plans_consultes",
   "sim_1", "sim_2", "sim_3", "sim_commandes", "sim_total", "sim_economies", "controle",
   "vw_trop_bon_marche", "vw_bon_marche", "vw_cher", "vw_trop_cher", "vw_coherent",
   "gg_2_49", "gg_3_49", "gg_4_49", "gg_4_99", "gg_5_99", "gg_6_99", "gg_coherent",

@@ -7,7 +7,7 @@
 <title>Testez un abonnement de livraison</title>
 <link rel="stylesheet" href="style.css">
 <style>
-  :root { --mint: #00a896; --mint-soft: #e3f6f3; --ink2: #2b2f38; --uber: #111; }
+  :root { --mint: #00a896; --mint-soft: #e3f6f3; --ink2: #2b2f38; }
   body { min-height: 100vh; background: radial-gradient(1200px 500px at 50% -200px, #e3f6f3, var(--bg)); }
   main { max-width: 560px; padding-top: 14px; padding-bottom: 60px; }
 
@@ -66,7 +66,7 @@
   .offer { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 14px 34px rgba(22,24,29,.12); }
   .offer .band { padding: 16px 20px 14px; color: #fff; }
   .offer.dlv .band { background: linear-gradient(135deg, #00a896, #007a6e); }
-  .offer.ub .band { background: linear-gradient(135deg, #2b2f38, #111); }
+  .offer.cc .band { background: linear-gradient(135deg, #5b5f6b, #2b2f38); }
   .offer .band small { font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
   .offer .band b { display: block; font-family: var(--serif); font-size: 1.35rem; font-weight: 500; margin-top: 2px; }
   .offer .body { padding: 16px 20px 18px; }
@@ -83,11 +83,30 @@
   .perks li { padding: 5px 0 5px 28px; position: relative; font-size: .93rem; }
   .perks li::before { content: "✓"; position: absolute; left: 0; top: 5px; width: 20px; height: 20px; border-radius: 50%; background: var(--mint-soft); color: var(--mint); font-size: .75rem; font-weight: 700; display: grid; place-items: center; }
   .perks li.minus::before { content: "–"; background: #f3f1ea; color: var(--muted); }
-  .offer.ub .perks li::before { background: #ececec; color: #111; }
+  .offer.cc .perks li::before { background: #ececec; color: #2b2f38; }
   .offer .btn { margin-top: 16px; }
-  .offer.ub .btn { background: var(--uber); border-color: var(--uber); }
-  .none-btn { display: block; margin: 16px auto 0; background: none; border: 0; color: var(--muted); text-decoration: underline; font-size: .92rem; }
-  .none-btn:hover { background: none; color: var(--ink); }
+  .offer { transition: box-shadow .2s, transform .2s; }
+  .offer.selected { box-shadow: 0 0 0 3px var(--mint), 0 14px 34px rgba(22,24,29,.14); transform: translateY(-2px); }
+  .sel-btn { background: #fff; color: var(--ink); border: 2px solid var(--ink); }
+  .sel-btn:hover { background: var(--ink); color: #fff; }
+  .sel-btn[aria-pressed="true"] { background: var(--mint); border-color: var(--mint); color: #fff; }
+  .chips button { position: relative; }
+  .chips .tick { display: none; position: absolute; top: -7px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: var(--mint); color: #fff; font-style: normal; font-size: .7rem; font-weight: 700; place-items: center; }
+  .chips button.chosen .tick { display: grid; }
+  .must { display: flex; gap: 10px; align-items: flex-start; background: #fff6dd; border: 1px solid #e0b100; border-radius: 12px; padding: 12px 14px; font-size: .93rem; margin: 6px 0 16px; }
+  .must.shake { animation: shake .45s; }
+  @keyframes shake { 20%, 60% { transform: translateX(-7px); } 40%, 80% { transform: translateX(7px); } }
+  .pick-none { display: flex; align-items: center; gap: 12px; width: 100%; margin: 14px 0 0; padding: 15px 16px; text-align: left; font-size: 1rem; font-weight: 600; background: #fff; color: var(--ink); border: 1px solid #dcd9d0; border-radius: 14px; }
+  .pick-none:hover { background: #fff; color: var(--ink); border-color: var(--ink); }
+  .pick-none .radio { flex: none; width: 20px; height: 20px; border-radius: 50%; border: 2px solid #b9b6ad; }
+  .pick-none[aria-pressed="true"] { border-color: var(--mint); box-shadow: 0 0 0 2px var(--mint); }
+  .pick-none[aria-pressed="true"] .radio { border: 6px solid var(--mint); }
+  .choice-bar { position: sticky; bottom: 10px; z-index: 4; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; background: #fff; border-radius: 16px; padding: 12px 14px; box-shadow: 0 8px 30px rgba(22,24,29,.18); }
+  .choice-txt small { display: block; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .choice-txt b { font-size: .95rem; }
+  .choice-txt b.vide { color: var(--neg); }
+  .choice-bar button { margin: 0; padding: 12px 18px; border-radius: 12px; white-space: nowrap; }
+  .choice-bar button[aria-disabled="true"] { opacity: .4; }
   .note { font-size: .75rem; color: var(--muted); text-align: center; margin: 12px 0 0; }
 
   /* scènes */
@@ -178,18 +197,19 @@
 // dans la feuille Google Sheets du groupe (voir LISEZMOI.md). Vide = mode test.
 const ENDPOINT = "";
 
-// Test A/B : seuls les prix des plans Deliveroo changent. A = prix bas (Plus Or au prix actuel), B = prix hauts.
+// Test A/B : seuls les prix des plans Deliveroo changent. A = prix bas (Plus Or au prix actuel),
+// B = chaque plan 1,50 € plus cher, pour que les écarts entre plans restent les mêmes.
 const PLANS = {
-  essentiel: { nom: "Plus Essentiel", prix: { A: 2.49, B: 3.49 },
+  essentiel: { nom: "Plus Essentiel", prix: { A: 2.49, B: 3.99 },
     avantages: ["Livraison offerte dès 12 € d'achat", "−10 % sur les commandes de 25 € et plus"], moins: ["Frais de service à payer"] },
   or: { nom: "Plus Or", tag: "Tout compris", prix: { A: 3.49, B: 4.99 },
     avantages: ["Livraison offerte dès 12 € d'achat", "Aucuns frais de service", "Offres réservées aux abonnés"], moins: [] },
-  famille: { nom: "Plus Famille", prix: { A: 6.99, B: 8.99 },
+  famille: { nom: "Plus Famille", prix: { A: 6.99, B: 8.49 },
     avantages: ["Tous les avantages de Plus Or", "Partagé avec 4 personnes du foyer", "−10 % sur les commandes de 25 € et plus"], moins: [] }
 };
-// Le concurrent, au même prix dans les deux versions.
-const UBER = { nom: "Uber One", prix: 5.99,
-  avantages: ["Livraison à 0 € dès 12 € d'achat", "Frais de service réduits de moitié", "Avantages sur les trajets Uber"] };
+// L'offre concurrente, au même prix dans les deux versions.
+const CONC = { nom: "Offre concurrente", prix: 5.99,
+  avantages: ["Livraison à 0 € dès 12 € d'achat", "Frais de service réduits de moitié", "Avantages chez des partenaires"] };
 // Prix soumis dans Gabor-Granger pour Plus Or, en ordre croissant, le même pour tous.
 const GG_PRICES = [2.49, 3.49, 4.49, 4.99, 5.99, 6.99];
 // Frais de la simulation (fictifs, du même ordre que ceux affichés par les applications).
@@ -234,13 +254,13 @@ function addition(plan, sousTotal) {
   if (plan === "essentiel") { if (livre) livraison = 0; if (sousTotal >= FRAIS.seuilRemise) remise = sousTotal * FRAIS.remise; }
   if (plan === "or") { if (livre) { livraison = 0; service = 0; } }
   if (plan === "famille") { if (livre) { livraison = 0; service = 0; } if (sousTotal >= FRAIS.seuilRemise) remise = sousTotal * FRAIS.remise; }
-  if (plan === "uber_one") { if (livre) livraison = 0; service = round2(FRAIS.service / 2); }
+  if (plan === "concurrent") { if (livre) livraison = 0; service = round2(FRAIS.service / 2); }
   const total = round2(sousTotal - remise + livraison + service);
   const sans = round2(sousTotal + FRAIS.livraison + FRAIS.service);
   return { livraison, service, remise: round2(remise), total, economie: round2(sans - total) };
 }
-const nomPlan = p => p === "uber_one" ? UBER.nom : p === "aucun" ? "Sans abonnement" : PLANS[p].nom;
-const prixPlan = p => p === "uber_one" ? UBER.prix : p === "aucun" ? 0 : PLANS[p].prix[V];
+const nomPlan = p => p === "concurrent" ? CONC.nom : p === "aucun" ? "Sans abonnement" : PLANS[p].nom;
+const prixPlan = p => p === "concurrent" ? CONC.prix : p === "aucun" ? 0 : PLANS[p].prix[V];
 
 // Déroulé en quatre chapitres.
 const FLOW = [
@@ -395,8 +415,7 @@ const SCREENS = {
         <div><b>2</b>Vous le testez sur trois repas fictifs</div>
         <div><b>3</b>Vous jouez au juste prix</div>
       </div>
-      <p class="src">⏱ 3 minutes · 🔒 Anonyme · 💸 Rien n'est payé. Étude réalisée par des étudiants du M1 Marketing de l'IAE Clermont Auvergne pour un projet de cours sur les prix. Simulation : aucune commande ni aucun abonnement réel, plans et prix proposés pour l'étude. Aucun nom, aucune adresse e-mail et aucune adresse IP ne sont enregistrés ; les réponses servent uniquement à ce projet et à un cours d'analyse de données. Vous pouvez revenir en arrière ou arrêter à tout moment.</p>
-      <label class="consent"><input type="checkbox" id="consent"> <span>J'ai lu ces informations, j'ai 18 ans ou plus et j'accepte de participer.</span></label>
+      <label class="consent"><input type="checkbox" id="consent"> <span>J'ai 18 ans ou plus et j'accepte de participer.</span></label>
       <p class="err" id="err" hidden>Cochez la case pour commencer.</p>
       <button type="button" class="btn" id="go">Commencer le test</button>`,
     bind: () => $("#go").addEventListener("click", () => $("#consent").checked ? next() : ($("#err").hidden = false))
@@ -423,52 +442,86 @@ const SCREENS = {
       $("#ok").addEventListener("click", next);
     }
   },
-  // Le test A/B : les plans Deliveroo et Uber One côte à côte. Seuls les prix Deliveroo diffèrent entre A et B.
+  // Le test A/B : les plans Deliveroo et l'offre concurrente côte à côte. Seuls les prix Deliveroo diffèrent entre A et B.
+  // Le répondant doit sélectionner une offre avant de pouvoir continuer.
   choix: {
     html: () => `
       <p class="kicker">Étape 1 · Choisissez votre abonnement</p>
       <p class="title s">Vous voulez arrêter de payer les frais de livraison. Quel abonnement prenez-vous ?</p>
-      <p class="sub">Comparez les plans Deliveroo en touchant chaque prix, et l'offre d'Uber Eats.</p>
+      <div class="must" id="must">👆 <span>Sélectionnez <b>une seule offre</b> pour continuer : un plan Deliveroo (touchez un prix pour voir chaque plan), l'offre concurrente, ou aucun abonnement.</span></div>
       <div class="offers">
-        <div class="offer dlv">
-          <div class="band"><small>Deliveroo</small><b>Les plans Deliveroo Plus</b></div>
+        <div class="offer dlv" id="offre-dlv">
+          <div class="band"><small>Option 1 · Deliveroo</small><b>Les plans Deliveroo Plus</b></div>
           <div class="body">
-            <div class="chips">${Object.entries(PLANS).map(([k, p]) => `<button type="button" data-plan="${k}" aria-pressed="${k === ongletChoix}"><b>${euro(p.prix[V])}</b>${p.nom.replace("Plus ", "")}</button>`).join("")}</div>
+            <div class="chips">${Object.entries(PLANS).map(([k, p]) => `<button type="button" data-plan="${k}" aria-pressed="${k === ongletChoix}"><b>${euro(p.prix[V])}</b>${p.nom.replace("Plus ", "")}<i class="tick">✓</i></button>`).join("")}</div>
             <div id="plan-card"></div>
           </div>
         </div>
-        <div class="offer ub">
-          <div class="band"><small>Uber Eats</small><b>${UBER.nom}</b></div>
+        <div class="offer cc" id="offre-cc">
+          <div class="band"><small>Option 2 · Autre application</small><b>${CONC.nom}</b></div>
           <div class="body">
-            <p class="price">${euro(UBER.prix)} <small>par mois</small></p>
-            <ul class="perks">${UBER.avantages.map(a => `<li>${a}</li>`).join("")}<li>Sans engagement</li></ul>
-            <button type="button" class="btn" data-choix="uber_one">Choisir Uber One</button>
+            <p class="price">${euro(CONC.prix)} <small>par mois</small></p>
+            <ul class="perks">${CONC.avantages.map(a => `<li>${a}</li>`).join("")}<li>Sans engagement</li></ul>
+            <button type="button" class="btn sel-btn" data-sel="concurrent"></button>
           </div>
         </div>
       </div>
-      <button type="button" class="none-btn" data-choix="aucun">Je ne prends aucun abonnement</button>
-      <p class="note">Simulation pour une étude : plans et prix proposés pour l'étude, rien n'est payé.</p>`,
+      <button type="button" class="pick-none" data-sel="aucun"><span class="radio"></span>Option 3 · Je ne prends aucun abonnement</button>
+      <div class="choice-bar">
+        <div class="choice-txt" id="choice-txt"></div>
+        <button type="button" id="continuer">Continuer →</button>
+      </div>`,
     bind: () => {
-      const card = () => {
+      let selection = answers.plan_choisi || null;
+      const refresh = () => {
         const p = PLANS[ongletChoix];
+        const choisi = selection === ongletChoix;
         $("#plan-card").innerHTML = `
           <span class="plan-name">${p.nom}</span>${p.tag ? `<span class="plan-tag">${p.tag}</span>` : ""}
           <p class="price">${euro(p.prix[V])} <small>par mois</small></p>
           <ul class="perks">${p.avantages.map(a => `<li>${a}</li>`).join("")}${p.moins.map(a => `<li class="minus">${a}</li>`).join("")}<li>Sans engagement</li></ul>
-          <button type="button" class="btn" data-choix="${ongletChoix}">Choisir ${p.nom} à ${euro(p.prix[V])}</button>`;
+          <button type="button" class="btn sel-btn" data-sel="${ongletChoix}" aria-pressed="${choisi}">${choisi ? "✓ Plan sélectionné" : `Sélectionner ${p.nom} · ${euro(p.prix[V])}`}</button>`;
+        const cc = app.querySelector('[data-sel="concurrent"]');
+        cc.setAttribute("aria-pressed", selection === "concurrent");
+        cc.textContent = selection === "concurrent" ? "✓ Offre sélectionnée" : "Sélectionner cette offre";
+        app.querySelector(".pick-none").setAttribute("aria-pressed", selection === "aucun");
+        app.querySelectorAll(".chips button").forEach(b => b.classList.toggle("chosen", b.dataset.plan === selection));
+        $("#offre-dlv").classList.toggle("selected", !!PLANS[selection]);
+        $("#offre-cc").classList.toggle("selected", selection === "concurrent");
+        $("#choice-txt").innerHTML = selection
+          ? `<small>Votre choix</small><b>${nomPlan(selection)}${selection === "aucun" ? "" : " · " + euro(prixPlan(selection)) + " / mois"}</b>`
+          : `<small>Votre choix</small><b class="vide">Aucune offre sélectionnée</b>`;
+        $("#continuer").setAttribute("aria-disabled", !selection);
       };
-      card();
-      app.querySelector(".chips").addEventListener("click", e => {
-        const b = e.target.closest("[data-plan]"); if (!b) return;
-        ongletChoix = b.dataset.plan; consultes.add(ongletChoix);
-        app.querySelectorAll(".chips button").forEach(x => x.setAttribute("aria-pressed", x === b));
-        card();
+      refresh();
+      const screen = app.querySelector(".screen");
+      screen.addEventListener("click", e => {
+        const chip = e.target.closest("[data-plan]");
+        if (chip) {
+          ongletChoix = chip.dataset.plan; consultes.add(ongletChoix);
+          app.querySelectorAll(".chips button").forEach(x => x.setAttribute("aria-pressed", x === chip));
+          return refresh();
+        }
+        const sel = e.target.closest("[data-sel]");
+        if (sel) { selection = sel.dataset.sel; return refresh(); }
       });
-      app.querySelector(".screen").addEventListener("click", e => {
-        const b = e.target.closest("[data-choix]"); if (!b) return;
-        answers.plan_choisi = b.dataset.choix;
-        answers.prix_choisi = prixPlan(b.dataset.choix);
-        answers.souscription_deliveroo = PLANS[b.dataset.choix] ? 1 : 0;
+      $("#continuer").addEventListener("click", () => {
+        if (!selection) {
+          const must = $("#must");
+          must.classList.remove("shake"); void must.offsetWidth; must.classList.add("shake");
+          must.scrollIntoView({ behavior: "smooth", block: "center" });
+          return;
+        }
+        // Le premier choix, fait avant les repas, est la mesure du test : il n'est jamais écrasé
+        // si le répondant revient en arrière pour changer d'offre.
+        if (answers.plan_premier_choix === undefined) {
+          answers.plan_premier_choix = selection;
+          answers.prix_premier_choix = prixPlan(selection);
+          answers.souscription_deliveroo = PLANS[selection] ? 1 : 0;
+        }
+        answers.plan_choisi = selection;
+        answers.prix_choisi = prixPlan(selection);
+        answers.choix_modifie = selection === answers.plan_premier_choix ? 0 : 1;
         answers.plans_consultes = [...consultes].join("+");
         next();
       });

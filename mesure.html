@@ -21,21 +21,21 @@
 <main>
   <p class="eyebrow">Attendu 3 sur 4 · Le prix psychologique, mesuré auprès de vraies personnes</p>
   <h1>La mesure : un test A/B sur les prix des plans Deliveroo</h1>
-  <p class="lead">Le répondant choisit un abonnement parmi trois plans Deliveroo et l'offre d'Uber Eats, puis le teste sur trois repas. Les prix des plans Deliveroo sont tirés au sort : bas pour la moitié des répondants, hauts pour l'autre.</p>
+  <p class="lead">Le répondant choisit un abonnement parmi trois plans Deliveroo et l'offre d'une autre application, puis le teste sur trois repas. Les prix des plans Deliveroo sont tirés au sort : bas pour la moitié des répondants, hauts pour l'autre.</p>
   <div class="cta-row"><a class="cta" href="questionnaire.html">🛵 Faire le test (3 min)</a></div>
 
   <h2>Le plan du test</h2>
   <div class="table-wrap"><table>
     <tr><th>Élément</th><th>Ce qui est fixé avant la collecte</th></tr>
-    <tr><td>Objectif pour Deliveroo</td><td>Savoir si Deliveroo peut augmenter les prix de ses abonnements sans perdre de clients au profit d'Uber Eats ou du « sans abonnement », ou si des prix bas attirent nettement plus d'abonnés.</td></tr>
+    <tr><td>Objectif pour Deliveroo</td><td>Savoir si Deliveroo peut augmenter les prix de ses abonnements sans perdre de clients au profit d'une autre application ou du « sans abonnement », ou si des prix bas attirent nettement plus d'abonnés.</td></tr>
     <tr><td>Hypothèse</td><td>Avec les prix hauts, la part de répondants qui choisissent un plan Deliveroo baisse, mais de moins de 10 % (hypothèse H4 de <a href="index.html">la question</a>).</td></tr>
-    <tr><td>Ce que voit chaque répondant</td><td>Sur un même écran, les trois plans Deliveroo, consultables en touchant leur prix, à côté d'Uber One, l'abonnement d'Uber Eats, et d'un bouton « Je ne prends aucun abonnement ».</td></tr>
+    <tr><td>Ce que voit chaque répondant</td><td>Sur un même écran, les trois plans Deliveroo, consultables en touchant leur prix, à côté de l'offre d'une « autre application », sans marque, et d'une option « Je ne prends aucun abonnement ». Il doit sélectionner une offre pour pouvoir continuer.</td></tr>
     <tr><td>Version A, prix bas</td><td>Plus Essentiel 2,49 € · Plus Or 3,49 € (le <a href="https://deliveroo.fr/fr/plus">prix actuel</a>) · Plus Famille 6,99 €</td></tr>
-    <tr><td>Version B, prix hauts</td><td>Plus Essentiel 3,49 € · Plus Or 4,99 € · Plus Famille 8,99 €</td></tr>
-    <tr><td>Ce qui ne change pas</td><td>Les avantages de chaque plan, la présentation, et l'offre Uber One à <a href="https://www.uber.com/fr/fr/uber-one/">5,99 €</a> dans les deux versions. Seuls les prix Deliveroo diffèrent.</td></tr>
+    <tr><td>Version B, prix hauts</td><td>Chaque plan 1,50 € plus cher : Plus Essentiel 3,99 € · Plus Or 4,99 € · Plus Famille 8,49 €. Les écarts entre plans restent les mêmes : seul le niveau de prix change.</td></tr>
+    <tr><td>Ce qui ne change pas</td><td>Les avantages de chaque plan, la présentation, et l'offre de l'autre application à 5,99 € dans les deux versions, le prix d'<a href="https://www.uber.com/fr/fr/uber-one/">Uber One</a> relevé sur le marché. Seuls les prix Deliveroo diffèrent.</td></tr>
     <tr><td>Répartition</td><td>Tirage au sort à l'ouverture du questionnaire, une chance sur deux ; la version est enregistrée dans la colonne <code>version</code>.</td></tr>
-    <tr><td>Métrique principale</td><td>La part de répondants qui choisissent un plan Deliveroo, quel qu'il soit.</td></tr>
-    <tr><td>Métriques secondaires</td><td>La répartition entre les trois plans ; la part qui choisit Uber One (les clients perdus au profit du concurrent) ; la recette par répondant, soit le prix du plan choisi en moyenne.</td></tr>
+    <tr><td>Métrique principale</td><td>La part de répondants dont le <strong>premier choix</strong> est un plan Deliveroo, quel qu'il soit. Le premier choix est fait avant les repas ; s'il revient en arrière pour changer d'offre, le nouveau choix est enregistré à part.</td></tr>
+    <tr><td>Métriques secondaires</td><td>La répartition entre les trois plans ; la part qui choisit l'autre application (les clients perdus au profit d'un concurrent) ; la recette par répondant, soit le prix du plan choisi en moyenne.</td></tr>
     <tr><td>Garde-fous</td><td>Les choix des répondants qui utilisent déjà Deliveroo, ceux qu'une hausse risque de faire partir ; et la question de contrôle, qui vérifie que le prix de Plus Or a été lu.</td></tr>
     <tr><td>Règle de décision</td><td>La hausse est recommandée si la part de choix Deliveroo en B atteint au moins 90 % de celle de A. En dessous, elle fait perdre plus d'abonnés que ne le permet le <a href="index.html#arbitrage">seuil de 10 %</a>.</td></tr>
   </table></div>
@@ -44,12 +44,12 @@
   <p>Deliveroo propose aujourd'hui une seule formule payante, <a href="https://deliveroo.fr/fr/plus">Plus Or</a>. Le test lui ajoute deux plans imaginés pour l'étude, afin de savoir si une gamme de prix fait choisir Deliveroo plus souvent.</p>
   <div class="table-wrap"><table>
     <tr><th>Plan</th><th>Avantages</th><th class="num">Prix A</th><th class="num">Prix B</th></tr>
-    <tr><td>Plus Essentiel</td><td>Livraison offerte dès 12 € ; −10 % sur les commandes de 25 € et plus ; frais de service à payer</td><td class="num">2,49 €</td><td class="num">3,49 €</td></tr>
+    <tr><td>Plus Essentiel</td><td>Livraison offerte dès 12 € ; −10 % sur les commandes de 25 € et plus ; frais de service à payer</td><td class="num">2,49 €</td><td class="num">3,99 €</td></tr>
     <tr><td>Plus Or, tout compris</td><td>Livraison offerte dès 12 € ; aucuns frais de service ; offres réservées</td><td class="num">3,49 €</td><td class="num">4,99 €</td></tr>
-    <tr><td>Plus Famille</td><td>Tous les avantages de Plus Or, partagés avec 4 personnes du foyer ; −10 % dès 25 €</td><td class="num">6,99 €</td><td class="num">8,99 €</td></tr>
-    <tr><td>Uber One (concurrent)</td><td>Livraison à 0 € dès 12 € ; frais de service réduits de moitié ; avantages sur les trajets Uber</td><td class="num">5,99 €</td><td class="num">5,99 €</td></tr>
+    <tr><td>Plus Famille</td><td>Tous les avantages de Plus Or, partagés avec 4 personnes du foyer ; −10 % dès 25 €</td><td class="num">6,99 €</td><td class="num">8,49 €</td></tr>
+    <tr><td>Autre application (concurrent sans marque)</td><td>Livraison à 0 € dès 12 € ; frais de service réduits de moitié ; avantages chez des partenaires</td><td class="num">5,99 €</td><td class="num">5,99 €</td></tr>
   </table></div>
-  <p class="src">Avantages d'Uber One d'après <a href="https://www.uber.com/fr/fr/uber-one/">uber.com</a>, consulté le 8 octobre 2026 ; plans Essentiel et Famille, et version « tout compris » de Plus Or : propositions du groupe.</p>
+  <p class="src">L'offre de l'autre application reprend le prix et les principaux avantages d'<a href="https://www.uber.com/fr/fr/uber-one/">Uber One</a> (consulté le 8 octobre 2026), présentés sans marque ; plans Essentiel et Famille, et version « tout compris » de Plus Or : propositions du groupe.</p>
 
   <h2>Les tests réels dont il s'inspire</h2>
   <div class="table-wrap"><table>
@@ -86,8 +86,9 @@
     <tr><td><code>id</code>, <code>horodatage</code></td><td>Identifiant aléatoire et date de la réponse</td></tr>
     <tr><td><code>version</code>, <code>prix_affiche</code></td><td>A ou B, et le prix de Plus Or dans cette version (3,49 ou 4,99)</td></tr>
     <tr><td><code>usage_uber_eats</code>, <code>usage_deliveroo</code>, <code>usage_just_eat</code>, <code>usage_autre</code></td><td>La matrice d'usage : jamais, rare, mois ou semaine</td></tr>
-    <tr><td><code>plan_choisi</code>, <code>prix_choisi</code></td><td>essentiel, or, famille, uber_one ou aucun, et son prix : la donnée centrale du test</td></tr>
-    <tr><td><code>souscription_deliveroo</code></td><td>1 si un plan Deliveroo est choisi, 0 sinon : la métrique principale</td></tr>
+    <tr><td><code>plan_premier_choix</code>, <code>prix_premier_choix</code></td><td>essentiel, or, famille, concurrent ou aucun, et son prix : le choix fait avant les repas, la donnée centrale du test</td></tr>
+    <tr><td><code>souscription_deliveroo</code></td><td>1 si le premier choix est un plan Deliveroo, 0 sinon : la métrique principale</td></tr>
+    <tr><td><code>plan_choisi</code>, <code>prix_choisi</code>, <code>choix_modifie</code></td><td>Le choix final, et 1 si le répondant est revenu en arrière pour en changer</td></tr>
     <tr><td><code>plans_consultes</code></td><td>Les plans Deliveroo que le répondant a affichés avant de choisir</td></tr>
     <tr><td><code>sim_1</code>, <code>sim_2</code>, <code>sim_3</code>, <code>sim_commandes</code>, <code>sim_total</code>, <code>sim_economies</code></td><td>Les trois repas : plat choisi, « maison » ou « annule » ; nombre de commandes, montant total et économies réalisées</td></tr>
     <tr><td><code>controle</code></td><td>3_49, 4_99 ou nsp : le prix de Plus Or dont le répondant se souvient</td></tr>
@@ -105,10 +106,10 @@
 
   <h2>Ce que la mesure vaut</h2>
   <p>C'est une simulation : choisir un abonnement sans payer n'est pas s'abonner, et les répondants sont souvent plus généreux qu'en situation réelle. L'échantillon restera surtout étudiant et clermontois, et les étudiants ont accès gratuitement à <a href="https://deliveroo.fr/fr/faq">Deliveroo Plus Argent</a>. C'est pourquoi la décision repose sur l'écart entre A et B, que le tirage au sort rend valide, plutôt que sur les niveaux absolus.</p>
-  <p>Sur téléphone, les plans Deliveroo apparaissent avant l'offre Uber One : cet ordre, identique dans les deux versions, ne fausse pas la comparaison entre A et B, mais peut favoriser Deliveroo dans les niveaux absolus.</p>
+  <p>Sur téléphone, les plans Deliveroo apparaissent avant l'offre de l'autre application : cet ordre, identique dans les deux versions, ne fausse pas la comparaison entre A et B, mais peut favoriser Deliveroo dans les niveaux absolus.</p>
 
   <h2>Les résultats</h2>
-  <div class="todo"><strong>À compléter après la collecte</strong> Nombre de réponses par version, écartées et gardées ; part de choix Deliveroo en A et en B, et rapport B ÷ A comparé au seuil de 90 % ; répartition entre Essentiel, Or, Famille, Uber One et aucun, par version ; recette par répondant ; mêmes calculs chez les utilisateurs actuels de Deliveroo ; courbes de Van Westendorp et de Gabor-Granger par version.</div>
+  <div class="todo"><strong>À compléter après la collecte</strong> Nombre de réponses par version, écartées et gardées ; part de choix Deliveroo en A et en B, et rapport B ÷ A comparé au seuil de 90 % ; répartition entre Essentiel, Or, Famille, autre application et aucun, par version ; recette par répondant ; mêmes calculs chez les utilisateurs actuels de Deliveroo ; courbes de Van Westendorp et de Gabor-Granger par version.</div>
 </main>
 <footer>Dossier de groupe · M1 Marketing, IAE Clermont Auvergne · Chaque chiffre porte sa source et sa date de consultation.</footer>
 </body>
