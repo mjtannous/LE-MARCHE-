@@ -193,9 +193,11 @@
 </main>
 
 <script>
-// Adresse de l'application web Google Apps Script qui enregistre les réponses
-// dans la feuille Google Sheets du groupe (voir LISEZMOI.md). Vide = mode test.
-const ENDPOINT = "";
+// Les réponses sont envoyées au formulaire Google « Réponses test Deliveroo », relié à la feuille
+// du même nom : une ligne par répondant, toutes les réponses en JSON dans la colonne « reponse »
+// (voir LISEZMOI.md). Vide = mode test.
+const ENDPOINT = "https://docs.google.com/forms/d/e/1FAIpQLSdo_gR-3m5rYHAsG0EcPb_sVULBsQPyotRne56SaSHN_zzQSA/formResponse";
+const CHAMP_REPONSE = "entry.2063983619";
 
 // Test A/B : seuls les prix des plans Deliveroo changent. A = prix bas (Plus Or au prix actuel),
 // B = chaque plan 1,50 € plus cher, pour que les écarts entre plans restent les mêmes.
@@ -699,8 +701,8 @@ async function send() {
     return;
   }
   try {
-    // text/plain + no-cors : Apps Script n'accepte pas les requêtes préliminaires CORS.
-    await fetch(ENDPOINT, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(answers) });
+    // no-cors : Google Forms enregistre la réponse sans autoriser la lecture du retour.
+    await fetch(ENDPOINT, { method: "POST", mode: "no-cors", body: new URLSearchParams({ [CHAMP_REPONSE]: JSON.stringify(answers) }) });
   } catch (e) {
     const msg = $("#fin-msg");
     if (msg) msg.textContent = "L'envoi a échoué. Vérifiez votre connexion et rechargez la page pour recommencer.";
