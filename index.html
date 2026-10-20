@@ -25,6 +25,10 @@
     <h1>Compte tenu du coût d'un abonné et de la sensibilité des clients au prix, Deliveroo France a-t-elle intérêt à baisser ou à augmenter le prix de son abonnement Deliveroo Plus ?</h1>
     <p class="standfirst">Deliveroo France gagne moins d'un centime par euro vendu, et son abonnement semble vendu sous ce qu'il lui coûte. Une baisse de prix pourrait attirer de nouveaux abonnés, une hausse mieux rentabiliser ceux qu'elle a déjà. Ce dossier compare les deux options à partir des comptes déposés, des prix du marché et d'un test auprès de consommateurs.</p>
     <p class="meta">M1 Marketing · IAE Clermont Auvergne · Université Clermont Auvergne</p>
+    <div class="cta-row">
+      <a class="cta" href="questionnaire.html">🛵 Faire le défi (3 min)</a>
+      <a class="cta ghost" href="#simulateur">Essayer le simulateur de prix</a>
+    </div>
   </div>
 
   <div class="todo"><strong>À compléter</strong> Noms des membres du groupe et groupe de TD.</div>
@@ -136,6 +140,21 @@
   <p>Autrement dit, <strong>la baisse ne paie que si elle augmente le nombre d'abonnés d'au moins 8 %</strong> avec des clients nouveaux pour Deliveroo, et <strong>la hausse ne coûte que si elle fait quitter Deliveroo à plus de 10 % des abonnés</strong>. Le <a href="mesure.html">test A/B</a> compare le taux de souscription à 3,49 € et à 4,99 € ; les questions de Gabor-Granger mesurent l'effet d'une baisse à 2,49 €.</p>
   <p class="src">Calculs du groupe : 245 000 × 1,00 € et 245 000 × 1,50 € pour l'effet sur les abonnés actuels ; 245 000 ÷ 12,39 ≈ 19 800 et 367 500 ÷ 14,89 ≈ 24 700 pour les seuils. Deux limites : un client de Deliveroo qui s'abonne grâce à la baisse ne compte pas comme nouveau, puisqu'il rapporte moins une fois abonné ; et un abonné qui résilie mais continue de commander sans abonnement ne fait presque rien perdre (il rapporte 14,53 € contre 14,89 €).</p>
 
+  <h2 id="simulateur">Le simulateur : et si Deliveroo changeait son prix ?</h2>
+  <p>Faites glisser le prix de Deliveroo Plus Or. Le simulateur applique les estimations ci-dessus : 245 000 abonnés, un plancher de 4,63 € et 9,90 € de marge mensuelle sur les commandes d'un abonné.</p>
+  <div class="sim">
+    <div class="sim-price"><span id="sim-p">3,49 €</span><small>par mois</small></div>
+    <input type="range" id="sim-range" min="1.99" max="5.99" step="0.10" value="3.49" aria-label="Prix mensuel de Deliveroo Plus Or">
+    <div class="sim-scale"><span>1,99 €</span><span>prix actuel 3,49 €</span><span>5,99 €</span></div>
+    <div class="sim-out">
+      <div><b id="sim-marge">−1,14 €</b><span>par abonné et par mois, par rapport au plancher</span></div>
+      <div><b id="sim-effet">0 €</b><span>par mois sur les abonnés actuels, par rapport à 3,49 €</span></div>
+      <div><b id="sim-seuil">—</b><span id="sim-seuil-l">abonnés à gagner ou à perdre au maximum</span></div>
+    </div>
+    <p class="sim-verdict" id="sim-verdict">C'est le prix actuel : chaque abonné rapporte moins que s'il n'était pas abonné.</p>
+  </div>
+  <p class="src">Calculs du groupe, mêmes hypothèses que le plancher et l'arbitrage ; un ordre de grandeur, pas une prévision.</p>
+
   <h2>Le cadre du dossier</h2>
   <p>Une entreprise réelle, ses comptes publics, et une seule question : peut-elle se permettre ce prix ? Le dossier y répond en quatre temps, dans l'ordre fixé par le module.</p>
   <ol class="brief">
@@ -147,5 +166,49 @@
   <p>Deux règles valent pour tout le dossier : chaque chiffre porte sa source et sa date, et l'usage de l'IA est déclaré et vérifié (<a href="methode.html">Sources et IA</a>).</p>
 </main>
 <footer>Dossier de groupe · M1 Marketing, IAE Clermont Auvergne · Chaque chiffre porte sa source et sa date de consultation.</footer>
+<script>
+// Simulateur de prix : mêmes hypothèses que les sections « plancher » et « arbitrage ».
+const ABONNES = 245000, PLANCHER = 4.63, MARGE_COMMANDES = 9.90, ACTUEL = 3.49;
+const fmt = (n, d = 2) => n.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const range = document.getElementById("sim-range");
+function simuler() {
+  const p = Number(range.value);
+  const marge = p - PLANCHER;
+  const effet = (p - ACTUEL) * ABONNES;
+  const seuil = Math.abs(effet) / (p + MARGE_COMMANDES);
+  document.getElementById("sim-p").textContent = fmt(p) + " €";
+  const m = document.getElementById("sim-marge");
+  m.textContent = (marge >= 0 ? "+" : "−") + fmt(Math.abs(marge)) + " €";
+  m.className = marge >= 0 ? "pos" : "neg";
+  const e = document.getElementById("sim-effet");
+  e.textContent = Math.abs(effet) < 1 ? "0 €" : (effet > 0 ? "+" : "−") + fmt(Math.abs(effet), 0) + " €";
+  e.className = effet >= 0 ? "pos" : "neg";
+  const s = document.getElementById("sim-seuil"), sl = document.getElementById("sim-seuil-l");
+  const v = document.getElementById("sim-verdict");
+  if (Math.abs(p - ACTUEL) < 0.05) {
+    s.textContent = "—"; sl.textContent = "abonnés à gagner ou à perdre au maximum";
+    v.textContent = "C'est le prix actuel : chaque abonné rapporte moins que s'il n'était pas abonné.";
+  } else if (p < ACTUEL) {
+    s.textContent = "+" + fmt(seuil, 0); sl.textContent = "nouveaux abonnés à gagner pour que la baisse soit rentable";
+    v.textContent = `Baisser à ${fmt(p)} € ne paie que si cela attire au moins ${fmt(seuil / ABONNES * 100, 0)} % d'abonnés en plus.`;
+  } else {
+    s.textContent = "−" + fmt(seuil, 0); sl.textContent = "abonnés que la hausse peut perdre au maximum";
+    v.textContent = `Monter à ${fmt(p)} € reste rentable tant que moins de ${fmt(seuil / ABONNES * 100, 0)} % des abonnés quittent Deliveroo.`;
+  }
+  const pct = (p - range.min) / (range.max - range.min) * 100;
+  range.style.background = `linear-gradient(90deg, var(--accent) ${pct}%, var(--line) ${pct}%)`;
+}
+range.addEventListener("input", simuler);
+simuler();
+
+// Les blocs apparaissent en douceur au défilement.
+if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const blocs = document.querySelectorAll("main > h2, main > figure, main > .table-wrap, main > .card, main > .sim, main > .kpis");
+  const obs = new IntersectionObserver(entries => entries.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add("in"); obs.unobserve(en.target); }
+  }), { rootMargin: "0px 0px -40px 0px" });
+  blocs.forEach(b => { b.classList.add("reveal"); obs.observe(b); });
+}
+</script>
 </body>
 </html>

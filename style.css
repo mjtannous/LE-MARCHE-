@@ -235,6 +235,34 @@ svg .val.neg { fill: var(--neg); }
 svg .lab { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
 svg .sub { font-size: 11.5px; fill: var(--muted); }
 
+/* boutons d'appel */
+.cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.cta { display: inline-block; padding: 13px 22px; border-radius: 999px; background: var(--ink); color: var(--bg); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: transform .15s, background .15s; }
+.cta:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
+.cta.ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+.cta.ghost:hover { background: var(--ink); color: var(--bg); }
+
+/* simulateur de prix */
+.sim { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 24px 22px 20px; margin: 22px 0 8px; box-shadow: 0 8px 26px rgba(22,24,29,.06); }
+.sim-price { text-align: center; font-family: var(--serif); font-size: 3rem; line-height: 1; }
+.sim-price small { display: block; font-family: var(--sans); font-size: .85rem; color: var(--muted); margin-top: 6px; }
+#sim-range { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 3px; margin: 22px 0 8px; outline: none; }
+#sim-range::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); border: 4px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,.25); cursor: pointer; }
+#sim-range::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--ink); border: 4px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,.25); cursor: pointer; }
+.sim-scale { display: flex; justify-content: space-between; font-size: .75rem; color: var(--muted); }
+.sim-out { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 20px 0 6px; }
+.sim-out div { background: var(--bg); border-radius: 12px; padding: 14px; }
+.sim-out b { display: block; font-family: var(--serif); font-size: 1.5rem; font-weight: 500; }
+.sim-out b.pos { color: var(--accent); }
+.sim-out b.neg { color: var(--neg); }
+.sim-out span { font-size: .78rem; color: var(--muted); }
+.sim-verdict { margin: 14px 0 0; font-weight: 600; }
+
+/* apparition des sections au défilement */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } .cta { transition: none; } }
+
 @media print {
   header.site { position: static; }
   .todo { border: 1px solid var(--line); }

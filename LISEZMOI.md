@@ -23,7 +23,7 @@ Tant que `ENDPOINT` est vide dans `questionnaire.html`, le questionnaire est en 
 
 ```javascript
 const COLONNES = ["id", "horodatage", "version", "prix_affiche", "appli",
-  "souscription", "controle",
+  "sim_1", "souscription", "sim_2", "sim_3", "sim_commandes", "sim_total", "controle",
   "vw_trop_bon_marche", "vw_bon_marche", "vw_cher", "vw_trop_cher", "vw_coherent",
   "gg_2_49", "gg_3_49", "gg_4_49", "gg_4_99", "gg_5_99", "gg_6_99", "gg_coherent",
   "age", "statut", "commandes_30j", "abonnements"];

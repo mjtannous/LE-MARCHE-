@@ -21,7 +21,8 @@
 <main>
   <p class="eyebrow">Attendu 3 sur 4 · Le prix psychologique, mesuré auprès de vraies personnes</p>
   <h1>La mesure : un test A/B sur le prix de Deliveroo Plus</h1>
-  <p class="lead">Un écran d'abonnement, deux prix tirés au sort, un clic « S'abonner » ou « Non merci » : le même dispositif que les tests de prix menés en entreprise.</p>
+  <p class="lead">Une simulation d'application, une offre d'abonnement à deux prix tirés au sort, un clic « S'abonner » ou « Non merci » : le même dispositif que les tests de prix menés en entreprise.</p>
+  <div class="cta-row"><a class="cta" href="questionnaire.html">🛵 Faire le défi (3 min)</a></div>
   <p><a href="questionnaire.html">Ouvrir le questionnaire</a></p>
 
   <h2>Le plan du test</h2>
@@ -49,16 +50,17 @@
   <p class="src">Pages consultées le 20 octobre 2026. Les résultats des tests de boutiques en ligne sont publiés par un prestataire et donnés sans méthodologie complète : ils servent de modèle de dispositif, pas de référence chiffrée.</p>
 
   <h2>Le parcours du répondant</h2>
+  <p>Le questionnaire prend la forme d'un défi en trois chapitres : <a href="questionnaire.html">« vivre un mois de livraisons en 3 minutes »</a>.</p>
   <ol>
-    <li>Accueil : objet de l'étude, anonymat, consentement.</li>
-    <li>Application de livraison la plus utilisée (Uber Eats, Deliveroo, Just Eat, autre, aucune).</li>
-    <li><strong>Le test A/B :</strong> l'écran d'abonnement Deliveroo Plus Or, à 3,49 € ou 4,99 € selon la version, avec deux boutons, « S'abonner » et « Non merci ».</li>
-    <li>Contrôle : « Quel était le prix mensuel affiché ? »</li>
-    <li>Van Westendorp : quatre questions à réponse libre en euros, dans l'ordre trop bon marché, bon marché, cher, trop cher.</li>
-    <li>Gabor-Granger : six prix présentés en ordre croissant à tout le monde, 2,49 €, 3,49 €, 4,49 €, 4,99 €, 5,99 € et 6,99 €.</li>
-    <li>Profil : âge, situation, nombre de commandes sur 30 jours, abonnements déjà détenus.</li>
+    <li>Accueil : objet de l'étude, anonymat, consentement ; puis l'application de livraison la plus utilisée.</li>
+    <li><strong>Chapitre 1, « Votre mois en livraison » :</strong> une simulation d'application. Lundi soir, le répondant choisit un plat ou cuisine ; s'il commande, il voit son panier avec les frais de livraison et de service, valide ou renonce, et suit la livraison.</li>
+    <li><strong>Le test A/B :</strong> en rouvrant l'application, l'offre Deliveroo Plus Or s'affiche, à 3,49 € ou 4,99 € selon la version, avec « S'abonner » ou « Non merci ».</li>
+    <li>Jeudi midi et samedi soir, deux nouvelles commandes : l'abonné voit la livraison offerte dès 12 € et des frais de service réduits, le non-abonné paie les frais. Un récapitulatif du mois clôt le chapitre.</li>
+    <li><strong>Chapitre 2, « Le juste prix » :</strong> la question de contrôle sur le prix vu, puis Van Westendorp avec quatre curseurs, dans l'ordre trop bon marché, bon marché, cher, trop cher ; puis Gabor-Granger sous forme de cartes de prix à balayer, en ordre croissant : 2,49 €, 3,49 €, 4,49 €, 4,99 €, 5,99 € et 6,99 €.</li>
+    <li><strong>Chapitre 3, « Et vous ? » :</strong> âge, situation, nombre de commandes réelles sur 30 jours, abonnements détenus ; puis un profil ludique et une invitation à partager le défi.</li>
   </ol>
-  <p><strong>Pourquoi le test vient en premier.</strong> Comme en conditions réelles, le répondant découvre l'offre et son prix sans avoir réfléchi au prix auparavant ; son clic n'est influencé par aucune question précédente. En contrepartie, le prix vu peut servir d'ancre aux questions de Van Westendorp et de Gabor-Granger : elles seront donc analysées séparément pour A et pour B.</p>
+  <p><strong>Pourquoi une simulation.</strong> L'offre apparaît au moment où une vraie application la proposerait, après une première commande et ses frais. Le répondant ne répond pas à une question sur le prix : il prend une décision, comme un client. C'est le principe des tests menés en entreprise, où l'on observe un comportement plutôt qu'une opinion. Les frais de la simulation (2,49 € de livraison, 0,99 € de service) sont fictifs, du même ordre que ceux affichés par les applications.</p>
+  <p><strong>Pourquoi le test vient avant les questions de prix.</strong> Le clic n'est influencé par aucune réflexion préalable sur le prix. En contrepartie, le prix vu peut servir d'ancre aux curseurs et aux cartes : ces réponses seront donc analysées séparément pour A et pour B. Les curseurs partent de 0 € et n'affichent aucun prix tant que le répondant ne les a pas déplacés.</p>
   <p><strong>Ce que mesure chaque partie.</strong> Le test A/B répond à la question de la hausse (H4). Les questions de Gabor-Granger mesurent aussi l'effet d'une baisse : la part de répondants qui s'abonneraient à 2,49 € plutôt qu'à 3,49 € sert à tester l'hypothèse H3.</p>
 
   <h2>La population interrogée</h2>
@@ -76,6 +78,8 @@
     <tr><td><code>version</code>, <code>prix_affiche</code></td><td>A et 3,49, ou B et 4,99</td></tr>
     <tr><td><code>appli</code></td><td>Application la plus utilisée : uber_eats, deliveroo, just_eat, autre, aucune</td></tr>
     <tr><td><code>souscription</code></td><td>1 si le répondant a cliqué sur « S'abonner », 0 sur « Non merci » : la métrique principale</td></tr>
+    <tr><td><code>sim_1</code>, <code>sim_2</code>, <code>sim_3</code></td><td>Le plat choisi à chaque scène, « maison » s'il cuisine, « annule » s'il renonce au panier</td></tr>
+    <tr><td><code>sim_commandes</code>, <code>sim_total</code></td><td>Nombre de commandes passées dans la simulation et montant total en euros</td></tr>
     <tr><td><code>controle</code></td><td>3_49, 4_99 ou nsp : le prix dont le répondant se souvient</td></tr>
     <tr><td><code>vw_trop_bon_marche</code>, <code>vw_bon_marche</code>, <code>vw_cher</code>, <code>vw_trop_cher</code>, <code>vw_coherent</code></td><td>Les réponses de Van Westendorp, et 1 si elles montent</td></tr>
     <tr><td><code>gg_2_49</code> à <code>gg_6_99</code>, <code>gg_coherent</code></td><td>1 si le répondant s'abonnerait à ce prix, et 0 en cas d'incohérence</td></tr>
