@@ -4,73 +4,114 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Le défi : un mois de livraisons</title>
+<title>Testez un abonnement de livraison</title>
 <link rel="stylesheet" href="style.css">
 <style>
-  :root { --mint: #00a896; --mint-soft: #e3f6f3; --ink2: #2b2f38; }
+  :root { --mint: #00a896; --mint-soft: #e3f6f3; --ink2: #2b2f38; --uber: #111; }
   body { min-height: 100vh; background: radial-gradient(1200px 500px at 50% -200px, #e3f6f3, var(--bg)); }
-  main { max-width: 520px; padding-top: 18px; padding-bottom: 60px; }
+  main { max-width: 560px; padding-top: 14px; padding-bottom: 60px; }
 
-  /* progression par chapitres */
-  .top { position: sticky; top: 0; z-index: 5; padding: 12px 0 10px; background: linear-gradient(var(--bg) 70%, transparent); }
-  .chapters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  /* barre du haut : retour et progression par chapitres */
+  .top { position: sticky; top: 0; z-index: 5; padding: 10px 0 10px; background: linear-gradient(var(--bg) 75%, transparent); }
+  .top-row { display: flex; align-items: center; gap: 12px; }
+  #back { margin: 0; padding: 6px 12px; font-size: .85rem; border-radius: 999px; background: #fff; color: var(--ink); border: 1px solid var(--line); flex: none; }
+  #back:hover { border-color: var(--ink); }
+  #back[hidden] { display: none; }
+  .chapters { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
   .chapters div { height: 5px; border-radius: 3px; background: var(--line); overflow: hidden; }
   .chapters i { display: block; height: 100%; width: 0; background: var(--mint); transition: width .5s ease; }
-  .chapter-name { font-size: 0.75rem; color: var(--muted); margin-top: 7px; letter-spacing: .04em; }
+  .chapter-name { font-size: .75rem; color: var(--muted); margin-top: 7px; letter-spacing: .04em; }
 
   .screen { animation: arrive .4s ease both; }
   @keyframes arrive { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) { .screen, .card, .scooter { animation: none !important; } }
+  @media (prefers-reduced-motion: reduce) { .screen, .card, .scooter, .confetti { animation: none !important; } }
 
-  .kicker { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--mint); margin: 18px 0 6px; }
-  .title { font-family: var(--serif); font-size: clamp(1.7rem, 6.5vw, 2.2rem); line-height: 1.15; margin: 0 0 10px; }
-  .sub { color: var(--muted); margin: 0 0 20px; }
+  .kicker { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--mint); margin: 16px 0 6px; }
+  .title { font-family: var(--serif); font-size: clamp(1.6rem, 6.5vw, 2.2rem); line-height: 1.15; margin: 0 0 10px; }
+  .title.s { font-size: 1.35rem; }
+  .sub { color: var(--muted); margin: 0 0 18px; }
   .btn { display: block; width: 100%; margin: 14px 0 0; padding: 15px; font-size: 1.05rem; border-radius: 12px; }
   .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
   .btn.ghost:hover { background: #fff; color: var(--ink); }
+  .btn:disabled { opacity: .35; cursor: not-allowed; }
   .err { margin: 10px 0 0; }
 
   /* accueil */
-  .hero-ill { font-size: 3.4rem; letter-spacing: 6px; margin: 10px 0 4px; }
-  .facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
-  .facts span { font-size: .82rem; padding: 6px 12px; border-radius: 999px; background: #fff; border: 1px solid var(--line); }
-  .consent { display: flex; gap: 10px; align-items: flex-start; font-size: .9rem; margin-top: 16px; cursor: pointer; }
+  .hero-ill { font-size: 3.2rem; letter-spacing: 6px; margin: 8px 0 0; }
+  .steps3 { display: grid; gap: 8px; margin: 16px 0; }
+  .steps3 div { display: flex; gap: 12px; align-items: center; background: #fff; border-radius: 12px; padding: 12px 14px; font-size: .95rem; }
+  .steps3 b { display: grid; place-items: center; flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--mint-soft); color: var(--mint); }
+  .consent { display: flex; gap: 10px; align-items: flex-start; font-size: .9rem; margin-top: 14px; cursor: pointer; }
   .consent input { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--ink); }
+
+  /* matrice d'usage */
+  .matrix { display: grid; gap: 10px; }
+  .mrow { background: #fff; border-radius: 14px; padding: 12px; box-shadow: 0 2px 10px rgba(22,24,29,.05); }
+  .mrow b { display: block; margin-bottom: 8px; }
+  .seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .seg button { margin: 0; padding: 9px 4px; font-size: .78rem; line-height: 1.2; border-radius: 9px; background: var(--bg); color: var(--ink); border: 1px solid var(--line); }
+  .seg button:hover { border-color: var(--ink); background: var(--bg); color: var(--ink); }
+  .seg button[aria-pressed="true"] { background: var(--mint); border-color: var(--mint); color: #fff; }
 
   /* tuiles */
   .tiles { display: grid; gap: 10px; }
-  .tile { display: flex; align-items: center; gap: 12px; width: 100%; margin: 0; padding: 15px 16px; text-align: left; font-size: 1rem; font-weight: 500; background: #fff; color: var(--ink); border: 1px solid #dcd9d0; border-radius: 12px; transition: border-color .15s, transform .1s, box-shadow .15s; }
+  .tile { display: flex; align-items: center; gap: 12px; width: 100%; margin: 0; padding: 15px 16px; text-align: left; font-size: 1rem; font-weight: 500; background: #fff; color: var(--ink); border: 1px solid #dcd9d0; border-radius: 12px; }
   .tile:hover { background: #fff; color: var(--ink); border-color: var(--ink); }
-  .tile:active { transform: scale(.98); }
   .tile[aria-pressed="true"] { border-color: var(--mint); background: var(--mint-soft); box-shadow: inset 0 0 0 1px var(--mint); }
   .tile .ico { font-size: 1.4rem; width: 1.8rem; text-align: center; }
 
-  /* scènes : cartes de plats */
-  .scene-head { display: flex; align-items: center; gap: 12px; background: var(--ink2); color: #fff; border-radius: 16px; padding: 16px 18px; margin: 14px 0 16px; }
+  /* le choix d'abonnement : le test A/B */
+  .offers { display: grid; gap: 14px; }
+  @media (min-width: 640px) { main.wide { max-width: 860px; } .offers { grid-template-columns: 1.35fr 1fr; align-items: start; } }
+  .offer { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 14px 34px rgba(22,24,29,.12); }
+  .offer .band { padding: 16px 20px 14px; color: #fff; }
+  .offer.dlv .band { background: linear-gradient(135deg, #00a896, #007a6e); }
+  .offer.ub .band { background: linear-gradient(135deg, #2b2f38, #111); }
+  .offer .band small { font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+  .offer .band b { display: block; font-family: var(--serif); font-size: 1.35rem; font-weight: 500; margin-top: 2px; }
+  .offer .body { padding: 16px 20px 18px; }
+  .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 14px; }
+  .chips button { margin: 0; padding: 8px 4px; border-radius: 10px; background: var(--bg); color: var(--ink); border: 1px solid var(--line); font-size: .8rem; line-height: 1.25; }
+  .chips button b { display: block; font-family: var(--serif); font-size: 1.15rem; font-weight: 500; }
+  .chips button:hover { border-color: var(--ink); background: var(--bg); color: var(--ink); }
+  .chips button[aria-pressed="true"] { background: var(--mint-soft); border-color: var(--mint); box-shadow: inset 0 0 0 1px var(--mint); }
+  .plan-name { font-weight: 700; font-size: 1.05rem; }
+  .plan-tag { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; background: var(--mint); color: #fff; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; }
+  .price { font-family: var(--serif); font-size: 2.5rem; line-height: 1; margin: 8px 0 12px; }
+  .price small { font-family: var(--sans); font-size: .9rem; color: var(--muted); }
+  .perks { list-style: none; padding: 0; margin: 0; }
+  .perks li { padding: 5px 0 5px 28px; position: relative; font-size: .93rem; }
+  .perks li::before { content: "✓"; position: absolute; left: 0; top: 5px; width: 20px; height: 20px; border-radius: 50%; background: var(--mint-soft); color: var(--mint); font-size: .75rem; font-weight: 700; display: grid; place-items: center; }
+  .perks li.minus::before { content: "–"; background: #f3f1ea; color: var(--muted); }
+  .offer.ub .perks li::before { background: #ececec; color: #111; }
+  .offer .btn { margin-top: 16px; }
+  .offer.ub .btn { background: var(--uber); border-color: var(--uber); }
+  .none-btn { display: block; margin: 16px auto 0; background: none; border: 0; color: var(--muted); text-decoration: underline; font-size: .92rem; }
+  .none-btn:hover { background: none; color: var(--ink); }
+  .note { font-size: .75rem; color: var(--muted); text-align: center; margin: 12px 0 0; }
+
+  /* scènes */
+  .mine { display: flex; align-items: center; gap: 8px; font-size: .85rem; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; width: fit-content; }
+  .scene-head { display: flex; align-items: center; gap: 12px; background: var(--ink2); color: #fff; border-radius: 16px; padding: 16px 18px; margin: 12px 0 16px; }
   .scene-head .clock { font-size: 2rem; }
   .scene-head b { display: block; font-size: 1.05rem; }
   .scene-head span { font-size: .9rem; opacity: .8; }
+  .same-price { font-size: .85rem; color: var(--muted); margin: -6px 0 12px; }
   .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .dish { margin: 0; padding: 0; border: 0; border-radius: 16px; overflow: hidden; text-align: left; background: #fff; color: var(--ink); box-shadow: 0 2px 10px rgba(22,24,29,.07); transition: transform .15s, box-shadow .15s; }
   .dish:hover { background: #fff; color: var(--ink); transform: translateY(-3px); box-shadow: 0 10px 22px rgba(22,24,29,.12); }
-  .dish .pic { height: 92px; display: grid; place-items: center; font-size: 3rem; }
-  .dish .txt { padding: 10px 12px 12px; }
-  .dish .txt b { display: block; font-size: .92rem; line-height: 1.25; }
-  .dish .txt span { font-size: .85rem; color: var(--muted); }
-  .dish.home { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: transparent; border: 1px dashed #c9c6bd; box-shadow: none; }
-  .dish.home .pic { height: auto; font-size: 1.8rem; }
+  .dish .pic { height: 88px; display: grid; place-items: center; font-size: 2.8rem; }
+  .dish .txt { padding: 10px 12px 12px; font-weight: 600; font-size: .92rem; line-height: 1.25; }
+  .dish.home { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: transparent; border: 1px dashed #c9c6bd; box-shadow: none; font-weight: 600; }
+  .dish.home .pic { height: auto; font-size: 1.7rem; }
 
-  /* panier */
   .receipt { background: #fff; border-radius: 16px; padding: 18px 18px 6px; box-shadow: 0 2px 12px rgba(22,24,29,.08); }
   .receipt .item { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px dashed var(--line); }
   .receipt .item .e { font-size: 2.2rem; }
-  .line { display: flex; justify-content: space-between; padding: 9px 0; font-size: .95rem; border-bottom: 1px solid var(--line); }
+  .line { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; font-size: .95rem; border-bottom: 1px solid var(--line); }
   .line.total { font-weight: 700; font-size: 1.1rem; border-bottom: 0; }
   .line .free { color: var(--mint); font-weight: 700; }
   .line s { color: var(--muted); margin-right: 6px; }
-  .badge-plus { display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .08em; background: var(--mint); color: #fff; padding: 3px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; }
-
-  /* livraison */
   .track { position: relative; height: 70px; margin: 26px 0 10px; border-bottom: 3px dotted #c9c6bd; }
   .scooter { position: absolute; bottom: 4px; left: 0; font-size: 2.4rem; animation: ride 1.8s ease-in-out forwards; }
   .track .home { position: absolute; right: 0; bottom: 4px; font-size: 2.2rem; }
@@ -78,26 +119,12 @@
   .delivered { text-align: center; font-family: var(--serif); font-size: 1.6rem; opacity: 0; transition: opacity .3s; }
   .delivered.on { opacity: 1; }
 
-  /* offre Plus : le test A/B */
-  .sheet { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 18px 40px rgba(22,24,29,.16); animation: arrive .5s ease both; }
-  .sheet .band { background: linear-gradient(135deg, #00a896, #007a6e); color: #fff; padding: 22px 22px 18px; }
-  .sheet .band small { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .9; }
-  .sheet .band h2 { color: #fff; margin: 6px 0 0; padding: 0; border: 0; font-size: 1.6rem; }
-  .sheet .body { padding: 20px 22px 18px; }
-  .sheet .price { font-family: var(--serif); font-size: 2.8rem; line-height: 1; margin: 0 0 14px; }
-  .sheet .price small { font-family: var(--sans); font-size: .95rem; color: var(--muted); }
-  .sheet ul { list-style: none; padding: 0; margin: 0 0 6px; }
-  .sheet li { padding: 6px 0 6px 30px; position: relative; }
-  .sheet li::before { content: "✓"; position: absolute; left: 0; top: 5px; width: 20px; height: 20px; border-radius: 50%; background: var(--mint-soft); color: var(--mint); font-size: .8rem; font-weight: 700; display: grid; place-items: center; }
-  .sheet .note { font-size: .75rem; color: var(--muted); text-align: center; margin: 12px 0 0; }
-
-  /* récapitulatif */
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0; }
-  .stats div { background: #fff; border-radius: 14px; padding: 14px 10px; text-align: center; box-shadow: 0 2px 10px rgba(22,24,29,.06); }
-  .stats b { display: block; font-family: var(--serif); font-size: 1.5rem; }
-  .stats span { font-size: .75rem; color: var(--muted); }
+  .stats div { background: #fff; border-radius: 14px; padding: 14px 8px; text-align: center; box-shadow: 0 2px 10px rgba(22,24,29,.06); }
+  .stats b { display: block; font-family: var(--serif); font-size: 1.45rem; }
+  .stats span { font-size: .74rem; color: var(--muted); }
 
-  /* le juste prix : curseurs */
+  /* le juste prix */
   .mood { text-align: center; font-size: 4rem; line-height: 1; margin: 10px 0 4px; transition: transform .2s; }
   .gauge-value { text-align: center; font-family: var(--serif); font-size: 3rem; margin: 0; }
   .gauge-value.idle { color: #c9c6bd; }
@@ -108,8 +135,7 @@
   .fine { display: flex; justify-content: center; gap: 10px; margin-top: 8px; }
   .fine button { margin: 0; padding: 6px 16px; border-radius: 999px; background: #fff; color: var(--ink); border: 1px solid var(--line); }
 
-  /* cartes à balayer */
-  .deck { position: relative; height: 290px; margin: 16px 0 10px; }
+  .deck { position: relative; height: 270px; margin: 14px 0 10px; }
   .card { position: absolute; inset: 0; background: #fff; border-radius: 22px; box-shadow: 0 14px 34px rgba(22,24,29,.14); display: grid; place-items: center; text-align: center; touch-action: pan-y; user-select: none; cursor: grab; transition: transform .35s ease, opacity .35s ease; }
   .card .p { font-family: var(--serif); font-size: 3.6rem; line-height: 1; }
   .card .p small { display: block; font-family: var(--sans); font-size: .95rem; color: var(--muted); margin-top: 6px; }
@@ -127,7 +153,6 @@
   .stepper button { margin: 0; width: 56px; height: 56px; padding: 0; font-size: 1.6rem; border-radius: 50%; background: #fff; color: var(--ink); border: 1px solid var(--ink); }
   .stepper output { font-family: var(--serif); font-size: 3rem; min-width: 2.5ch; text-align: center; }
 
-  /* fin */
   .badge { text-align: center; background: #fff; border-radius: 22px; padding: 26px 20px; box-shadow: 0 14px 34px rgba(22,24,29,.1); margin: 18px 0; }
   .badge .e { font-size: 4rem; }
   .badge b { display: block; font-family: var(--serif); font-size: 1.6rem; margin-top: 6px; }
@@ -136,9 +161,12 @@
 </style>
 </head>
 <body>
-<main>
+<main id="main">
   <div class="top" id="top" hidden>
-    <div class="chapters"><div><i id="c1"></i></div><div><i id="c2"></i></div><div><i id="c3"></i></div></div>
+    <div class="top-row">
+      <button type="button" id="back">← Retour</button>
+      <div class="chapters"><div><i id="c1"></i></div><div><i id="c2"></i></div><div><i id="c3"></i></div><div><i id="c4"></i></div></div>
+    </div>
     <div class="chapter-name" id="chapter"></div>
   </div>
   <p id="testmode" class="todo" hidden><strong>Mode test</strong> Aucune adresse d'enregistrement n'est configurée : les réponses restent dans ce navigateur. Voir le fichier LISEZMOI.</p>
@@ -150,83 +178,103 @@
 // dans la feuille Google Sheets du groupe (voir LISEZMOI.md). Vide = mode test.
 const ENDPOINT = "";
 
-// Test A/B : A est le témoin (prix actuel), B la variante (hausse étudiée).
-const PRIX_AB = { A: 3.49, B: 4.99 };
-// Prix soumis dans Gabor-Granger, en ordre croissant, le même pour tous.
+// Test A/B : seuls les prix des plans Deliveroo changent. A = prix bas (Plus Or au prix actuel), B = prix hauts.
+const PLANS = {
+  essentiel: { nom: "Plus Essentiel", prix: { A: 2.49, B: 3.49 },
+    avantages: ["Livraison offerte dès 12 € d'achat", "−10 % sur les commandes de 25 € et plus"], moins: ["Frais de service à payer"] },
+  or: { nom: "Plus Or", tag: "Tout compris", prix: { A: 3.49, B: 4.99 },
+    avantages: ["Livraison offerte dès 12 € d'achat", "Aucuns frais de service", "Offres réservées aux abonnés"], moins: [] },
+  famille: { nom: "Plus Famille", prix: { A: 6.99, B: 8.99 },
+    avantages: ["Tous les avantages de Plus Or", "Partagé avec 4 personnes du foyer", "−10 % sur les commandes de 25 € et plus"], moins: [] }
+};
+// Le concurrent, au même prix dans les deux versions.
+const UBER = { nom: "Uber One", prix: 5.99,
+  avantages: ["Livraison à 0 € dès 12 € d'achat", "Frais de service réduits de moitié", "Avantages sur les trajets Uber"] };
+// Prix soumis dans Gabor-Granger pour Plus Or, en ordre croissant, le même pour tous.
 const GG_PRICES = [2.49, 3.49, 4.49, 4.99, 5.99, 6.99];
 // Frais de la simulation (fictifs, du même ordre que ceux affichés par les applications).
-const FRAIS = { livraison: 2.49, service: 0.99, serviceAbonne: 0.49, seuilAbonne: 12 };
+const FRAIS = { livraison: 2.49, service: 0.99, seuilLivraison: 12, seuilRemise: 25, remise: 0.10 };
 
+// Dans chaque scène, tous les plats ont le même prix : le choix du plat ne dépend pas du prix.
 const SCENES = [
-  { clock: "🌙", quand: "Lundi, 21 h", ambiance: "Longue journée. Le frigo est vide.",
-    plats: [
-      { k: "burger", e: "🍔", n: "Smash burger & frites", p: 12.90, bg: "linear-gradient(135deg,#ffd27a,#ff9a62)" },
-      { k: "sushi", e: "🍣", n: "Plateau 18 pièces", p: 15.50, bg: "linear-gradient(135deg,#ffc3c3,#ff8e8e)" },
-      { k: "pizza", e: "🍕", n: "Pizza margherita", p: 11.00, bg: "linear-gradient(135deg,#ffe29a,#f6b26b)" },
-      { k: "ramen", e: "🍜", n: "Ramen tonkotsu", p: 13.90, bg: "linear-gradient(135deg,#ffe8c2,#f0b27a)" }],
-    maison: { k: "maison", e: "🍝", n: "Je me fais des pâtes" } },
-  { clock: "☀️", quand: "Jeudi, 13 h", ambiance: "Pause déjeuner, pas le temps de sortir.",
-    plats: [
-      { k: "poke", e: "🥗", n: "Poke bowl saumon", p: 13.50, bg: "linear-gradient(135deg,#c8f2d4,#7fd6a4)" },
-      { k: "tacos", e: "🌮", n: "Tacos XL", p: 10.90, bg: "linear-gradient(135deg,#ffe29a,#ffb36b)" },
-      { k: "sandwich", e: "🥪", n: "Sandwich & boisson", p: 8.50, bg: "linear-gradient(135deg,#f3e3c3,#d9b98a)" },
-      { k: "falafel", e: "🧆", n: "Assiette falafels", p: 12.40, bg: "linear-gradient(135deg,#e5f0c8,#b9d77f)" }],
-    maison: { k: "maison", e: "🥖", n: "Je descends à la boulangerie" } },
-  { clock: "🎉", quand: "Samedi, 20 h", ambiance: "Des amis passent à l'improviste.",
-    plats: [
-      { k: "pizzas", e: "🍕", n: "2 pizzas à partager", p: 24.00, bg: "linear-gradient(135deg,#ffe29a,#f6b26b)" },
-      { k: "curry", e: "🍛", n: "Curry & naans pour 2", p: 19.80, bg: "linear-gradient(135deg,#ffd9a8,#e9a15e)" },
-      { k: "padthai", e: "🍜", n: "Pad thaï x2", p: 22.40, bg: "linear-gradient(135deg,#ffe8c2,#f0b27a)" },
-      { k: "burgers", e: "🍔", n: "3 burgers & frites", p: 27.60, bg: "linear-gradient(135deg,#ffd27a,#ff9a62)" }],
-    maison: { k: "maison", e: "🍳", n: "On cuisine ensemble" } }
+  { clock: "🌙", quand: "Lundi, 21 h", ambiance: "Longue journée. Le frigo est vide.", prix: 13.90,
+    plats: [["burger", "🍔", "Smash burger & frites", "#ffd27a,#ff9a62"], ["sushi", "🍣", "Plateau de sushis", "#ffc3c3,#ff8e8e"], ["pizza", "🍕", "Pizza margherita", "#ffe29a,#f6b26b"], ["ramen", "🍜", "Ramen tonkotsu", "#ffe8c2,#f0b27a"]],
+    maison: ["maison", "🍝", "Je me fais des pâtes"] },
+  { clock: "☀️", quand: "Jeudi, 13 h", ambiance: "Pause déjeuner, pas le temps de sortir.", prix: 12.50,
+    plats: [["poke", "🥗", "Poke bowl saumon", "#c8f2d4,#7fd6a4"], ["tacos", "🌮", "Tacos XL", "#ffe29a,#ffb36b"], ["wrap", "🌯", "Wrap poulet & boisson", "#f3e3c3,#d9b98a"], ["falafel", "🧆", "Assiette falafels", "#e5f0c8,#b9d77f"]],
+    maison: ["maison", "🥖", "Je descends à la boulangerie"] },
+  { clock: "🎉", quand: "Samedi, 20 h", ambiance: "Un ami passe dîner. Commande pour deux.", prix: 29.80,
+    plats: [["pizzas", "🍕", "2 pizzas à partager", "#ffe29a,#f6b26b"], ["curry", "🍛", "Curry & naans pour 2", "#ffd9a8,#e9a15e"], ["padthai", "🍜", "Pad thaï x2", "#ffe8c2,#f0b27a"], ["burgers", "🍔", "2 burgers & frites", "#ffd27a,#ff9a62"]],
+    maison: ["maison", "🍳", "On cuisine ensemble"] }
 ];
 
 const answers = {
   id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
   horodatage: new Date().toISOString(),
   // Tirage au sort de la version à l'ouverture du questionnaire, une chance sur deux.
-  version: Math.random() < 0.5 ? "A" : "B",
-  sim_commandes: 0,
-  sim_total: 0
+  version: Math.random() < 0.5 ? "A" : "B"
 };
-answers.prix_affiche = PRIX_AB[answers.version];
-let fraisPayes = 0, economies = 0;
+answers.prix_affiche = PLANS.or.prix[answers.version];
+const V = answers.version;
+const consultes = new Set(["or"]);
+let ongletChoix = "or";
+const commandes = [null, null, null]; // { total, economie } par scène, recalculé si le répondant revient en arrière
 
 const euro = p => p.toFixed(2).replace(".", ",") + " €";
 const key = p => p.toFixed(2).replace(".", "_");
+const round2 = x => Math.round(x * 100) / 100;
 const $ = s => document.querySelector(s);
 const app = $("#app");
 if (!ENDPOINT) $("#testmode").hidden = false;
 
-// Déroulé : trois chapitres, qui pilotent la barre de progression.
+// Frais d'une commande selon l'abonnement choisi.
+function addition(plan, sousTotal) {
+  const livre = sousTotal >= FRAIS.seuilLivraison;
+  let livraison = FRAIS.livraison, service = FRAIS.service, remise = 0;
+  if (plan === "essentiel") { if (livre) livraison = 0; if (sousTotal >= FRAIS.seuilRemise) remise = sousTotal * FRAIS.remise; }
+  if (plan === "or") { if (livre) { livraison = 0; service = 0; } }
+  if (plan === "famille") { if (livre) { livraison = 0; service = 0; } if (sousTotal >= FRAIS.seuilRemise) remise = sousTotal * FRAIS.remise; }
+  if (plan === "uber_one") { if (livre) livraison = 0; service = round2(FRAIS.service / 2); }
+  const total = round2(sousTotal - remise + livraison + service);
+  const sans = round2(sousTotal + FRAIS.livraison + FRAIS.service);
+  return { livraison, service, remise: round2(remise), total, economie: round2(sans - total) };
+}
+const nomPlan = p => p === "uber_one" ? UBER.nom : p === "aucun" ? "Sans abonnement" : PLANS[p].nom;
+const prixPlan = p => p === "uber_one" ? UBER.prix : p === "aucun" ? 0 : PLANS[p].prix[V];
+
+// Déroulé en quatre chapitres.
 const FLOW = [
-  ["accueil", 0], ["appli", 1], ["scene0", 1], ["offre", 1], ["scene1", 1], ["scene2", 1], ["recap", 1],
-  ["controle", 2], ["vw1", 2], ["vw2", 2], ["vw3", 2], ["vw4", 2], ["gg", 2],
-  ["age", 3], ["statut", 3], ["freq", 3], ["abo", 3], ["fin", 3]
+  ["accueil", 0], ["usage", 1],
+  ["choix", 2], ["scene0", 2], ["scene1", 2], ["scene2", 2], ["recap", 2],
+  ["controle", 3], ["vw1", 3], ["vw2", 3], ["vw3", 3], ["vw4", 3], ["gg", 3],
+  ["age", 4], ["statut", 4], ["freq", 4], ["abo", 4], ["fin", 4]
 ];
-const CHAPTERS = ["", "Chapitre 1 · Votre mois en livraison", "Chapitre 2 · Le juste prix", "Chapitre 3 · Et vous ?"];
-let pos = 0;
+const CHAPTERS = ["", "1 · Vous et la livraison", "2 · Choisissez et testez votre abonnement", "3 · Le juste prix", "4 · Pour finir"];
+let pos = 0, sousEcran = false;
 
 function go(i) {
-  pos = i;
+  pos = i; sousEcran = false;
   const [name, ch] = FLOW[i];
   $("#top").hidden = ch === 0 || name === "fin";
-  [1, 2, 3].forEach(c => {
-    const inChapter = FLOW.filter(f => f[1] === c && f[0] !== "fin");
-    const done = c < ch ? inChapter.length : c === ch ? inChapter.findIndex(f => f[0] === name) : 0;
-    $("#c" + c).style.width = Math.round((done / inChapter.length) * 100) + "%";
+  $("#back").hidden = false;
+  [1, 2, 3, 4].forEach(c => {
+    const etapes = FLOW.filter(f => f[1] === c && f[0] !== "fin");
+    const fait = c < ch ? etapes.length : c === ch ? etapes.findIndex(f => f[0] === name) : 0;
+    $("#c" + c).style.width = Math.round((fait / etapes.length) * 100) + "%";
   });
-  $("#chapter").textContent = CHAPTERS[ch];
+  $("#chapter").textContent = "Chapitre " + CHAPTERS[ch];
+  $("#main").classList.toggle("wide", name === "choix");
   app.innerHTML = `<div class="screen">${SCREENS[name].html()}</div>`;
   window.scrollTo(0, 0);
   SCREENS[name].bind && SCREENS[name].bind();
 }
 const next = () => go(pos + 1);
+// Retour : depuis un panier, on revient au choix du plat ; sinon à l'écran précédent.
+$("#back").addEventListener("click", () => sousEcran ? go(pos) : pos > 0 && go(pos - 1));
 
-// Tuiles à choix unique : enregistre la valeur puis enchaîne.
 function tiles(name, options) {
   return `<div class="tiles" data-single="${name}">${options.map(([v, label, ico]) =>
-    `<button type="button" class="tile" data-value="${v}">${ico ? `<span class="ico">${ico}</span>` : ""}${label}</button>`).join("")}</div>`;
+    `<button type="button" class="tile" data-value="${v}" aria-pressed="${answers[name] === v}">${ico ? `<span class="ico">${ico}</span>` : ""}${label}</button>`).join("")}</div>`;
 }
 function bindTiles() {
   const group = app.querySelector("[data-single]");
@@ -238,62 +286,64 @@ function bindTiles() {
   });
 }
 
-// Une scène : choisir un plat, voir le panier, se faire livrer.
+// Matrice d'usage des applications.
+const APPS = [["uber_eats", "Uber Eats"], ["deliveroo", "Deliveroo"], ["just_eat", "Just Eat"], ["autre", "Une autre application"]];
+const FREQS = [["jamais", "Jamais"], ["rare", "Moins d'une fois par mois"], ["mois", "1 à 3 fois par mois"], ["semaine", "Chaque semaine"]];
+
 function sceneScreen(n) {
   const s = SCENES[n];
   return {
     html: () => `
-      <div class="scene-head"><span class="clock">${s.clock}</span><div><b>${s.quand}</b><span>${s.ambiance}</span></div></div>
-      <p class="title" style="font-size:1.4rem">Qu'est-ce qui vous fait envie ?</p>
+      <span class="mine">${answers.plan_choisi === "aucun" ? "🧾 Sans abonnement" : "⭐ Votre abonnement : " + nomPlan(answers.plan_choisi)}</span>
+      <div class="scene-head"><span class="clock">${s.clock}</span><div><b>Repas ${n + 1} sur 3 · ${s.quand}</b><span>${s.ambiance}</span></div></div>
+      <p class="title s">Qu'est-ce qui vous fait envie ?</p>
+      <p class="same-price">Tous les plats sont à ${euro(s.prix)} : choisissez selon vos envies.</p>
       <div class="menu">
-        ${s.plats.map(p => `<button type="button" class="dish" data-k="${p.k}"><div class="pic" style="background:${p.bg}">${p.e}</div><div class="txt"><b>${p.n}</b><span>${euro(p.p)}</span></div></button>`).join("")}
-        <button type="button" class="dish home" data-k="${s.maison.k}"><span class="pic">${s.maison.e}</span><b>${s.maison.n}</b></button>
+        ${s.plats.map(([k, e, nom, bg]) => `<button type="button" class="dish" data-k="${k}"><div class="pic" style="background:linear-gradient(135deg,${bg})">${e}</div><div class="txt">${nom}</div></button>`).join("")}
+        <button type="button" class="dish home" data-k="${s.maison[0]}"><span class="pic">${s.maison[1]}</span>${s.maison[2]}</button>
       </div>`,
     bind: () => app.querySelectorAll(".dish").forEach(b => b.addEventListener("click", () => {
+      const plat = s.plats.find(p => p[0] === b.dataset.k);
       answers["sim_" + (n + 1)] = b.dataset.k;
-      const plat = s.plats.find(p => p.k === b.dataset.k);
-      plat ? basket(n, plat) : next();
+      if (!plat) { commandes[n] = null; return next(); }
+      panier(n, plat);
     }))
   };
 }
-function basket(n, plat) {
-  const abonne = answers.souscription === 1;
-  const livraisonOfferte = abonne && plat.p >= FRAIS.seuilAbonne;
-  const livraison = livraisonOfferte ? 0 : FRAIS.livraison;
-  const service = abonne ? FRAIS.serviceAbonne : FRAIS.service;
-  const total = plat.p + livraison + service;
+function panier(n, [k, e, nom]) {
+  sousEcran = true;
+  const s = SCENES[n], plan = answers.plan_choisi, a = addition(plan, s.prix);
+  const badge = plan === "aucun" ? "" : ` · ${nomPlan(plan)}`;
   app.innerHTML = `<div class="screen">
-    <p class="kicker">Votre panier</p>
+    <p class="kicker">Votre panier${badge}</p>
     <div class="receipt">
-      <div class="item"><span class="e">${plat.e}</span><div><b>${plat.n}</b><br><span class="src">${euro(plat.p)}</span></div></div>
-      <div class="line"><span>Frais de livraison${abonne ? '<span class="badge-plus">PLUS</span>' : ""}</span><span>${livraisonOfferte ? `<s>${euro(FRAIS.livraison)}</s><span class="free">Offerte</span>` : euro(livraison)}</span></div>
-      <div class="line"><span>Frais de service</span><span>${abonne ? `<s>${euro(FRAIS.service)}</s>` : ""}${euro(service)}</span></div>
-      <div class="line total"><span>Total</span><span>${euro(total)}</span></div>
+      <div class="item"><span class="e">${e}</span><div><b>${nom}</b><br><span class="src">${euro(s.prix)}</span></div></div>
+      ${a.remise ? `<div class="line"><span>Remise abonné (−10 %)</span><span class="free">−${euro(a.remise)}</span></div>` : ""}
+      <div class="line"><span>Frais de livraison</span><span>${a.livraison === 0 ? `<s>${euro(FRAIS.livraison)}</s><span class="free">Offerte</span>` : euro(a.livraison)}</span></div>
+      <div class="line"><span>Frais de service</span><span>${a.service < FRAIS.service ? `<s>${euro(FRAIS.service)}</s>` : ""}${a.service === 0 ? '<span class="free">Offerts</span>' : euro(a.service)}</span></div>
+      <div class="line total"><span>Total</span><span>${euro(a.total)}</span></div>
     </div>
-    ${abonne && !livraisonOfferte ? `<p class="src">Livraison offerte aux abonnés dès ${euro(FRAIS.seuilAbonne)} d'achat.</p>` : ""}
-    <button type="button" class="btn" id="cmd">Commander · ${euro(total)}</button>
+    ${a.economie > 0 ? `<p class="src">Votre abonnement vous fait économiser ${euro(a.economie)} sur cette commande.</p>` : ""}
+    <button type="button" class="btn" id="cmd">Commander · ${euro(a.total)}</button>
     <button type="button" class="btn ghost" id="annuler">Finalement non, je m'en passe</button>
   </div>`;
-  $("#annuler").addEventListener("click", () => { answers["sim_" + (n + 1)] = "annule"; next(); });
+  $("#annuler").addEventListener("click", () => { answers["sim_" + (n + 1)] = "annule"; commandes[n] = null; next(); });
   $("#cmd").addEventListener("click", () => {
-    answers.sim_commandes += 1;
-    answers.sim_total = Math.round((answers.sim_total + total) * 100) / 100;
-    fraisPayes += livraison + service;
-    economies += (FRAIS.livraison - livraison) + (FRAIS.service - service);
+    commandes[n] = { total: a.total, economie: a.economie };
+    $("#back").hidden = true;
     app.innerHTML = `<div class="screen">
       <p class="kicker">Commande en route</p>
-      <p class="title">${plat.e} arrive…</p>
+      <p class="title">${e} arrive…</p>
       <div class="track"><span class="scooter">🛵</span><span class="home">🏠</span></div>
       <p class="delivered" id="ok">Livré ! Bon appétit 😋</p></div>`;
-    setTimeout(() => $("#ok").classList.add("on"), 1800);
+    setTimeout(() => $("#ok") && $("#ok").classList.add("on"), 1800);
     setTimeout(next, 2700);
   });
 }
 
-// Les curseurs du juste prix (Van Westendorp), toujours dans le même ordre.
 const VW = [
-  { k: "vw_trop_bon_marche", mood: "🤨", q: "À partir de quel prix mensuel cet abonnement serait-il <b>si bon marché</b> que vous douteriez de sa qualité ?" },
-  { k: "vw_bon_marche", mood: "😊", q: "À quel prix mensuel serait-il une <b>bonne affaire</b> ?" },
+  { k: "vw_trop_bon_marche", mood: "🤨", q: "À partir de quel prix mensuel le plan Plus Or serait-il <b>si bon marché</b> que vous douteriez de sa qualité ?" },
+  { k: "vw_bon_marche", mood: "😊", q: "À quel prix mensuel le plan Plus Or serait-il une <b>bonne affaire</b> ?" },
   { k: "vw_cher", mood: "😬", q: "À quel prix mensuel commencerait-il à être <b>cher</b>, sans exclure de le prendre ?" },
   { k: "vw_trop_cher", mood: "🙅", q: "À partir de quel prix mensuel serait-il <b>trop cher</b> pour que vous l'envisagiez ?" }
 ];
@@ -302,18 +352,18 @@ function vwScreen(i) {
   return {
     html: () => `
       <p class="kicker">Le juste prix · ${i + 1} / 4</p>
-      <p class="title" style="font-size:1.35rem">${v.q}</p>
-      <p class="sub">Pour l'abonnement Deliveroo Plus, indépendamment des prix vus jusqu'ici. Faites glisser le curseur.</p>
+      <p class="title s">${v.q}</p>
+      <p class="sub">Plus Or : livraison offerte dès 12 €, aucuns frais de service. Répondez indépendamment des prix vus jusqu'ici, en faisant glisser le curseur.</p>
       <div class="mood" id="mood">${v.mood}</div>
-      <p class="gauge-value idle" id="val">? €</p>
-      <input type="range" id="rng" min="0" max="20" step="0.1" value="0" aria-label="Prix mensuel en euros">
+      <p class="gauge-value${answers[v.k] === undefined ? " idle" : ""}" id="val">${answers[v.k] === undefined ? "? €" : euro(answers[v.k])}</p>
+      <input type="range" id="rng" min="0" max="20" step="0.1" value="${answers[v.k] ?? 0}" aria-label="Prix mensuel en euros">
       <div class="scale"><span>0 €</span><span>10 €</span><span>20 € et plus</span></div>
       <div class="fine"><button type="button" id="moins">− 0,10 €</button><button type="button" id="plus">+ 0,10 €</button></div>
       ${i ? `<div class="prev">${VW.slice(0, i).map(p => `<span>${p.mood} ${euro(answers[p.k])}</span>`).join("")}</div>` : ""}
       <p class="err" id="err" hidden>Faites glisser le curseur pour indiquer un prix.</p>
       <button type="button" class="btn" id="ok">Valider</button>`,
     bind: () => {
-      let touched = false;
+      let touched = answers[v.k] !== undefined;
       const rng = $("#rng");
       const show = () => { touched = true; $("#val").textContent = euro(Number(rng.value)); $("#val").classList.remove("idle"); $("#mood").style.transform = `scale(${1 + Number(rng.value) / 40})`; };
       rng.addEventListener("input", show);
@@ -321,7 +371,7 @@ function vwScreen(i) {
       $("#plus").addEventListener("click", () => { rng.value = Math.min(20, Number(rng.value) + 0.1).toFixed(1); show(); });
       $("#ok").addEventListener("click", () => {
         if (!touched) { $("#err").hidden = false; return; }
-        answers[v.k] = Math.round(Number(rng.value) * 100) / 100;
+        answers[v.k] = round2(Number(rng.value));
         if (i === 3) {
           const a = VW.map(p => answers[p.k]);
           // Les quatre réponses doivent monter ; sinon le répondant sera écarté à l'analyse.
@@ -336,70 +386,128 @@ function vwScreen(i) {
 const SCREENS = {
   accueil: {
     html: () => `
-      <p class="hero-ill">🛵🍔🍣</p>
+      <p class="hero-ill">🛵⭐🍔</p>
       <p class="kicker">Étude · M1 Marketing · IAE Clermont Auvergne</p>
-      <h1 class="title">Le défi : vivre un mois de livraisons en 3 minutes</h1>
-      <p class="sub">Vous allez commander (pour de faux) vos repas pendant un mois, puis jouer au juste prix. Pas de bonne ou de mauvaise réponse : faites comme dans la vraie vie, que vous vous fassiez livrer souvent ou jamais.</p>
-      <div class="facts"><span>⏱ 3 minutes</span><span>🔒 Anonyme</span><span>💸 Rien n'est payé</span></div>
-      <p class="src">Étude réalisée par des étudiants du M1 Marketing de l'IAE Clermont Auvergne pour un projet de cours sur les prix. Simulation : aucune commande ni aucun abonnement réel. Aucun nom, aucune adresse e-mail et aucune adresse IP ne sont enregistrés ; les réponses servent uniquement à ce projet et à un cours d'analyse de données. Vous pouvez arrêter à tout moment en fermant la page.</p>
+      <h1 class="title">Testez un abonnement de livraison de repas</h1>
+      <p class="sub">Les applications de livraison proposent des abonnements pour ne plus payer certains frais. Choisissez celui qui vous tente, puis testez-le sur trois repas, pour voir ce qu'il vous fait vraiment économiser.</p>
+      <div class="steps3">
+        <div><b>1</b>Vous choisissez un abonnement, ou aucun</div>
+        <div><b>2</b>Vous le testez sur trois repas fictifs</div>
+        <div><b>3</b>Vous jouez au juste prix</div>
+      </div>
+      <p class="src">⏱ 3 minutes · 🔒 Anonyme · 💸 Rien n'est payé. Étude réalisée par des étudiants du M1 Marketing de l'IAE Clermont Auvergne pour un projet de cours sur les prix. Simulation : aucune commande ni aucun abonnement réel, plans et prix proposés pour l'étude. Aucun nom, aucune adresse e-mail et aucune adresse IP ne sont enregistrés ; les réponses servent uniquement à ce projet et à un cours d'analyse de données. Vous pouvez revenir en arrière ou arrêter à tout moment.</p>
       <label class="consent"><input type="checkbox" id="consent"> <span>J'ai lu ces informations, j'ai 18 ans ou plus et j'accepte de participer.</span></label>
       <p class="err" id="err" hidden>Cochez la case pour commencer.</p>
-      <button type="button" class="btn" id="go">Relever le défi</button>`,
+      <button type="button" class="btn" id="go">Commencer le test</button>`,
     bind: () => $("#go").addEventListener("click", () => $("#consent").checked ? next() : ($("#err").hidden = false))
   },
-  appli: {
-    html: () => `<p class="kicker">Pour commencer</p><p class="title" style="font-size:1.4rem">Quelle application de livraison utilisez-vous le plus souvent ?</p>
-      ${tiles("appli", [["uber_eats", "Uber Eats", "🛵"], ["deliveroo", "Deliveroo", "🛵"], ["just_eat", "Just Eat", "🛵"], ["autre", "Une autre application", "📲"], ["aucune", "Aucune, je ne me fais pas livrer", "🍳"]])}`,
-    bind: bindTiles
-  },
-  scene0: sceneScreen(0),
-  // Le test A/B : l'offre apparaît comme dans une vraie application. Seul le prix diffère entre A et B.
-  offre: {
+  usage: {
     html: () => `
-      <p class="kicker">Quelques jours plus tard, vous rouvrez l'application…</p>
-      <div class="sheet">
-        <div class="band"><small>Offre pour vous</small><h2>Deliveroo Plus Or</h2></div>
-        <div class="body">
-          <p class="price">${euro(answers.prix_affiche)} <small>par mois</small></p>
-          <ul>
-            <li>Frais de livraison offerts dès 12 € d'achat, dans les restaurants et les commerces.</li>
-            <li>Frais de service réduits sur chaque commande.</li>
-            <li>Offres et récompenses réservées aux abonnés.</li>
-            <li>Sans engagement, résiliable à tout moment.</li>
-          </ul>
-          <button type="button" class="btn" data-s="1">S'abonner</button>
-          <button type="button" class="btn ghost" data-s="0">Non merci</button>
-          <p class="note">Simulation pour une étude : rien n'est payé, aucun abonnement réel.</p>
-        </div>
-      </div>`,
-    bind: () => app.querySelectorAll("[data-s]").forEach(b => b.addEventListener("click", () => { answers.souscription = Number(b.dataset.s); next(); }))
-  },
-  scene1: sceneScreen(1),
-  scene2: sceneScreen(2),
-  recap: {
-    html: () => `
-      <p class="kicker">Fin du mois</p>
-      <p class="title">Votre mois en livraison</p>
-      <div class="stats">
-        <div><b>${answers.sim_commandes}</b><span>commande${answers.sim_commandes > 1 ? "s" : ""}</span></div>
-        <div><b>${euro(answers.sim_total).replace(" €", "")}</b><span>€ dépensés</span></div>
-        <div><b>${euro(answers.souscription ? economies : fraisPayes).replace(" €", "")}</b><span>€ ${answers.souscription ? "de frais économisés" : "de frais payés"}</span></div>
+      <p class="kicker">Pour commencer</p>
+      <p class="title s">À quelle fréquence utilisez-vous ces applications de livraison de repas ?</p>
+      <p class="sub">Une réponse par ligne.</p>
+      <div class="matrix">${APPS.map(([k, label]) => `
+        <div class="mrow"><b>${label}</b><div class="seg" data-app="${k}">${FREQS.map(([f, fl]) =>
+          `<button type="button" data-f="${f}" aria-pressed="${answers["usage_" + k] === f}">${fl}</button>`).join("")}</div></div>`).join("")}
       </div>
-      <p class="sub">${answers.souscription ? "Abonné(e) à Plus, vous avez évité une partie des frais. Place au jeu du juste prix !" : answers.sim_commandes ? "Sans abonnement, vous avez payé les frais à chaque commande. Place au jeu du juste prix !" : "Un mois sans livraison : bravo ! Place au jeu du juste prix."}</p>
-      <button type="button" class="btn" id="ok">Continuer</button>`,
+      <button type="button" class="btn" id="ok" disabled>Continuer</button>`,
+    bind: () => {
+      const complet = () => APPS.every(([k]) => answers["usage_" + k]);
+      $("#ok").disabled = !complet();
+      app.querySelectorAll(".seg").forEach(seg => seg.addEventListener("click", e => {
+        const b = e.target.closest("button"); if (!b) return;
+        seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+        answers["usage_" + seg.dataset.app] = b.dataset.f;
+        $("#ok").disabled = !complet();
+      }));
+      $("#ok").addEventListener("click", next);
+    }
+  },
+  // Le test A/B : les plans Deliveroo et Uber One côte à côte. Seuls les prix Deliveroo diffèrent entre A et B.
+  choix: {
+    html: () => `
+      <p class="kicker">Étape 1 · Choisissez votre abonnement</p>
+      <p class="title s">Vous voulez arrêter de payer les frais de livraison. Quel abonnement prenez-vous ?</p>
+      <p class="sub">Comparez les plans Deliveroo en touchant chaque prix, et l'offre d'Uber Eats.</p>
+      <div class="offers">
+        <div class="offer dlv">
+          <div class="band"><small>Deliveroo</small><b>Les plans Deliveroo Plus</b></div>
+          <div class="body">
+            <div class="chips">${Object.entries(PLANS).map(([k, p]) => `<button type="button" data-plan="${k}" aria-pressed="${k === ongletChoix}"><b>${euro(p.prix[V])}</b>${p.nom.replace("Plus ", "")}</button>`).join("")}</div>
+            <div id="plan-card"></div>
+          </div>
+        </div>
+        <div class="offer ub">
+          <div class="band"><small>Uber Eats</small><b>${UBER.nom}</b></div>
+          <div class="body">
+            <p class="price">${euro(UBER.prix)} <small>par mois</small></p>
+            <ul class="perks">${UBER.avantages.map(a => `<li>${a}</li>`).join("")}<li>Sans engagement</li></ul>
+            <button type="button" class="btn" data-choix="uber_one">Choisir Uber One</button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="none-btn" data-choix="aucun">Je ne prends aucun abonnement</button>
+      <p class="note">Simulation pour une étude : plans et prix proposés pour l'étude, rien n'est payé.</p>`,
+    bind: () => {
+      const card = () => {
+        const p = PLANS[ongletChoix];
+        $("#plan-card").innerHTML = `
+          <span class="plan-name">${p.nom}</span>${p.tag ? `<span class="plan-tag">${p.tag}</span>` : ""}
+          <p class="price">${euro(p.prix[V])} <small>par mois</small></p>
+          <ul class="perks">${p.avantages.map(a => `<li>${a}</li>`).join("")}${p.moins.map(a => `<li class="minus">${a}</li>`).join("")}<li>Sans engagement</li></ul>
+          <button type="button" class="btn" data-choix="${ongletChoix}">Choisir ${p.nom} à ${euro(p.prix[V])}</button>`;
+      };
+      card();
+      app.querySelector(".chips").addEventListener("click", e => {
+        const b = e.target.closest("[data-plan]"); if (!b) return;
+        ongletChoix = b.dataset.plan; consultes.add(ongletChoix);
+        app.querySelectorAll(".chips button").forEach(x => x.setAttribute("aria-pressed", x === b));
+        card();
+      });
+      app.querySelector(".screen").addEventListener("click", e => {
+        const b = e.target.closest("[data-choix]"); if (!b) return;
+        answers.plan_choisi = b.dataset.choix;
+        answers.prix_choisi = prixPlan(b.dataset.choix);
+        answers.souscription_deliveroo = PLANS[b.dataset.choix] ? 1 : 0;
+        answers.plans_consultes = [...consultes].join("+");
+        next();
+      });
+    }
+  },
+  scene0: sceneScreen(0), scene1: sceneScreen(1), scene2: sceneScreen(2),
+  recap: {
+    html: () => {
+      const faites = commandes.filter(Boolean);
+      answers.sim_commandes = faites.length;
+      answers.sim_total = round2(faites.reduce((s, c) => s + c.total, 0));
+      answers.sim_economies = round2(faites.reduce((s, c) => s + c.economie, 0));
+      const plan = answers.plan_choisi, prix = prixPlan(plan);
+      const bilan = plan === "aucun"
+        ? (faites.length ? "Sans abonnement, vous avez payé tous les frais." : "Trois repas sans livraison : bravo !")
+        : `Votre abonnement ${nomPlan(plan)} coûte ${euro(prix)} par mois ; sur ces trois repas, il vous a fait économiser ${euro(answers.sim_economies)}.`;
+      return `
+        <p class="kicker">Fin du test</p>
+        <p class="title">Votre test en chiffres</p>
+        <div class="stats">
+          <div><b>${answers.sim_commandes}</b><span>commande${answers.sim_commandes > 1 ? "s" : ""}</span></div>
+          <div><b>${euro(answers.sim_total).replace(" €", "")}</b><span>€ dépensés</span></div>
+          <div><b>${euro(answers.sim_economies).replace(" €", "")}</b><span>€ économisés</span></div>
+        </div>
+        <p class="sub">${bilan} Place au jeu du juste prix !</p>
+        <button type="button" class="btn" id="ok">Continuer</button>`;
+    },
     bind: () => $("#ok").addEventListener("click", next)
   },
   controle: {
-    html: () => `<p class="kicker">Question mémoire</p><p class="title" style="font-size:1.4rem">Quel était le prix mensuel de l'offre Deliveroo Plus Or qui s'est affichée ?</p>
+    html: () => `<p class="kicker">Question mémoire</p><p class="title s">Quel était le prix mensuel du plan Deliveroo Plus Or (tout compris) ?</p>
       ${tiles("controle", [["3_49", "3,49 €"], ["4_99", "4,99 €"], ["nsp", "Je ne sais plus", "🤷"]])}`,
     bind: bindTiles
   },
   vw1: vwScreen(0), vw2: vwScreen(1), vw3: vwScreen(2), vw4: vwScreen(3),
-  // Gabor-Granger : des cartes de prix à balayer, en ordre croissant.
   gg: {
     html: () => `
       <p class="kicker">Ça passe ou ça casse</p>
-      <p class="title" style="font-size:1.35rem">À ce prix, vous abonneriez-vous à Deliveroo Plus ?</p>
+      <p class="title s">À ce prix, prendriez-vous le plan Deliveroo Plus Or ?</p>
       <p class="sub">Balayez la carte à droite pour oui, à gauche pour non, ou utilisez les boutons.</p>
       <div class="deck" id="deck"></div>
       <p class="counter" id="counter"></p>
@@ -450,29 +558,30 @@ const SCREENS = {
     }
   },
   age: {
-    html: () => `<p class="kicker">Et vous ?</p><p class="title" style="font-size:1.4rem">Votre âge ?</p>
+    html: () => `<p class="kicker">Pour finir</p><p class="title s">Votre âge ?</p>
       ${tiles("age", [["18 à 24 ans", "18 à 24 ans"], ["25 à 34 ans", "25 à 34 ans"], ["35 à 49 ans", "35 à 49 ans"], ["50 ans et plus", "50 ans et plus"]])}`,
     bind: bindTiles
   },
   statut: {
-    html: () => `<p class="kicker">Et vous ?</p><p class="title" style="font-size:1.4rem">Vous êtes…</p>
+    html: () => `<p class="kicker">Pour finir</p><p class="title s">Vous êtes…</p>
       ${tiles("statut", [["Étudiant", "Étudiant", "🎓"], ["En emploi", "En emploi", "💼"], ["En recherche d'emploi", "En recherche d'emploi", "🔎"], ["Autre", "Autre", "✳️"]])}`,
     bind: bindTiles
   },
   freq: {
-    html: () => `<p class="kicker">Et vous ?</p><p class="title" style="font-size:1.4rem">Dans la vraie vie, combien de repas vous êtes-vous fait livrer ces 30 derniers jours ?</p>
-      <div class="stepper"><button type="button" id="m" aria-label="Un de moins">−</button><output id="f">0</output><button type="button" id="p" aria-label="Un de plus">+</button></div>
+    html: () => `<p class="kicker">Pour finir</p><p class="title s">Dans la vraie vie, combien de repas vous êtes-vous fait livrer ces 30 derniers jours ?</p>
+      <div class="stepper"><button type="button" id="m" aria-label="Un de moins">−</button><output id="f">${answers.commandes_30j ?? 0}</output><button type="button" id="p" aria-label="Un de plus">+</button></div>
       <button type="button" class="btn" id="ok">Valider</button>`,
     bind: () => {
-      let f = 0;
+      let f = answers.commandes_30j ?? 0;
       $("#m").addEventListener("click", () => { f = Math.max(0, f - 1); $("#f").textContent = f; });
       $("#p").addEventListener("click", () => { f = Math.min(60, f + 1); $("#f").textContent = f; });
       $("#ok").addEventListener("click", () => { answers.commandes_30j = f; next(); });
     }
   },
   abo: {
-    html: () => `<p class="kicker">Dernière question</p><p class="title" style="font-size:1.4rem">Avez-vous actuellement un de ces abonnements ?</p><p class="sub">Plusieurs réponses possibles.</p>
-      <div class="tiles" id="multi">${[["deliveroo_plus", "Deliveroo Plus"], ["uber_one", "Uber One"], ["autre", "Un autre abonnement de livraison"], ["aucun", "Aucun"]].map(([v, l]) => `<button type="button" class="tile" data-value="${v}">${l}</button>`).join("")}</div>
+    html: () => `<p class="kicker">Dernière question</p><p class="title s">Dans la vraie vie, avez-vous un de ces abonnements ?</p><p class="sub">Plusieurs réponses possibles.</p>
+      <div class="tiles" id="multi">${[["deliveroo_plus", "Deliveroo Plus"], ["uber_one", "Uber One"], ["autre", "Un autre abonnement de livraison"], ["aucun", "Aucun"]].map(([v, l]) =>
+        `<button type="button" class="tile" data-value="${v}" aria-pressed="${(answers.abonnements || "").split("+").includes(v)}">${l}</button>`).join("")}</div>
       <p class="err" id="err" hidden>Choisissez au moins une réponse.</p>
       <button type="button" class="btn" id="ok">Voir mon profil</button>`,
     bind: () => {
@@ -501,16 +610,15 @@ const SCREENS = {
         : tc < 8 ? ["🍽️", "Gourmet pragmatique", "Prêt à payer pour le confort, mais pas à n'importe quel prix."]
         : ["🛋️", "Roi du canapé", "Le confort n'a pas de prix… ou presque."];
       return `
-        <p class="kicker">Défi terminé · merci !</p>
+        <p class="kicker">Test terminé · merci !</p>
         <div class="badge"><div class="e">${e}</div><b>${titre}</b><p class="sub" style="margin:6px 0 0">${txt}</p></div>
-        <p class="sub" id="fin-msg">Vos réponses sont enregistrées. Chaque participant rend l'étude plus fiable : défiez vos amis !</p>
-        <button type="button" class="btn" id="share">Défier un ami</button>
+        <p class="sub" id="fin-msg">Vos réponses sont enregistrées. Chaque participant rend l'étude plus fiable : faites passer le test !</p>
+        <button type="button" class="btn" id="share">Partager le test</button>
         <p class="src" id="share-msg"></p>`;
     },
     bind: () => {
-      if (!ENDPOINT) $("#fin-msg").textContent = "Mode test : réponse gardée dans ce navigateur seulement (version " + answers.version + ").";
-      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!reduce) for (let k = 0; k < 24; k++) {
+      if (!ENDPOINT) $("#fin-msg").textContent = "Mode test : réponse gardée dans ce navigateur seulement (version " + V + ").";
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) for (let k = 0; k < 24; k++) {
         const c = document.createElement("span");
         c.className = "confetti";
         c.textContent = ["🍕", "🍔", "🍣", "🥗", "🌮", "✨"][k % 6];
@@ -522,9 +630,9 @@ const SCREENS = {
       $("#share").addEventListener("click", async () => {
         const url = location.href.split(/[?#]/)[0];
         try {
-          if (navigator.share) await navigator.share({ title: "Le défi : un mois de livraisons en 3 minutes", url });
+          if (navigator.share) await navigator.share({ title: "Testez un abonnement de livraison de repas", url });
           else { await navigator.clipboard.writeText(url); $("#share-msg").textContent = "Lien copié : il ne reste qu'à le coller dans un message."; }
-        } catch (err) { $("#share-msg").textContent = "Lien du défi : " + url; }
+        } catch (err) { $("#share-msg").textContent = "Lien du test : " + url; }
       });
     }
   }
