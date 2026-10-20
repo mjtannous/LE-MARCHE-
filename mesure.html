@@ -20,83 +20,81 @@
 </div></header>
 <main>
   <p class="eyebrow">Attendu 3 sur 4 · Le prix psychologique, mesuré auprès de vraies personnes</p>
-  <h1>La mesure : le prix que les clients acceptent</h1>
-  <p class="lead">Un questionnaire anonyme, deux versions tirées au sort, une seule différence entre elles : une baisse ou une hausse du prix.</p>
+  <h1>La mesure : un test A/B sur le prix de Deliveroo Plus</h1>
+  <p class="lead">Un écran d'abonnement, deux prix tirés au sort, un clic « S'abonner » ou « Non merci » : le même dispositif que les tests de prix menés en entreprise.</p>
   <p><a href="questionnaire.html">Ouvrir le questionnaire</a></p>
 
-  <h2>Ce qui est mesuré</h2>
-  <p>Trois choses, qui correspondent aux termes de <a href="index.html">la question</a> :</p>
-  <ul>
-    <li><strong>Le prix accepté</strong> pour Deliveroo Plus Or, à situer par rapport au prix actuel de <a href="https://deliveroo.fr/fr/plus">3,49 €</a> et au <a href="index.html#plancher">plancher estimé de 4,60 €</a>.</li>
-    <li><strong>L'intention de s'abonner après une baisse</strong> à 2,49 €.</li>
-    <li><strong>L'intention de s'abonner, ou de le rester, après une hausse</strong> à 4,99 €.</li>
-  </ul>
-
-  <h2>Le test A/B</h2>
+  <h2>Le plan du test</h2>
   <div class="table-wrap"><table>
-    <tr><th></th><th>Version A</th><th>Version B</th></tr>
-    <tr><td>Description de l'offre et questions de prix</td><td>Deliveroo Plus Or tel qu'il est <a href="https://deliveroo.fr/fr/plus">affiché aujourd'hui</a></td><td>Identiques, au mot près</td></tr>
-    <tr><td>La seule différence : l'annonce d'un nouveau prix</td><td>« Le prix… baisse à 2,49 € par mois »</td><td>« Le prix… augmente à 4,99 € par mois »</td></tr>
-    <tr><td>L'option représentée</td><td>Baisser pour gagner des abonnés</td><td>Augmenter pour couvrir leur coût</td></tr>
+    <tr><th>Élément</th><th>Ce qui est fixé avant la collecte</th></tr>
+    <tr><td>Objectif pour Deliveroo</td><td>Savoir si Deliveroo peut porter Deliveroo Plus Or de 3,49 € à 4,99 € par mois, au-dessus du <a href="index.html#plancher">coût estimé d'un abonné</a>, sans faire chuter le nombre de souscriptions.</td></tr>
+    <tr><td>Hypothèse</td><td>À 4,99 €, le taux de souscription baisse, mais de moins de 10 % par rapport à 3,49 € (hypothèse H4 de <a href="index.html">la question</a>).</td></tr>
+    <tr><td>Version A, le témoin</td><td>L'écran d'abonnement au prix actuel, <a href="https://deliveroo.fr/fr/plus">3,49 € par mois</a>.</td></tr>
+    <tr><td>Version B, la variante</td><td>Le même écran, au mot près, à 4,99 € par mois.</td></tr>
+    <tr><td>La seule variable</td><td>Le prix affiché. Les avantages, la présentation et les boutons sont identiques.</td></tr>
+    <tr><td>Répartition</td><td>Tirage au sort à l'ouverture du questionnaire, une chance sur deux ; la version vue est enregistrée dans la colonne <code>version</code>.</td></tr>
+    <tr><td>Métrique principale</td><td>Le taux de souscription : part des répondants qui cliquent sur « S'abonner ».</td></tr>
+    <tr><td>Métrique secondaire</td><td>La recette par répondant : taux de souscription × prix affiché.</td></tr>
+    <tr><td>Garde-fous</td><td>Le taux de souscription des abonnés actuels à Deliveroo Plus, ceux qu'une hausse risque de faire partir ; et la question de contrôle, qui vérifie que le prix a été lu.</td></tr>
+    <tr><td>Règle de décision</td><td>La hausse est recommandée si le taux de souscription en B atteint au moins 90 % de celui de A. En dessous, elle fait perdre plus d'abonnés que ne le permet le <a href="index.html#arbitrage">seuil de 10 %</a>.</td></tr>
   </table></div>
-  <p><strong>L'hypothèse.</strong> La baisse fait monter l'intention de s'abonner, la hausse la fait baisser. La question est de savoir de combien : d'après <a href="index.html#arbitrage">l'arbitrage chiffré</a>, la baisse ne paie que si elle augmente le nombre d'abonnés d'au moins 8 %, et la hausse ne coûte que si elle fait partir plus de 10 % des abonnés.</p>
-  <p><strong>Le tirage.</strong> La version est tirée au sort, une chance sur deux, à l'ouverture de la page, et enregistrée avec les réponses dans la colonne <code>version</code>.</p>
-  <p><strong>La question de contrôle.</strong> « Dans l'annonce, le prix baissait-il ou augmentait-il ? » vérifie que l'annonce a été lue.</p>
-  <p><strong>Pourquoi l'annonce vient-elle après les questions de prix ?</strong> Afficher un prix avant les questions de Van Westendorp et de Gabor-Granger servirait d'ancre et fausserait la mesure du prix accepté. L'offre est donc décrite sans prix, les questions de prix sont les mêmes pour tous, et la différence entre A et B n'intervient qu'ensuite. Chaque répondant ne voit qu'un seul des deux prix annoncés : c'est le principe du test monadique, vu en CM 2.</p>
 
-  <h2>La population interrogée</h2>
-  <p>Le questionnaire s'adresse à toute personne majeure. Personne n'est écarté : les abonnés actuels sont ceux qu'une hausse peut faire partir, les autres sont ceux qu'une baisse peut attirer. La première question, « quelle application de livraison utilisez-vous le plus souvent ? », sert à comparer ces profils, pas à filtrer.</p>
-  <p>Une première version n'acceptait que les personnes ayant commandé dans les trois derniers mois. Ce filtre a été retiré : il réduisait l'échantillon et excluait une partie des abonnés possibles.</p>
+  <h2>Les tests réels dont il s'inspire</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Test réel</th><th>Ce qu'il a montré</th><th>Ce qui en est repris</th></tr>
+    <tr><td><a href="https://deliveroo.engineering/2025/02/06/experimentation-principles.html">Principes d'expérimentation de Deliveroo</a>, publiés par ses équipes en février 2025</td><td>Chaque expérience part d'une hypothèse et de critères de succès, et les critères de déploiement sont fixés avant de voir les résultats, pour éviter de conclure dans le sens de ce qu'on observe.</td><td>L'objectif, l'hypothèse et la règle de décision du tableau ci-dessus, écrits avant la collecte.</td></tr>
+    <tr><td><a href="https://convertibles.dev/blogs/optimization/increase-subscription-rate-shopify">Test d'une formule d'abonnement plus chère</a> sur une boutique en ligne, 31 jours, 472 contre 551 commandes</td><td>La variante plus chère a fait baisser le taux de conversion de 13,9 % et la recette par visiteur de 11,4 %.</td><td>Une seule variable, le prix, et deux métriques : la conversion et la recette par visiteur. Une hausse peut faire perdre des clients sans faire perdre de recette, ou l'inverse.</td></tr>
+    <tr><td>Expériences de <a href="https://www.psychologytoday.com/us/blog/the-science-behind-behavior/201904/the-powerful-influence-pennies-day-price-offers">John Gourville sur le prix « par jour »</a>, et tests de magazines comme Time</td><td>Un don présenté à 85 cents par jour a recueilli 52 % d'accords, contre 30 % pour 300 dollars par an. Les offres « par numéro » ont attiré 10 à 40 % d'abonnés de plus que les offres « par an ».</td><td>La piste du test suivant, si la hausse fait perdre trop d'abonnés : afficher 4,99 € comme « moins de 17 centimes par jour ». Ce second test n'est pas mené ici, pour garder une seule variable.</td></tr>
+  </table></div>
+  <p class="src">Pages consultées le 20 octobre 2026. Les résultats des tests de boutiques en ligne sont publiés par un prestataire et donnés sans méthodologie complète : ils servent de modèle de dispositif, pas de référence chiffrée.</p>
 
   <h2>Le parcours du répondant</h2>
   <ol>
     <li>Accueil : objet de l'étude, anonymat, consentement.</li>
-    <li>Application de livraison la plus utilisée.</li>
-    <li>L'offre Deliveroo Plus Or, sans prix.</li>
-    <li>Van Westendorp : quatre questions à réponse libre en euros, toujours dans l'ordre trop bon marché, bon marché, cher, trop cher.</li>
-    <li>Gabor-Granger : cinq prix présentés en ordre croissant à tout le monde, 2,49 €, 3,49 €, 4,49 €, 5,99 € et 6,99 €, avec « je m'abonnerais » ou non.</li>
-    <li>L'annonce, en version A (baisse à 2,49 €) ou B (hausse à 4,99 €), et l'intention de s'abonner, sur quatre niveaux de « oui, certainement » à « non, certainement pas ».</li>
-    <li>Contrôle.</li>
+    <li>Application de livraison la plus utilisée (Uber Eats, Deliveroo, Just Eat, autre, aucune).</li>
+    <li><strong>Le test A/B :</strong> l'écran d'abonnement Deliveroo Plus Or, à 3,49 € ou 4,99 € selon la version, avec deux boutons, « S'abonner » et « Non merci ».</li>
+    <li>Contrôle : « Quel était le prix mensuel affiché ? »</li>
+    <li>Van Westendorp : quatre questions à réponse libre en euros, dans l'ordre trop bon marché, bon marché, cher, trop cher.</li>
+    <li>Gabor-Granger : six prix présentés en ordre croissant à tout le monde, 2,49 €, 3,49 €, 4,49 €, 4,99 €, 5,99 € et 6,99 €.</li>
     <li>Profil : âge, situation, nombre de commandes sur 30 jours, abonnements déjà détenus.</li>
   </ol>
-  <p>L'étape optionnelle d'échelles de Likert n'a pas été retenue, afin de garder un questionnaire de trois minutes.</p>
+  <p><strong>Pourquoi le test vient en premier.</strong> Comme en conditions réelles, le répondant découvre l'offre et son prix sans avoir réfléchi au prix auparavant ; son clic n'est influencé par aucune question précédente. En contrepartie, le prix vu peut servir d'ancre aux questions de Van Westendorp et de Gabor-Granger : elles seront donc analysées séparément pour A et pour B.</p>
+  <p><strong>Ce que mesure chaque partie.</strong> Le test A/B répond à la question de la hausse (H4). Les questions de Gabor-Granger mesurent aussi l'effet d'une baisse : la part de répondants qui s'abonneraient à 2,49 € plutôt qu'à 3,49 € sert à tester l'hypothèse H3.</p>
+
+  <h2>La population interrogée</h2>
+  <p>Le questionnaire s'adresse à toute personne majeure. Personne n'est écarté : les abonnés actuels sont ceux qu'une hausse peut faire partir, les autres ceux qu'une baisse peut attirer. La question sur l'application utilisée sert à comparer ces profils, pas à filtrer.</p>
+
+  <h2>Combien de répondants ?</h2>
+  <p>Pour détecter avec une puissance de 80 % et un risque d'erreur de 5 % un passage du taux de souscription de 40 % à 30 %, il faut environ 350 répondants par version. Avec 100 répondants par version, seul un écart d'environ 19 points serait détectable de façon fiable.</p>
+  <p class="src">Calcul du groupe, formule usuelle de comparaison de deux proportions : n = (1,96 + 0,84)² × (0,40 × 0,60 + 0,30 × 0,70) ÷ 0,10². Les tests statistiques eux-mêmes seront vus en Analyse de données. Si l'échantillon reste petit, le résultat sera présenté comme une tendance, pas comme une preuve.</p>
 
   <h2>Les données</h2>
   <p>Une ligne par répondant, des colonnes fixes. Aucun nom, aucune adresse e-mail, aucune adresse IP.</p>
   <div class="table-wrap"><table>
     <tr><th>Colonne</th><th>Contenu</th></tr>
     <tr><td><code>id</code>, <code>horodatage</code></td><td>Identifiant aléatoire et date de la réponse</td></tr>
-    <tr><td><code>version</code></td><td>A (baisse à 2,49 €) ou B (hausse à 4,99 €)</td></tr>
+    <tr><td><code>version</code>, <code>prix_affiche</code></td><td>A et 3,49, ou B et 4,99</td></tr>
     <tr><td><code>appli</code></td><td>Application la plus utilisée : uber_eats, deliveroo, just_eat, autre, aucune</td></tr>
-    <tr><td><code>vw_trop_bon_marche</code>, <code>vw_bon_marche</code>, <code>vw_cher</code>, <code>vw_trop_cher</code></td><td>Les quatre réponses de Van Westendorp, en euros par mois</td></tr>
-    <tr><td><code>vw_coherent</code></td><td>1 si les quatre réponses montent, 0 sinon</td></tr>
-    <tr><td><code>gg_2_49</code> à <code>gg_6_99</code></td><td>1 si le répondant s'abonnerait à ce prix, 0 sinon</td></tr>
-    <tr><td><code>gg_coherent</code></td><td>0 si un prix est accepté après le refus d'un prix plus bas</td></tr>
-    <tr><td><code>intention</code></td><td>De 4 (oui, certainement) à 1 (non, certainement pas), au prix annoncé dans la version vue</td></tr>
-    <tr><td><code>controle</code></td><td>baisse, hausse ou nsp</td></tr>
+    <tr><td><code>souscription</code></td><td>1 si le répondant a cliqué sur « S'abonner », 0 sur « Non merci » : la métrique principale</td></tr>
+    <tr><td><code>controle</code></td><td>3_49, 4_99 ou nsp : le prix dont le répondant se souvient</td></tr>
+    <tr><td><code>vw_trop_bon_marche</code>, <code>vw_bon_marche</code>, <code>vw_cher</code>, <code>vw_trop_cher</code>, <code>vw_coherent</code></td><td>Les réponses de Van Westendorp, et 1 si elles montent</td></tr>
+    <tr><td><code>gg_2_49</code> à <code>gg_6_99</code>, <code>gg_coherent</code></td><td>1 si le répondant s'abonnerait à ce prix, et 0 en cas d'incohérence</td></tr>
     <tr><td><code>age</code>, <code>statut</code>, <code>commandes_30j</code>, <code>abonnements</code></td><td>Profil</td></tr>
   </table></div>
 
   <h2>Le nettoyage prévu</h2>
   <ul>
-    <li>Écarter les répondants dont <code>vw_coherent</code> ou <code>gg_coherent</code> vaut 0, et dire combien.</li>
-    <li>Signaler les réponses aberrantes (0 € ou plusieurs dizaines d'euros) sans les effacer en silence.</li>
-    <li>Vérifier que les groupes A et B se ressemblent sur l'âge, la situation, l'application utilisée et le nombre de commandes.</li>
+    <li>Écarter du test A/B les répondants qui se trompent de prix à la question de contrôle, et dire combien.</li>
+    <li>Écarter des analyses de prix les répondants dont <code>vw_coherent</code> ou <code>gg_coherent</code> vaut 0.</li>
+    <li>Vérifier que les groupes A et B se ressemblent sur l'âge, la situation, l'application utilisée et les abonnements détenus.</li>
   </ul>
 
   <h2>Ce que la mesure vaut</h2>
-  <p>C'est du déclaratif : dire qu'on s'abonnerait n'est pas s'abonner. L'échantillon restera surtout étudiant et clermontois, et les étudiants ont accès gratuitement à <a href="https://deliveroo.fr/fr/faq">Deliveroo Plus Argent</a> : leurs réponses risquent de sous-estimer le prix accepté par les autres clients. Le résultat sera donc confronté aux prix du marché, et l'analyse portera surtout sur la comparaison entre A et B, que le tirage au sort rend valide.</p>
+  <p>C'est une simulation : cliquer sur « S'abonner » sans payer n'est pas s'abonner, et les répondants sont souvent plus généreux qu'en situation réelle. L'échantillon restera surtout étudiant et clermontois, et les étudiants ont accès gratuitement à <a href="https://deliveroo.fr/fr/faq">Deliveroo Plus Argent</a>. C'est pourquoi la décision repose sur l'écart entre A et B, que le tirage au sort rend valide, plutôt que sur le niveau absolu du taux de souscription.</p>
   <p>Les réponses fourniront aussi deux hypothèses du <a href="index.html#plancher">calcul du plancher</a> : le nombre de commandes par mois des abonnés et celui des non-abonnés.</p>
 
-  <h2>Calendrier</h2>
-  <ul>
-    <li>Avant le lancement : essai auprès de quelques personnes extérieures au groupe, corrections.</li>
-    <li>Jusqu'au 21 octobre : collecte.</li>
-    <li>21 octobre : traitement des réponses en Analyse de données.</li>
-  </ul>
-
   <h2>Les résultats</h2>
-  <div class="todo"><strong>À compléter après la collecte</strong> Nombre de réponses reçues, écartées, gardées par version ; profil des répondants ; courbes de Van Westendorp et fourchette de prix acceptable ; courbe de demande de Gabor-Granger ; part de « oui » (certainement ou probablement) après la baisse et après la hausse, au total et chez les abonnés actuels ; part des répondants ayant bien lu le sens de l'annonce.</div>
+  <div class="todo"><strong>À compléter après la collecte</strong> Nombre de réponses par version, écartées et gardées ; taux de souscription en A et en B, rapport B ÷ A comparé au seuil de 90 % ; recette par répondant en A et en B ; même calcul chez les abonnés actuels ; courbes de Van Westendorp et de Gabor-Granger par version ; part d'acceptation à 2,49 € contre 3,49 € pour l'hypothèse H3.</div>
 </main>
 <footer>Dossier de groupe · M1 Marketing, IAE Clermont Auvergne · Chaque chiffre porte sa source et sa date de consultation.</footer>
 </body>

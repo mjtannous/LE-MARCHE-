@@ -6,6 +6,17 @@
 <meta name="robots" content="noindex">
 <title>Questionnaire — abonnement de livraison de repas</title>
 <link rel="stylesheet" href="style.css">
+<style>
+  .paywall { border: 1px solid var(--ink); border-radius: 12px; padding: 26px 24px; max-width: 420px; background: #fff; }
+  .paywall .plan { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  .paywall h2 { margin: 0 0 4px; padding: 0; border: 0; font-size: 1.5rem; }
+  .paywall .price { font-family: var(--serif); font-size: 2.6rem; line-height: 1.1; margin: 14px 0 2px; }
+  .paywall .price small { font-family: var(--sans); font-size: 0.95rem; color: var(--muted); }
+  .paywall ul { margin: 16px 0 6px; }
+  .paywall .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .paywall .actions button { margin-top: 18px; }
+  .paywall .note { font-size: 0.78rem; color: var(--muted); margin: 14px 0 0; }
+</style>
 </head>
 <body>
 <main>
@@ -35,25 +46,43 @@
     <button type="button" data-next="usage">Continuer</button>
   </section>
 
-  <!-- 3. L'offre (version A ou B, tirée au sort) -->
+  <!-- 3. Le test A/B : l'écran d'abonnement. Seul le prix affiché diffère entre A et B. -->
   <section class="step" data-step="offre">
-    <h2>Lisez attentivement cette offre</h2>
-    <div class="card offer">
-      <h3>Deliveroo Plus Or</h3>
-      <p>Un abonnement mensuel à l'application de livraison de repas Deliveroo, sans engagement, résiliable à tout moment.</p>
+    <p>Imaginez que vous ouvrez l'application Deliveroo et que cet écran s'affiche. Que faites-vous ?</p>
+    <div class="paywall">
+      <p class="plan">Abonnement</p>
+      <h2>Deliveroo Plus Or</h2>
+      <p class="price"><span class="prix-ab"></span> <small>par mois</small></p>
       <ul>
         <li>Frais de livraison offerts dès 12 € d'achat, dans les restaurants et les commerces.</li>
         <li>Frais de service réduits sur chaque commande.</li>
         <li>Offres et récompenses réservées aux abonnés.</li>
+        <li>Sans engagement, résiliable à tout moment.</li>
       </ul>
+      <div class="actions">
+        <button type="button" data-souscription="1">S'abonner</button>
+        <button type="button" class="secondary" data-souscription="0">Non merci</button>
+      </div>
+      <p class="note">Simulation pour une étude : aucun abonnement réel n'est souscrit.</p>
     </div>
-    <button type="button" data-next="offre">J'ai lu l'offre</button>
   </section>
 
-  <!-- 4. Van Westendorp -->
+  <!-- 4. Question de contrôle -->
+  <section class="step" data-step="controle">
+    <label class="q">Quel était le prix mensuel affiché sur l'écran d'abonnement ?</label>
+    <div class="opts">
+      <label><input type="radio" name="controle" value="3_49"> 3,49 €</label>
+      <label><input type="radio" name="controle" value="4_99"> 4,99 €</label>
+      <label><input type="radio" name="controle" value="nsp"> Je ne sais plus</label>
+    </div>
+    <p class="err" id="err-controle" hidden>Choisissez une réponse.</p>
+    <button type="button" data-next="controle">Continuer</button>
+  </section>
+
+  <!-- 5. Van Westendorp -->
   <section class="step" data-step="vw">
     <h2>Le prix de cet abonnement</h2>
-    <p>Répondez en euros par mois. Les centimes sont acceptés.</p>
+    <p>Indépendamment du prix affiché tout à l'heure, répondez en euros par mois. Les centimes sont acceptés.</p>
     <label class="q" for="vw1">À partir de quel prix mensuel trouveriez-vous cet abonnement si bon marché que vous douteriez de sa qualité ?</label>
     <input type="number" id="vw1" min="0" step="0.01" inputmode="decimal"> € par mois
     <label class="q" for="vw2">À quel prix mensuel trouveriez-vous cet abonnement bon marché, une bonne affaire ?</label>
@@ -66,7 +95,7 @@
     <button type="button" data-next="vw">Continuer</button>
   </section>
 
-  <!-- 5. Gabor-Granger : prix présentés en ordre croissant, le même pour tous -->
+  <!-- 6. Gabor-Granger : prix présentés en ordre croissant, le même pour tous -->
   <section class="step" data-step="gg">
     <h2>À chacun de ces prix, vous abonneriez-vous ?</h2>
     <div id="gg-list"></div>
@@ -74,36 +103,7 @@
     <button type="button" data-next="gg">Continuer</button>
   </section>
 
-  <!-- 6. Annonce d'un changement de prix : seul endroit où les versions A et B diffèrent -->
-  <section class="step" data-step="intention">
-    <h2>Une annonce</h2>
-    <div class="card offer">
-      <p>Deliveroo annonce que le prix de son abonnement Deliveroo Plus Or, aujourd'hui de 3,49 € par mois, <span class="sens-ab"></span> à <strong><span class="prix-ab"></span> par mois</strong>. Les avantages restent les mêmes.</p>
-    </div>
-    <label class="q">À ce nouveau prix, vous abonneriez-vous à Deliveroo Plus Or, ou resteriez-vous abonné si vous l'êtes déjà ?</label>
-    <div class="opts">
-      <label><input type="radio" name="intention" value="4"> Oui, certainement</label>
-      <label><input type="radio" name="intention" value="3"> Oui, probablement</label>
-      <label><input type="radio" name="intention" value="2"> Non, probablement pas</label>
-      <label><input type="radio" name="intention" value="1"> Non, certainement pas</label>
-    </div>
-    <p class="err" id="err-intention" hidden>Choisissez une réponse.</p>
-    <button type="button" data-next="intention">Continuer</button>
-  </section>
-
-  <!-- 7. Question de contrôle -->
-  <section class="step" data-step="controle">
-    <label class="q">Dans l'annonce que vous venez de lire, le prix de Deliveroo Plus Or…</label>
-    <div class="opts">
-      <label><input type="radio" name="controle" value="baisse"> baissait</label>
-      <label><input type="radio" name="controle" value="hausse"> augmentait</label>
-      <label><input type="radio" name="controle" value="nsp"> Je ne sais plus</label>
-    </div>
-    <p class="err" id="err-controle" hidden>Choisissez une réponse.</p>
-    <button type="button" data-next="controle">Continuer</button>
-  </section>
-
-  <!-- 8. Profil -->
+  <!-- 7. Profil -->
   <section class="step" data-step="profil">
     <h2>Pour finir, quelques questions sur vous</h2>
     <label class="q" for="age">Votre âge</label>
@@ -141,25 +141,25 @@
 // dans la feuille Google Sheets du groupe (voir LISEZMOI.md). Vide = mode test.
 const ENDPOINT = "";
 
-// Prix soumis dans Gabor-Granger, en ordre croissant, le même pour tous :
-// du prix actuel moins un euro jusqu'au-dessus du plafond concurrent (5,99 €).
-const GG_PRICES = [2.49, 3.49, 4.49, 5.99, 6.99];
+// Test A/B : A est le témoin (prix actuel), B la variante (hausse étudiée).
+const PRIX_AB = { A: 3.49, B: 4.99 };
+
+// Prix soumis dans Gabor-Granger, en ordre croissant, le même pour tous.
+const GG_PRICES = [2.49, 3.49, 4.49, 4.99, 5.99, 6.99];
 
 const answers = {
   id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
   horodatage: new Date().toISOString(),
-  // Tirage au sort de la version à l'ouverture du questionnaire.
-  // Seul le prix annoncé change : A, baisse à 2,49 € ; B, hausse à 4,99 €.
+  // Tirage au sort de la version à l'ouverture du questionnaire, une chance sur deux.
   version: Math.random() < 0.5 ? "A" : "B"
 };
-const PRIX_AB = { A: 2.49, B: 4.99 };
-const SENS_AB = { A: "baisse", B: "augmente" };
+answers.prix_affiche = PRIX_AB[answers.version];
 
 const euro = p => p.toFixed(2).replace(".", ",") + " €";
 
 if (!ENDPOINT) document.getElementById("testmode").hidden = false;
-document.querySelectorAll(".prix-ab").forEach(el => { el.textContent = euro(PRIX_AB[answers.version]); });
-document.querySelectorAll(".sens-ab").forEach(el => { el.textContent = SENS_AB[answers.version]; });
+document.querySelectorAll(".prix-ab").forEach(el => { el.textContent = euro(answers.prix_affiche); });
+
 document.getElementById("gg-list").innerHTML = GG_PRICES.map((p, i) => `
   <label class="q">${euro(p)} par mois</label>
   <div class="opts">
@@ -191,13 +191,20 @@ function single(step, name, next) {
   show(next);
 }
 
+// La métrique principale du test : le clic sur « S'abonner » ou « Non merci ».
+document.querySelectorAll("button[data-souscription]").forEach(b =>
+  b.addEventListener("click", () => {
+    answers.souscription = Number(b.dataset.souscription);
+    show("controle");
+  }));
+
 const handlers = {
   accueil() {
     if (!document.getElementById("consent").checked) return fail("accueil");
     show("usage");
   },
   usage() { single("usage", "appli", "offre"); },
-  offre() { show("vw"); },
+  controle() { single("controle", "controle", "vw"); },
   vw() {
     const v = ["vw1", "vw2", "vw3", "vw4"].map(num);
     if (v.some(x => x === null)) return fail("vw");
@@ -212,10 +219,8 @@ const handlers = {
     GG_PRICES.forEach((p, i) => { answers["gg_" + p.toFixed(2).replace(".", "_")] = Number(v[i]); });
     // Accepter un prix élevé après avoir refusé un prix plus bas est une incohérence.
     answers.gg_coherent = v.join("").includes("01") ? 0 : 1;
-    show("intention");
+    show("profil");
   },
-  intention() { single("intention", "intention", "controle"); },
-  controle() { single("controle", "controle", "profil"); },
   profil() {
     const age = document.getElementById("age").value;
     const statut = document.getElementById("statut").value;

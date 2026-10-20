@@ -206,6 +206,8 @@ button {
   cursor: pointer;
 }
 button:hover { background: var(--accent); border-color: var(--accent); }
+button.secondary { background: transparent; color: var(--ink); }
+button.secondary:hover { background: var(--note); border-color: var(--ink); }
 .offer { border: 1px solid var(--ink); border-radius: 4px; padding: 22px 24px; }
 .offer h3 { margin-top: 0; font-family: var(--serif); font-size: 1.3rem; font-weight: 500; }
 .err { color: var(--neg); font-size: 0.9rem; }

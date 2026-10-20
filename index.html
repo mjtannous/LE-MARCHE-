@@ -49,7 +49,7 @@
   <ol class="brief">
     <li><div><a href="#plancher">Que coûte un abonné à Deliveroo France, et le prix actuel de 3,49 € couvre-t-il ce coût ?</a><small>H1 : le prix actuel est inférieur au coût d'un abonné. Partie « L'entreprise », calcul du plancher.</small></div></li>
     <li><div><a href="marche.html">Quelle marge de manœuvre le prix des abonnements concurrents laisse-t-il à Deliveroo ?</a><small>H2 : une hausse à 4,99 € reste sous le prix des offres concurrentes. Partie « Le marché ».</small></div></li>
-    <li><div><a href="mesure.html">Comment l'intention de s'abonner réagit-elle à une baisse à 2,49 € et à une hausse à 4,99 € ?</a><small>H3 : la baisse n'augmente pas le nombre d'abonnés d'au moins 8 %, seuil qui la rendrait rentable. H4 : la hausse fait partir moins de 10 % des abonnés, seuil au-delà duquel elle coûte. Partie « La mesure ».</small></div></li>
+    <li><div><a href="mesure.html">Comment le taux de souscription réagit-il à une baisse à 2,49 € et à une hausse à 4,99 € ?</a><small>H3 : la baisse n'augmente pas le nombre d'abonnés d'au moins 8 %, seuil qui la rendrait rentable ; mesurée par Gabor-Granger. H4 : la hausse fait perdre moins de 10 % des souscriptions, seuil au-delà duquel elle coûte ; mesurée par le test A/B. Partie « La mesure ».</small></div></li>
     <li><div><a href="proposition.html">Quelle option améliore le résultat de Deliveroo France, et quel est le coût d'une erreur ?</a><small>Partie « La proposition ».</small></div></li>
   </ol>
   <p class="src">Les seuils de 8 % et 10 % sont calculés dans la section <a href="#arbitrage">L'arbitrage</a>.</p>
@@ -70,9 +70,10 @@
       <circle cx="487" cy="64" r="5" class="dot hollow"/>
       <text x="95" y="40" text-anchor="middle" class="val">2,49 €</text>
       <text x="95" y="92" text-anchor="middle" class="lab">Baisse</text>
-      <text x="95" y="108" text-anchor="middle" class="sub">version A</text>
+      <text x="95" y="108" text-anchor="middle" class="sub">Gabor-Granger</text>
       <text x="207" y="40" text-anchor="middle" class="val">3,49 €</text>
       <text x="207" y="92" text-anchor="middle" class="lab">Prix actuel</text>
+      <text x="207" y="108" text-anchor="middle" class="sub">test A/B : version A</text>
       <text x="319" y="40" text-anchor="end" class="val">4,60 €</text>
       <text x="319" y="92" text-anchor="end" class="lab">Plancher</text>
       <text x="319" y="108" text-anchor="end" class="sub">estimé</text>
@@ -132,7 +133,7 @@
     <tr><td><strong>Seuil de rentabilité</strong></td><td class="num"><strong>gagner au moins 19 800 nouveaux abonnés</strong></td><td class="num"><strong>perdre au plus 24 700 abonnés</strong></td></tr>
     <tr><td>Soit, rapporté à la base actuelle</td><td class="num">+8 %</td><td class="num">−10 %</td></tr>
   </table></div>
-  <p>Autrement dit, <strong>la baisse ne paie que si elle augmente le nombre d'abonnés d'au moins 8 %</strong> avec des clients nouveaux pour Deliveroo, et <strong>la hausse ne coûte que si elle fait quitter Deliveroo à plus de 10 % des abonnés</strong>. Le <a href="mesure.html">test A/B</a> mesure l'intention de s'abonner à chacun des deux prix.</p>
+  <p>Autrement dit, <strong>la baisse ne paie que si elle augmente le nombre d'abonnés d'au moins 8 %</strong> avec des clients nouveaux pour Deliveroo, et <strong>la hausse ne coûte que si elle fait quitter Deliveroo à plus de 10 % des abonnés</strong>. Le <a href="mesure.html">test A/B</a> compare le taux de souscription à 3,49 € et à 4,99 € ; les questions de Gabor-Granger mesurent l'effet d'une baisse à 2,49 €.</p>
   <p class="src">Calculs du groupe : 245 000 × 1,00 € et 245 000 × 1,50 € pour l'effet sur les abonnés actuels ; 245 000 ÷ 12,39 ≈ 19 800 et 367 500 ÷ 14,89 ≈ 24 700 pour les seuils. Deux limites : un client de Deliveroo qui s'abonne grâce à la baisse ne compte pas comme nouveau, puisqu'il rapporte moins une fois abonné ; et un abonné qui résilie mais continue de commander sans abonnement ne fait presque rien perdre (il rapporte 14,53 € contre 14,89 €).</p>
 
   <h2>Le cadre du dossier</h2>
