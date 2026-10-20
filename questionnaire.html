@@ -45,7 +45,6 @@
         <li>Frais de livraison offerts dès 12 € d'achat, dans les restaurants et les commerces.</li>
         <li>Frais de service réduits sur chaque commande.</li>
         <li>Offres et récompenses réservées aux abonnés.</li>
-        <li id="garantie" hidden>Garantie retard : 3 € crédités automatiquement sur votre compte si une commande arrive avec plus de 15 minutes de retard.</li>
       </ul>
     </div>
     <button type="button" data-next="offre">J'ai lu l'offre</button>
@@ -75,24 +74,29 @@
     <button type="button" data-next="gg">Continuer</button>
   </section>
 
-  <!-- 6. Choix face au concurrent -->
-  <section class="step" data-step="choix">
-    <label class="q">Uber Eats propose un abonnement comparable, Uber One, à 5,99 € par mois. Si l'abonnement Deliveroo Plus Or que vous avez lu coûtait 4,99 € par mois, que choisiriez-vous ?</label>
-    <div class="opts">
-      <label><input type="radio" name="choix" value="deliveroo"> Deliveroo Plus Or à 4,99 €</label>
-      <label><input type="radio" name="choix" value="uber_one"> Uber One à 5,99 €</label>
-      <label><input type="radio" name="choix" value="aucun"> Aucun des deux</label>
+  <!-- 6. Annonce d'un changement de prix : seul endroit où les versions A et B diffèrent -->
+  <section class="step" data-step="intention">
+    <h2>Une annonce</h2>
+    <div class="card offer">
+      <p>Deliveroo annonce que le prix de son abonnement Deliveroo Plus Or, aujourd'hui de 3,49 € par mois, <span class="sens-ab"></span> à <strong><span class="prix-ab"></span> par mois</strong>. Les avantages restent les mêmes.</p>
     </div>
-    <p class="err" id="err-choix" hidden>Choisissez une réponse.</p>
-    <button type="button" data-next="choix">Continuer</button>
+    <label class="q">À ce nouveau prix, vous abonneriez-vous à Deliveroo Plus Or, ou resteriez-vous abonné si vous l'êtes déjà ?</label>
+    <div class="opts">
+      <label><input type="radio" name="intention" value="4"> Oui, certainement</label>
+      <label><input type="radio" name="intention" value="3"> Oui, probablement</label>
+      <label><input type="radio" name="intention" value="2"> Non, probablement pas</label>
+      <label><input type="radio" name="intention" value="1"> Non, certainement pas</label>
+    </div>
+    <p class="err" id="err-intention" hidden>Choisissez une réponse.</p>
+    <button type="button" data-next="intention">Continuer</button>
   </section>
 
   <!-- 7. Question de contrôle -->
   <section class="step" data-step="controle">
-    <label class="q">L'offre Deliveroo Plus Or que vous avez lue prévoyait-elle une compensation en cas de retard de livraison ?</label>
+    <label class="q">Dans l'annonce que vous venez de lire, le prix de Deliveroo Plus Or…</label>
     <div class="opts">
-      <label><input type="radio" name="controle" value="oui"> Oui</label>
-      <label><input type="radio" name="controle" value="non"> Non</label>
+      <label><input type="radio" name="controle" value="baisse"> baissait</label>
+      <label><input type="radio" name="controle" value="hausse"> augmentait</label>
       <label><input type="radio" name="controle" value="nsp"> Je ne sais plus</label>
     </div>
     <p class="err" id="err-controle" hidden>Choisissez une réponse.</p>
@@ -145,14 +149,17 @@ const answers = {
   id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
   horodatage: new Date().toISOString(),
   // Tirage au sort de la version à l'ouverture du questionnaire.
-  // A : offre actuelle. B : la même, avec la garantie retard en plus.
+  // Seul le prix annoncé change : A, baisse à 2,49 € ; B, hausse à 4,99 €.
   version: Math.random() < 0.5 ? "A" : "B"
 };
-
-if (!ENDPOINT) document.getElementById("testmode").hidden = false;
-if (answers.version === "B") document.getElementById("garantie").hidden = false;
+const PRIX_AB = { A: 2.49, B: 4.99 };
+const SENS_AB = { A: "baisse", B: "augmente" };
 
 const euro = p => p.toFixed(2).replace(".", ",") + " €";
+
+if (!ENDPOINT) document.getElementById("testmode").hidden = false;
+document.querySelectorAll(".prix-ab").forEach(el => { el.textContent = euro(PRIX_AB[answers.version]); });
+document.querySelectorAll(".sens-ab").forEach(el => { el.textContent = SENS_AB[answers.version]; });
 document.getElementById("gg-list").innerHTML = GG_PRICES.map((p, i) => `
   <label class="q">${euro(p)} par mois</label>
   <div class="opts">
@@ -205,9 +212,9 @@ const handlers = {
     GG_PRICES.forEach((p, i) => { answers["gg_" + p.toFixed(2).replace(".", "_")] = Number(v[i]); });
     // Accepter un prix élevé après avoir refusé un prix plus bas est une incohérence.
     answers.gg_coherent = v.join("").includes("01") ? 0 : 1;
-    show("choix");
+    show("intention");
   },
-  choix() { single("choix", "choix", "controle"); },
+  intention() { single("intention", "intention", "controle"); },
   controle() { single("controle", "controle", "profil"); },
   profil() {
     const age = document.getElementById("age").value;
