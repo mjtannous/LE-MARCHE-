@@ -4,51 +4,114 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Questionnaire — abonnement de livraison de repas</title>
+<title>3 minutes sur la livraison de repas</title>
 <link rel="stylesheet" href="style.css">
 <style>
-  .paywall { border: 1px solid var(--ink); border-radius: 12px; padding: 26px 24px; max-width: 420px; background: #fff; }
+  body { min-height: 100vh; }
+  main { max-width: 560px; padding-top: 28px; }
+
+  /* barre de progression */
+  .progress { position: sticky; top: 0; z-index: 2; background: var(--bg); padding: 14px 0 10px; }
+  .progress .bar { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
+  .progress .fill { height: 100%; width: 0; background: var(--accent); transition: width .4s ease; }
+  .progress .count { font-size: 0.75rem; color: var(--muted); margin-top: 6px; letter-spacing: 0.04em; }
+
+  /* écrans */
+  .step { display: none; }
+  .step.active { display: block; animation: arrive .35s ease both; }
+  @keyframes arrive { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .step.active { animation: none; } .progress .fill { transition: none; } }
+  .step h1 { font-size: clamp(1.8rem, 6vw, 2.3rem); }
+  .ask { font-family: var(--serif); font-size: 1.45rem; line-height: 1.3; margin: 18px 0 20px; }
+  .hint { color: var(--muted); font-size: 0.9rem; margin: -10px 0 18px; }
+
+  /* tuiles de réponse */
+  .tiles { display: grid; gap: 10px; }
+  .tiles.two { grid-template-columns: 1fr 1fr; }
+  .tile {
+    display: flex; align-items: center; gap: 12px; width: 100%; margin: 0;
+    padding: 15px 18px; text-align: left; font-size: 1rem; font-weight: 500;
+    background: #fff; color: var(--ink); border: 1px solid #d9d6cd; border-radius: 10px;
+    transition: border-color .15s, background .15s, transform .1s;
+  }
+  .tile:hover { background: #fff; border-color: var(--ink); color: var(--ink); }
+  .tile:active { transform: scale(.98); }
+  .tile .ico { font-size: 1.3rem; width: 1.6rem; text-align: center; }
+  .tile[aria-pressed="true"] { border-color: var(--accent); background: #e9f5f3; box-shadow: inset 0 0 0 1px var(--accent); }
+  .tiles.two .tile { justify-content: center; font-size: 1.05rem; padding: 18px; }
+
+  /* montants */
+  .amount { display: flex; align-items: center; gap: 10px; }
+  .amount input { font-family: var(--serif); font-size: 2.2rem; width: 160px; padding: 8px 14px; border-radius: 10px; }
+  .amount span { font-size: 1.1rem; color: var(--muted); }
+  .recap { font-size: 0.85rem; color: var(--muted); margin-top: 14px; }
+  .stepper { display: flex; align-items: center; gap: 14px; }
+  .stepper button { margin: 0; width: 52px; height: 52px; padding: 0; font-size: 1.5rem; border-radius: 50%; }
+  .stepper output { font-family: var(--serif); font-size: 2.4rem; min-width: 2.5ch; text-align: center; }
+
+  /* question de Gabor-Granger */
+  .gg-price { font-family: var(--serif); font-size: 3.2rem; line-height: 1; margin: 6px 0 24px; }
+  .gg-price small { font-family: var(--sans); font-size: 1rem; color: var(--muted); }
+
+  /* écran d'abonnement du test A/B */
+  .paywall { border: 1px solid var(--ink); border-radius: 14px; padding: 26px 24px; background: #fff; box-shadow: 0 10px 30px rgba(22,24,29,.08); }
   .paywall .plan { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
   .paywall h2 { margin: 0 0 4px; padding: 0; border: 0; font-size: 1.5rem; }
   .paywall .price { font-family: var(--serif); font-size: 2.6rem; line-height: 1.1; margin: 14px 0 2px; }
   .paywall .price small { font-family: var(--sans); font-size: 0.95rem; color: var(--muted); }
-  .paywall ul { margin: 16px 0 6px; }
-  .paywall .actions { display: flex; flex-wrap: wrap; gap: 10px; }
-  .paywall .actions button { margin-top: 18px; }
+  .paywall ul { margin: 16px 0 6px; padding-left: 0; list-style: none; }
+  .paywall li { padding-left: 26px; position: relative; }
+  .paywall li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  .paywall .actions { display: grid; gap: 10px; margin-top: 18px; }
+  .paywall .actions button { margin: 0; padding: 14px; font-size: 1rem; }
   .paywall .note { font-size: 0.78rem; color: var(--muted); margin: 14px 0 0; }
+
+  .facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 6px; }
+  .facts span { font-size: 0.82rem; padding: 6px 12px; border-radius: 999px; background: #fff; border: 1px solid var(--line); }
+  .consent { display: flex; gap: 10px; align-items: flex-start; font-size: 0.92rem; margin-top: 18px; cursor: pointer; }
+  .consent input { margin-top: 4px; accent-color: var(--ink); width: 18px; height: 18px; }
+  .big-btn { width: 100%; padding: 15px; font-size: 1.05rem; }
+  .err { margin-top: 10px; }
+  .done { text-align: center; padding-top: 30px; }
+  .done .check { font-size: 3rem; color: var(--accent); }
 </style>
 </head>
 <body>
 <main>
+  <div class="progress" id="progress" hidden>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="count" id="count"></div>
+  </div>
+
   <p id="testmode" class="todo" hidden><strong>Mode test</strong> Aucune adresse d'enregistrement n'est configurée : les réponses restent dans ce navigateur. Voir le fichier LISEZMOI.</p>
 
-  <!-- 1. Accueil et consentement -->
+  <!-- Accueil et consentement -->
   <section class="step active" data-step="accueil">
-    <h1>Votre avis sur un abonnement de livraison de repas</h1>
-    <p>Ce questionnaire est réalisé par des étudiants du M1 Marketing de l'IAE Clermont Auvergne, dans le cadre d'un projet de cours sur les prix. Il dure environ trois minutes et s'adresse à toute personne majeure, qu'elle se fasse livrer des repas ou non.</p>
-    <p>Il est anonyme : aucun nom, aucune adresse e-mail et aucune adresse IP ne sont enregistrés. Les réponses servent uniquement à ce projet et à un cours d'analyse de données. Vous pouvez arrêter à tout moment en fermant la page.</p>
-    <div class="opts"><label><input type="checkbox" id="consent"> J'ai lu ces informations, j'ai 18 ans ou plus et j'accepte de répondre.</label></div>
-    <p class="err" id="err-accueil" hidden>Cochez la case pour continuer.</p>
-    <button type="button" data-next="accueil">Commencer</button>
+    <p class="eyebrow">Étude · M1 Marketing · IAE Clermont Auvergne</p>
+    <h1>Combien paieriez-vous pour ne plus payer la livraison ?</h1>
+    <p>Quelques questions rapides sur un abonnement de livraison de repas. Pas de bonne ou de mauvaise réponse : seul votre avis compte, que vous vous fassiez livrer souvent, parfois ou jamais.</p>
+    <div class="facts"><span>⏱ 3 minutes</span><span>🔒 Anonyme</span><span>📱 Pensé pour mobile</span></div>
+    <p class="src">Questionnaire réalisé par des étudiants du M1 Marketing de l'IAE Clermont Auvergne pour un projet de cours sur les prix. Aucun nom, aucune adresse e-mail et aucune adresse IP ne sont enregistrés. Les réponses servent uniquement à ce projet et à un cours d'analyse de données. Vous pouvez arrêter à tout moment en fermant la page.</p>
+    <label class="consent"><input type="checkbox" id="consent"> <span>J'ai lu ces informations, j'ai 18 ans ou plus et j'accepte de répondre.</span></label>
+    <p class="err" id="err-accueil" hidden>Cochez la case pour commencer.</p>
+    <button type="button" class="big-btn" id="start">C'est parti</button>
   </section>
 
-  <!-- 2. Usage : personne n'est exclu, la réponse sert à comparer les profils -->
+  <!-- Usage -->
   <section class="step" data-step="usage">
-    <label class="q">Quelle application de livraison de repas utilisez-vous le plus souvent ?</label>
-    <div class="opts">
-      <label><input type="radio" name="appli" value="uber_eats"> Uber Eats</label>
-      <label><input type="radio" name="appli" value="deliveroo"> Deliveroo</label>
-      <label><input type="radio" name="appli" value="just_eat"> Just Eat</label>
-      <label><input type="radio" name="appli" value="autre"> Une autre application</label>
-      <label><input type="radio" name="appli" value="aucune"> Aucune, je ne me fais pas livrer de repas</label>
+    <p class="ask">Quelle application de livraison de repas utilisez-vous le plus souvent ?</p>
+    <div class="tiles" data-choice="appli">
+      <button type="button" class="tile" data-value="uber_eats"><span class="ico">🛵</span>Uber Eats</button>
+      <button type="button" class="tile" data-value="deliveroo"><span class="ico">🛵</span>Deliveroo</button>
+      <button type="button" class="tile" data-value="just_eat"><span class="ico">🛵</span>Just Eat</button>
+      <button type="button" class="tile" data-value="autre"><span class="ico">📲</span>Une autre application</button>
+      <button type="button" class="tile" data-value="aucune"><span class="ico">🍳</span>Aucune, je ne me fais pas livrer</button>
     </div>
-    <p class="err" id="err-usage" hidden>Choisissez une réponse.</p>
-    <button type="button" data-next="usage">Continuer</button>
   </section>
 
-  <!-- 3. Le test A/B : l'écran d'abonnement. Seul le prix affiché diffère entre A et B. -->
+  <!-- Le test A/B : seul le prix affiché diffère entre A et B -->
   <section class="step" data-step="offre">
-    <p>Imaginez que vous ouvrez l'application Deliveroo et que cet écran s'affiche. Que faites-vous ?</p>
+    <p class="ask">Vous ouvrez l'application Deliveroo et cet écran s'affiche. Que faites-vous ?</p>
     <div class="paywall">
       <p class="plan">Abonnement</p>
       <h2>Deliveroo Plus Or</h2>
@@ -67,72 +130,96 @@
     </div>
   </section>
 
-  <!-- 4. Question de contrôle -->
+  <!-- Contrôle -->
   <section class="step" data-step="controle">
-    <label class="q">Quel était le prix mensuel affiché sur l'écran d'abonnement ?</label>
-    <div class="opts">
-      <label><input type="radio" name="controle" value="3_49"> 3,49 €</label>
-      <label><input type="radio" name="controle" value="4_99"> 4,99 €</label>
-      <label><input type="radio" name="controle" value="nsp"> Je ne sais plus</label>
+    <p class="ask">Petit test de mémoire : quel était le prix mensuel affiché sur l'écran ?</p>
+    <div class="tiles" data-choice="controle">
+      <button type="button" class="tile" data-value="3_49">3,49 €</button>
+      <button type="button" class="tile" data-value="4_99">4,99 €</button>
+      <button type="button" class="tile" data-value="nsp">Je ne sais plus</button>
     </div>
-    <p class="err" id="err-controle" hidden>Choisissez une réponse.</p>
-    <button type="button" data-next="controle">Continuer</button>
   </section>
 
-  <!-- 5. Van Westendorp -->
-  <section class="step" data-step="vw">
-    <h2>Le prix de cet abonnement</h2>
-    <p>Indépendamment du prix affiché tout à l'heure, répondez en euros par mois. Les centimes sont acceptés.</p>
-    <label class="q" for="vw1">À partir de quel prix mensuel trouveriez-vous cet abonnement si bon marché que vous douteriez de sa qualité ?</label>
-    <input type="number" id="vw1" min="0" step="0.01" inputmode="decimal"> € par mois
-    <label class="q" for="vw2">À quel prix mensuel trouveriez-vous cet abonnement bon marché, une bonne affaire ?</label>
-    <input type="number" id="vw2" min="0" step="0.01" inputmode="decimal"> € par mois
-    <label class="q" for="vw3">À quel prix mensuel commenceriez-vous à trouver cet abonnement cher, sans exclure de le prendre ?</label>
-    <input type="number" id="vw3" min="0" step="0.01" inputmode="decimal"> € par mois
-    <label class="q" for="vw4">À partir de quel prix mensuel trouveriez-vous cet abonnement trop cher pour envisager de le prendre ?</label>
-    <input type="number" id="vw4" min="0" step="0.01" inputmode="decimal"> € par mois
-    <p class="err" id="err-vw" hidden>Répondez aux quatre questions par un montant.</p>
-    <button type="button" data-next="vw">Continuer</button>
+  <!-- Van Westendorp, une question par écran, toujours dans le même ordre -->
+  <section class="step" data-step="vw1">
+    <p class="ask">À partir de quel prix mensuel trouveriez-vous cet abonnement <strong>si bon marché</strong> que vous douteriez de sa qualité ?</p>
+    <p class="hint">Indépendamment du prix affiché tout à l'heure. Les centimes sont acceptés.</p>
+    <div class="amount"><input type="text" autocomplete="off" id="vw1" inputmode="decimal" placeholder="0,00"><span>€ par mois</span></div>
+    <p class="err" id="err-vw1" hidden>Indiquez un montant entre 0 et 100 €.</p>
+    <button type="button" class="big-btn" data-next="vw1">Suivant</button>
+  </section>
+  <section class="step" data-step="vw2">
+    <p class="ask">À quel prix mensuel le trouveriez-vous <strong>bon marché</strong>, une bonne affaire ?</p>
+    <div class="amount"><input type="text" autocomplete="off" id="vw2" inputmode="decimal" placeholder="0,00"><span>€ par mois</span></div>
+    <p class="recap" data-recap="vw2"></p>
+    <p class="err" id="err-vw2" hidden>Indiquez un montant entre 0 et 100 €.</p>
+    <button type="button" class="big-btn" data-next="vw2">Suivant</button>
+  </section>
+  <section class="step" data-step="vw3">
+    <p class="ask">À quel prix mensuel commenceriez-vous à le trouver <strong>cher</strong>, sans exclure de le prendre ?</p>
+    <div class="amount"><input type="text" autocomplete="off" id="vw3" inputmode="decimal" placeholder="0,00"><span>€ par mois</span></div>
+    <p class="recap" data-recap="vw3"></p>
+    <p class="err" id="err-vw3" hidden>Indiquez un montant entre 0 et 100 €.</p>
+    <button type="button" class="big-btn" data-next="vw3">Suivant</button>
+  </section>
+  <section class="step" data-step="vw4">
+    <p class="ask">À partir de quel prix mensuel serait-il <strong>trop cher</strong> pour que vous l'envisagiez ?</p>
+    <div class="amount"><input type="text" autocomplete="off" id="vw4" inputmode="decimal" placeholder="0,00"><span>€ par mois</span></div>
+    <p class="recap" data-recap="vw4"></p>
+    <p class="err" id="err-vw4" hidden>Indiquez un montant entre 0 et 100 €.</p>
+    <button type="button" class="big-btn" data-next="vw4">Suivant</button>
   </section>
 
-  <!-- 6. Gabor-Granger : prix présentés en ordre croissant, le même pour tous -->
-  <section class="step" data-step="gg">
-    <h2>À chacun de ces prix, vous abonneriez-vous ?</h2>
-    <div id="gg-list"></div>
-    <p class="err" id="err-gg" hidden>Répondez pour chaque prix.</p>
-    <button type="button" data-next="gg">Continuer</button>
-  </section>
+  <!-- Gabor-Granger : les écrans sont générés par le script, un prix par écran, en ordre croissant -->
+  <div id="gg-screens"></div>
 
-  <!-- 7. Profil -->
-  <section class="step" data-step="profil">
-    <h2>Pour finir, quelques questions sur vous</h2>
-    <label class="q" for="age">Votre âge</label>
-    <select id="age">
-      <option value="">—</option>
-      <option>18 à 24 ans</option><option>25 à 34 ans</option>
-      <option>35 à 49 ans</option><option>50 ans et plus</option>
-    </select>
-    <label class="q" for="statut">Votre situation</label>
-    <select id="statut">
-      <option value="">—</option>
-      <option>Étudiant</option><option>En emploi</option><option>En recherche d'emploi</option><option>Autre</option>
-    </select>
-    <label class="q" for="freq">Combien de repas vous êtes-vous fait livrer par une application au cours des 30 derniers jours ? (0 si aucun)</label>
-    <input type="number" id="freq" min="0" step="1" inputmode="numeric"> commandes
-    <label class="q">Avez-vous actuellement un de ces abonnements ? (plusieurs réponses possibles)</label>
-    <div class="opts">
-      <label><input type="checkbox" name="abo" value="deliveroo_plus"> Deliveroo Plus</label>
-      <label><input type="checkbox" name="abo" value="uber_one"> Uber One</label>
-      <label><input type="checkbox" name="abo" value="autre"> Un autre abonnement de livraison</label>
-      <label><input type="checkbox" name="abo" value="aucun"> Aucun</label>
+  <!-- Profil -->
+  <section class="step" data-step="age">
+    <p class="ask">Votre âge ?</p>
+    <div class="tiles" data-choice="age">
+      <button type="button" class="tile" data-value="18 à 24 ans">18 à 24 ans</button>
+      <button type="button" class="tile" data-value="25 à 34 ans">25 à 34 ans</button>
+      <button type="button" class="tile" data-value="35 à 49 ans">35 à 49 ans</button>
+      <button type="button" class="tile" data-value="50 ans et plus">50 ans et plus</button>
     </div>
-    <p class="err" id="err-profil" hidden>Répondez à toutes les questions.</p>
-    <button type="button" data-next="profil">Envoyer mes réponses</button>
+  </section>
+  <section class="step" data-step="statut">
+    <p class="ask">Vous êtes…</p>
+    <div class="tiles" data-choice="statut">
+      <button type="button" class="tile" data-value="Étudiant"><span class="ico">🎓</span>Étudiant</button>
+      <button type="button" class="tile" data-value="En emploi"><span class="ico">💼</span>En emploi</button>
+      <button type="button" class="tile" data-value="En recherche d'emploi"><span class="ico">🔎</span>En recherche d'emploi</button>
+      <button type="button" class="tile" data-value="Autre"><span class="ico">✳️</span>Autre</button>
+    </div>
+  </section>
+  <section class="step" data-step="freq">
+    <p class="ask">Combien de repas vous êtes-vous fait livrer par une application au cours des 30 derniers jours ?</p>
+    <div class="stepper">
+      <button type="button" class="secondary" id="freq-moins" aria-label="Un de moins">−</button>
+      <output id="freq">0</output>
+      <button type="button" class="secondary" id="freq-plus" aria-label="Un de plus">+</button>
+    </div>
+    <button type="button" class="big-btn" data-next="freq">Suivant</button>
+  </section>
+  <section class="step" data-step="abo">
+    <p class="ask">Avez-vous actuellement un de ces abonnements ?</p>
+    <p class="hint">Plusieurs réponses possibles.</p>
+    <div class="tiles" data-multi="abonnements">
+      <button type="button" class="tile" data-value="deliveroo_plus">Deliveroo Plus</button>
+      <button type="button" class="tile" data-value="uber_one">Uber One</button>
+      <button type="button" class="tile" data-value="autre">Un autre abonnement de livraison</button>
+      <button type="button" class="tile" data-value="aucun">Aucun</button>
+    </div>
+    <p class="err" id="err-abo" hidden>Choisissez au moins une réponse.</p>
+    <button type="button" class="big-btn" data-next="abo">Envoyer mes réponses</button>
   </section>
 
-  <section class="step" data-step="fin">
+  <section class="step done" data-step="fin">
+    <p class="check">✓</p>
     <h1>Merci !</h1>
-    <p id="fin-msg">Vos réponses sont enregistrées. Vous pouvez fermer cette page.</p>
+    <p id="fin-msg">Vos réponses sont enregistrées. Chaque réponse rend l'étude plus fiable : vous pouvez aider en partageant le questionnaire.</p>
+    <button type="button" class="big-btn" id="share">Partager le questionnaire</button>
+    <p class="src" id="share-msg"></p>
   </section>
 </main>
 
@@ -156,84 +243,134 @@ const answers = {
 answers.prix_affiche = PRIX_AB[answers.version];
 
 const euro = p => p.toFixed(2).replace(".", ",") + " €";
+const $ = sel => document.querySelector(sel);
 
-if (!ENDPOINT) document.getElementById("testmode").hidden = false;
+if (!ENDPOINT) $("#testmode").hidden = false;
 document.querySelectorAll(".prix-ab").forEach(el => { el.textContent = euro(answers.prix_affiche); });
 
-document.getElementById("gg-list").innerHTML = GG_PRICES.map((p, i) => `
-  <label class="q">${euro(p)} par mois</label>
-  <div class="opts">
-    <label><input type="radio" name="gg${i}" value="1"> Oui, je m'abonnerais</label>
-    <label><input type="radio" name="gg${i}" value="0"> Non</label>
-  </div>`).join("");
+// Écrans de Gabor-Granger : un prix par écran, réponse en un geste.
+$("#gg-screens").outerHTML = GG_PRICES.map((p, i) => `
+  <section class="step" data-step="gg${i}">
+    <p class="hint">Prix ${i + 1} sur ${GG_PRICES.length}</p>
+    <p class="ask">À ce prix, vous abonneriez-vous ?</p>
+    <p class="gg-price">${euro(p)} <small>par mois</small></p>
+    <div class="tiles two" data-choice="gg_${p.toFixed(2).replace(".", "_")}">
+      <button type="button" class="tile" data-value="1">👍 Oui</button>
+      <button type="button" class="tile" data-value="0">👎 Non</button>
+    </div>
+  </section>`).join("");
 
-const radio = name => {
-  const el = document.querySelector(`input[name="${name}"]:checked`);
-  return el ? el.value : null;
-};
-const num = id => {
-  const v = document.getElementById(id).value;
-  return v === "" || isNaN(Number(v)) ? null : Number(v);
-};
+// Ordre des écrans, qui sert aussi à la barre de progression.
+const SEQ = ["accueil", "usage", "offre", "controle", "vw1", "vw2", "vw3", "vw4",
+  ...GG_PRICES.map((_, i) => "gg" + i), "age", "statut", "freq", "abo", "fin"];
+let current = 0;
 
 function show(step) {
+  current = SEQ.indexOf(step);
   document.querySelectorAll(".step").forEach(s => s.classList.toggle("active", s.dataset.step === step));
+  const total = SEQ.length - 2; // ni l'accueil ni la fin ne comptent
+  $("#progress").hidden = step === "accueil" || step === "fin";
+  $("#fill").style.width = Math.round((current / (total + 1)) * 100) + "%";
+  $("#count").textContent = `Question ${current} sur ${total}`;
   window.scrollTo(0, 0);
+  const input = document.querySelector(`.step[data-step="${step}"] .amount input`);
+  if (input) setTimeout(() => input.focus(), 350);
 }
-function fail(step) {
-  document.getElementById("err-" + step).hidden = false;
-}
-// Étape à une seule question fermée : enregistre la réponse puis passe à la suivante.
-function single(step, name, next) {
-  const v = radio(name);
-  if (!v) return fail(step);
-  answers[name] = v;
-  show(next);
-}
+const next = () => show(SEQ[current + 1]);
+
+// Accueil
+$("#start").addEventListener("click", () => {
+  if (!$("#consent").checked) { $("#err-accueil").hidden = false; return; }
+  show("usage");
+});
+
+// Tuiles à choix unique : la réponse est enregistrée et l'écran suivant arrive tout seul.
+document.querySelectorAll("[data-choice]").forEach(group => {
+  group.addEventListener("click", e => {
+    const tile = e.target.closest(".tile");
+    if (!tile) return;
+    group.querySelectorAll(".tile").forEach(t => t.setAttribute("aria-pressed", t === tile));
+    const name = group.dataset.choice;
+    answers[name] = name.startsWith("gg_") ? Number(tile.dataset.value) : tile.dataset.value;
+    if (name === "gg_" + GG_PRICES[GG_PRICES.length - 1].toFixed(2).replace(".", "_")) scoreGaborGranger();
+    setTimeout(next, 280);
+  });
+});
+
+// Tuiles à choix multiple : « Aucun » exclut les autres réponses.
+document.querySelectorAll("[data-multi]").forEach(group => {
+  group.addEventListener("click", e => {
+    const tile = e.target.closest(".tile");
+    if (!tile) return;
+    const on = tile.getAttribute("aria-pressed") !== "true";
+    tile.setAttribute("aria-pressed", on);
+    if (on && tile.dataset.value === "aucun") group.querySelectorAll(".tile").forEach(t => { if (t !== tile) t.setAttribute("aria-pressed", false); });
+    if (on && tile.dataset.value !== "aucun") group.querySelector('[data-value="aucun"]').setAttribute("aria-pressed", false);
+  });
+});
 
 // La métrique principale du test : le clic sur « S'abonner » ou « Non merci ».
 document.querySelectorAll("button[data-souscription]").forEach(b =>
-  b.addEventListener("click", () => {
-    answers.souscription = Number(b.dataset.souscription);
-    show("controle");
-  }));
+  b.addEventListener("click", () => { answers.souscription = Number(b.dataset.souscription); next(); }));
+
+// Van Westendorp : un montant par écran, rappel de la réponse précédente.
+const VW_KEYS = { vw1: "vw_trop_bon_marche", vw2: "vw_bon_marche", vw3: "vw_cher", vw4: "vw_trop_cher" };
+const VW_LABELS = { vw1: "si bon marché qu'il en est douteux", vw2: "bon marché", vw3: "cher" };
+function saveAmount(id) {
+  const raw = $("#" + id).value.replace(",", ".");
+  const v = Number(raw);
+  if (raw === "" || isNaN(v) || v < 0 || v > 100) { $("#err-" + id).hidden = false; return false; }
+  answers[VW_KEYS[id]] = v;
+  const following = "vw" + (Number(id.slice(2)) + 1);
+  const recap = document.querySelector(`[data-recap="${following}"]`);
+  if (recap) recap.textContent = `Pour rappel, vous l'avez trouvé ${VW_LABELS[id]} à ${euro(v)}.`;
+  return true;
+}
+function scoreVanWestendorp() {
+  const v = ["vw1", "vw2", "vw3", "vw4"].map(k => answers[VW_KEYS[k]]);
+  // Les quatre réponses doivent monter ; sinon le répondant sera écarté à l'analyse.
+  answers.vw_coherent = v[0] <= v[1] && v[1] <= v[2] && v[2] <= v[3] ? 1 : 0;
+}
+function scoreGaborGranger() {
+  const seq = GG_PRICES.map(p => answers["gg_" + p.toFixed(2).replace(".", "_")]).join("");
+  // Accepter un prix élevé après avoir refusé un prix plus bas est une incohérence.
+  answers.gg_coherent = seq.includes("01") ? 0 : 1;
+}
+
+// Nombre de commandes : boutons − et +.
+let freq = 0;
+$("#freq-moins").addEventListener("click", () => { freq = Math.max(0, freq - 1); $("#freq").textContent = freq; });
+$("#freq-plus").addEventListener("click", () => { freq = Math.min(60, freq + 1); $("#freq").textContent = freq; });
 
 const handlers = {
-  accueil() {
-    if (!document.getElementById("consent").checked) return fail("accueil");
-    show("usage");
-  },
-  usage() { single("usage", "appli", "offre"); },
-  controle() { single("controle", "controle", "vw"); },
-  vw() {
-    const v = ["vw1", "vw2", "vw3", "vw4"].map(num);
-    if (v.some(x => x === null)) return fail("vw");
-    [answers.vw_trop_bon_marche, answers.vw_bon_marche, answers.vw_cher, answers.vw_trop_cher] = v;
-    // Les quatre réponses doivent monter ; sinon le répondant sera écarté à l'analyse.
-    answers.vw_coherent = v[0] <= v[1] && v[1] <= v[2] && v[2] <= v[3] ? 1 : 0;
-    show("gg");
-  },
-  gg() {
-    const v = GG_PRICES.map((_, i) => radio("gg" + i));
-    if (v.some(x => x === null)) return fail("gg");
-    GG_PRICES.forEach((p, i) => { answers["gg_" + p.toFixed(2).replace(".", "_")] = Number(v[i]); });
-    // Accepter un prix élevé après avoir refusé un prix plus bas est une incohérence.
-    answers.gg_coherent = v.join("").includes("01") ? 0 : 1;
-    show("profil");
-  },
-  profil() {
-    const age = document.getElementById("age").value;
-    const statut = document.getElementById("statut").value;
-    const freq = num("freq");
-    const abo = [...document.querySelectorAll('input[name="abo"]:checked')].map(e => e.value);
-    if (!age || !statut || freq === null || !abo.length) return fail("profil");
-    Object.assign(answers, { age, statut, commandes_30j: freq, abonnements: abo.join("+") });
+  vw1() { if (saveAmount("vw1")) next(); },
+  vw2() { if (saveAmount("vw2")) next(); },
+  vw3() { if (saveAmount("vw3")) next(); },
+  vw4() { if (saveAmount("vw4")) { scoreVanWestendorp(); next(); } },
+  freq() { answers.commandes_30j = freq; next(); },
+  abo() {
+    const abo = [...document.querySelectorAll('[data-multi="abonnements"] .tile[aria-pressed="true"]')].map(t => t.dataset.value);
+    if (!abo.length) { $("#err-abo").hidden = false; return; }
+    answers.abonnements = abo.join("+");
     send();
   }
 };
-
 document.querySelectorAll("button[data-next]").forEach(b =>
   b.addEventListener("click", () => handlers[b.dataset.next]()));
+// Entrée valide un montant.
+document.querySelectorAll(".amount input").forEach(input =>
+  input.addEventListener("keydown", e => { if (e.key === "Enter") handlers[input.id](); }));
+
+// Partage du questionnaire pour élargir l'échantillon.
+$("#share").addEventListener("click", async () => {
+  const url = location.href.split(/[?#]/)[0];
+  try {
+    if (navigator.share) await navigator.share({ title: "3 minutes sur la livraison de repas", url });
+    else { await navigator.clipboard.writeText(url); $("#share-msg").textContent = "Lien copié : il ne reste qu'à le coller dans un message."; }
+  } catch (e) {
+    $("#share-msg").textContent = "Lien du questionnaire : " + url;
+  }
+});
 
 async function send() {
   show("fin");
@@ -241,8 +378,7 @@ async function send() {
     const all = JSON.parse(localStorage.getItem("reponses_test") || "[]");
     all.push(answers);
     localStorage.setItem("reponses_test", JSON.stringify(all));
-    document.getElementById("fin-msg").textContent =
-      "Mode test : réponse gardée dans ce navigateur seulement (version " + answers.version + ").";
+    $("#fin-msg").textContent = "Mode test : réponse gardée dans ce navigateur seulement (version " + answers.version + ").";
     return;
   }
   try {
@@ -254,8 +390,7 @@ async function send() {
       body: JSON.stringify(answers)
     });
   } catch (e) {
-    document.getElementById("fin-msg").textContent =
-      "L'envoi a échoué. Vérifiez votre connexion et rechargez la page pour recommencer.";
+    $("#fin-msg").textContent = "L'envoi a échoué. Vérifiez votre connexion et rechargez la page pour recommencer.";
   }
 }
 </script>
