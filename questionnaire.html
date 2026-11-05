@@ -364,13 +364,15 @@ function panier(n, [k, e, nom]) {
 }
 
 const VW = [
-  { k: "vw_trop_bon_marche", mood: "🤨", q: "À partir de quel prix mensuel le plan Plus Or serait-il <b>si bon marché</b> que vous douteriez de sa qualité ?" },
-  { k: "vw_bon_marche", mood: "😊", q: "À quel prix mensuel le plan Plus Or serait-il une <b>bonne affaire</b> ?" },
+  { k: "vw_trop_bon_marche", mood: "🤨", q: "<b>En dessous de</b> quel prix mensuel le plan Plus Or serait-il <b>si bon marché</b> que vous douteriez de sa qualité ?" },
+  { k: "vw_bon_marche", mood: "😊", q: "À quel prix mensuel le plan Plus Or serait-il une <b>bonne affaire</b>, sans que vous doutiez de sa qualité ?" },
   { k: "vw_cher", mood: "😬", q: "À quel prix mensuel commencerait-il à être <b>cher</b>, sans exclure de le prendre ?" },
   { k: "vw_trop_cher", mood: "🙅", q: "À partir de quel prix mensuel serait-il <b>trop cher</b> pour que vous l'envisagiez ?" }
 ];
 function vwScreen(i) {
   const v = VW[i];
+  // Le curseur part de la réponse précédente, et un prix plus bas qu'elle est refusé : les quatre seuils ne peuvent que monter.
+  const prev = () => (i ? answers[VW[i - 1].k] : undefined);
   return {
     html: () => `
       <p class="kicker">Le juste prix · ${i + 1} / 4</p>
@@ -378,7 +380,7 @@ function vwScreen(i) {
       <p class="sub">Plus Or : livraison offerte dès 12 €, aucuns frais de service. Répondez indépendamment des prix vus jusqu'ici, en faisant glisser le curseur.</p>
       <div class="mood" id="mood">${v.mood}</div>
       <p class="gauge-value${answers[v.k] === undefined ? " idle" : ""}" id="val">${answers[v.k] === undefined ? "? €" : euro(answers[v.k])}</p>
-      <input type="range" id="rng" min="0" max="20" step="0.1" value="${answers[v.k] ?? 0}" aria-label="Prix mensuel en euros">
+      <input type="range" id="rng" min="0" max="20" step="0.1" value="${answers[v.k] ?? prev() ?? 0}" aria-label="Prix mensuel en euros">
       <div class="scale"><span>0 €</span><span>10 €</span><span>20 € et plus</span></div>
       <div class="fine"><button type="button" id="moins">− 0,10 €</button><button type="button" id="plus">+ 0,10 €</button></div>
       ${i ? `<div class="prev">${VW.slice(0, i).map(p => `<span>${p.mood} ${euro(answers[p.k])}</span>`).join("")}</div>` : ""}
@@ -392,7 +394,10 @@ function vwScreen(i) {
       $("#moins").addEventListener("click", () => { rng.value = Math.max(0, Number(rng.value) - 0.1).toFixed(1); show(); });
       $("#plus").addEventListener("click", () => { rng.value = Math.min(20, Number(rng.value) + 0.1).toFixed(1); show(); });
       $("#ok").addEventListener("click", () => {
-        if (!touched) { $("#err").hidden = false; return; }
+        const err = t => { $("#err").textContent = t; $("#err").hidden = false; };
+        if (!touched) return err("Faites glisser le curseur pour indiquer un prix.");
+        if (prev() !== undefined && Number(rng.value) < prev())
+          return err(`Ce prix doit être au moins égal à votre réponse précédente (${euro(prev())}) : faites glisser le curseur plus haut.`);
         answers[v.k] = round2(Number(rng.value));
         if (i === 3) {
           const a = VW.map(p => answers[p.k]);
@@ -563,12 +568,15 @@ const SCREENS = {
     html: () => `
       <p class="kicker">Ça passe ou ça casse</p>
       <p class="title s">À ce prix, prendriez-vous le plan Deliveroo Plus Or ?</p>
-      <p class="sub">Balayez la carte à droite pour oui, à gauche pour non, ou utilisez les boutons.</p>
+      <p class="sub">Répondez Oui ou Non pour chaque prix. Une erreur ? Revenez au prix précédent.</p>
       <div class="deck" id="deck"></div>
       <p class="counter" id="counter"></p>
-      <div class="swipe-btns"><button type="button" class="no" id="no">✖ Non</button><button type="button" class="yes" id="yes">✔ Oui</button></div>`,
+      <p class="err" id="err" hidden></p>
+      <div class="swipe-btns"><button type="button" class="no" id="no">✖ Non</button><button type="button" class="yes" id="yes">✔ Oui</button></div>
+      <div class="fine"><button type="button" id="retour" hidden>↩ Prix précédent</button></div>`,
     bind: () => {
-      let i = 0;
+      // Boutons seulement (plus de carte à glisser) : un geste involontaire ne peut plus créer de réponse.
+      let i = 0, confirme = false;
       const deck = $("#deck");
       const render = () => {
         if (i >= GG_PRICES.length) {
@@ -577,38 +585,29 @@ const SCREENS = {
           answers.gg_coherent = seq.includes("01") ? 0 : 1;
           return setTimeout(next, 300);
         }
-        deck.innerHTML = GG_PRICES.slice(i, i + 2).reverse().map((p, j, arr) =>
-          `<div class="card ${j < arr.length - 1 ? "behind" : "front"}"><span class="stamp yes">OUI</span><span class="stamp no">NON</span><div class="p">${euro(p)}<small>par mois</small></div></div>`).join("");
+        deck.innerHTML = `<div class="card front"><div class="p">${euro(GG_PRICES[i])}<small>par mois</small></div></div>`;
         $("#counter").textContent = `Prix ${i + 1} sur ${GG_PRICES.length}`;
-        drag(deck.querySelector(".front"));
+        $("#retour").hidden = i === 0;
+        $("#err").hidden = true;
+        confirme = false;
       };
       const decide = yes => {
-        const card = deck.querySelector(".front"); if (!card) return;
+        // Oui à ce prix après un Non à un prix plus bas : on le signale, un second Oui confirme.
+        const refusePlusBas = GG_PRICES.slice(0, i).some(p => answers["gg_" + key(p)] === 0);
+        if (yes && refusePlusBas && !confirme) {
+          $("#err").textContent = "Vous avez refusé un prix plus bas. Appuyez de nouveau sur Oui pour confirmer, ou revenez au prix précédent.";
+          $("#err").hidden = false;
+          confirme = true;
+          return;
+        }
         answers["gg_" + key(GG_PRICES[i])] = yes ? 1 : 0;
-        card.style.transform = `translateX(${yes ? 140 : -140}%) rotate(${yes ? 18 : -18}deg)`;
-        card.style.opacity = 0;
+        deck.querySelector(".card").style.opacity = 0;
         i += 1;
-        setTimeout(render, 300);
-      };
-      const drag = card => {
-        let x0 = null, dx = 0;
-        card.addEventListener("pointerdown", e => { x0 = e.clientX; card.setPointerCapture(e.pointerId); card.style.transition = "none"; });
-        card.addEventListener("pointermove", e => {
-          if (x0 === null) return;
-          dx = e.clientX - x0;
-          card.style.transform = `translateX(${dx}px) rotate(${dx / 18}deg)`;
-          card.querySelector(".yes").style.opacity = Math.max(0, dx / 90);
-          card.querySelector(".no").style.opacity = Math.max(0, -dx / 90);
-        });
-        card.addEventListener("pointerup", () => {
-          card.style.transition = "";
-          if (Math.abs(dx) > 90) decide(dx > 0);
-          else { card.style.transform = ""; card.querySelectorAll(".stamp").forEach(s => s.style.opacity = 0); }
-          x0 = null; dx = 0;
-        });
+        setTimeout(render, 200);
       };
       $("#yes").addEventListener("click", () => decide(true));
       $("#no").addEventListener("click", () => decide(false));
+      $("#retour").addEventListener("click", () => { i = Math.max(0, i - 1); render(); });
       render();
     }
   },
