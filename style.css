@@ -221,6 +221,7 @@ button.secondary:hover { background: var(--note); border-color: var(--ink); }
 /* figures */
 figure { margin: 34px 0 8px; }
 figure svg { display: block; width: 100%; height: auto; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
 figcaption { font-size: 0.8rem; color: var(--muted); margin-top: 10px; }
 svg .axis { stroke: var(--line); stroke-width: 1; }
 svg .range { stroke: var(--ink); stroke-width: 2; }

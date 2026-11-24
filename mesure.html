@@ -65,22 +65,22 @@
     <li>Accueil : l'objet est annoncé clairement, « testez un abonnement de livraison de repas » ; anonymat et consentement.</li>
     <li><strong>Chapitre 1 :</strong> une matrice sur la fréquence d'usage d'Uber Eats, de Deliveroo, de Just Eat et des autres applications.</li>
     <li><strong>Chapitre 2, le test A/B :</strong> le choix de l'abonnement, puis trois repas, chacun sur sa page (lundi soir, jeudi midi, samedi pour deux). Dans chaque repas, tous les plats ont le même prix, pour que le choix du plat ne dépende pas du prix. Le panier applique les frais du plan choisi ; un récapitulatif montre ce que l'abonnement a fait économiser.</li>
-    <li><strong>Chapitre 3, le juste prix :</strong> la question de contrôle, puis Van Westendorp pour Plus Or avec quatre curseurs, puis Gabor-Granger avec des cartes de prix à balayer, de 2,49 € à 6,99 €.</li>
+    <li><strong>Chapitre 3, le juste prix :</strong> la question de contrôle, puis Van Westendorp pour Plus Or avec quatre curseurs, puis Gabor-Granger, une question oui ou non par prix, <strong>présentés dans l'ordre croissant</strong>, de 2,49 € à 6,99 €. Ce chapitre a été corrigé le 5 novembre 2026 (voir <a href="#nettoyage">le nettoyage</a>).</li>
     <li><strong>Chapitre 4 :</strong> âge, situation, commandes réelles sur 30 jours, abonnements détenus ; puis un profil ludique et une invitation à partager le test.</li>
   </ol>
   <p>Un bouton « Retour » permet de revenir à tout moment à l'écran précédent ; les réponses sont alors remplacées par les nouvelles.</p>
   <p><strong>Pourquoi les repas viennent après le choix.</strong> Le répondant décide d'abord, comme un client devant l'écran d'abonnement ; les repas lui font ensuite vivre les effets de son choix. Les frais de la simulation (2,49 € de livraison, 0,99 € de service) sont fictifs, du même ordre que ceux affichés par les applications.</p>
-  <p><strong>Pourquoi les questions de prix viennent ensuite.</strong> Le choix n'est influencé par aucune réflexion préalable sur le prix. En contrepartie, les prix vus peuvent servir d'ancre aux curseurs et aux cartes : ces réponses seront analysées séparément pour A et pour B.</p>
+  <p><strong>Pourquoi les questions de prix viennent ensuite.</strong> Le choix n'est influencé par aucune réflexion préalable sur le prix. En contrepartie, les prix vus peuvent servir d'ancre aux curseurs et aux cartes : ces réponses sont analysées séparément pour A et pour B.</p>
 
   <h2>La population interrogée</h2>
   <p>Le questionnaire s'adresse à toute personne majeure. Personne n'est écarté : les utilisateurs de Deliveroo sont ceux qu'une hausse peut faire partir, ceux d'Uber Eats et les non-utilisateurs ceux qu'une baisse peut attirer. La matrice d'usage sert à comparer ces profils, pas à filtrer.</p>
 
   <h2>Combien de répondants ?</h2>
   <p>Pour détecter avec une puissance de 80 % et un risque d'erreur de 5 % un passage de 40 % à 30 % de choix Deliveroo, il faut environ 350 répondants par version. Avec 100 répondants par version, seul un écart d'environ 19 points serait détectable de façon fiable.</p>
-  <p class="src">Calcul du groupe : n = (1,96 + 0,84)² × (0,40 × 0,60 + 0,30 × 0,70) ÷ 0,10². Les tests statistiques seront vus en Analyse de données ; si l'échantillon reste petit, le résultat sera présenté comme une tendance.</p>
+  <p class="src">Calcul du groupe : n = (1,96 + 0,84)² × (0,40 × 0,60 + 0,30 × 0,70) ÷ 0,10². Si l'échantillon reste petit, le résultat est présenté comme une tendance.</p>
 
   <h2>Les données</h2>
-  <p>Une ligne par répondant, des colonnes fixes. Aucun nom, aucune adresse e-mail, aucune adresse IP.</p>
+  <p>Une ligne par répondant, des colonnes fixes. Aucun nom, aucune adresse e-mail, aucune adresse IP. Les réponses sont des données personnelles : elles restent hors de ce site et de GitHub.</p>
   <div class="table-wrap"><table>
     <tr><th>Colonne</th><th>Contenu</th></tr>
     <tr><td><code>id</code>, <code>horodatage</code></td><td>Identifiant aléatoire et date de la réponse</td></tr>
@@ -97,19 +97,101 @@
     <tr><td><code>age</code>, <code>statut</code>, <code>commandes_30j</code>, <code>abonnements</code></td><td>Profil</td></tr>
   </table></div>
 
-  <h2>Le nettoyage prévu</h2>
-  <ul>
-    <li>Écarter du test les répondants qui se trompent de prix à la question de contrôle, et dire combien.</li>
-    <li>Écarter des analyses de prix les répondants dont <code>vw_coherent</code> ou <code>gg_coherent</code> vaut 0.</li>
-    <li>Vérifier que les groupes A et B se ressemblent sur l'âge, la situation, l'usage des applications et les abonnements détenus.</li>
-  </ul>
 
   <h2>Ce que la mesure vaut</h2>
-  <p>C'est une simulation : choisir un abonnement sans payer n'est pas s'abonner, et les répondants sont souvent plus généreux qu'en situation réelle. L'échantillon restera surtout étudiant et clermontois, et les étudiants ont accès gratuitement à <a href="https://deliveroo.fr/fr/faq">Deliveroo Plus Argent</a>. C'est pourquoi la décision repose sur l'écart entre A et B, que le tirage au sort rend valide, plutôt que sur les niveaux absolus.</p>
+  <p>C'est une simulation : choisir un abonnement sans payer n'est pas s'abonner, et les répondants sont souvent plus généreux qu'en situation réelle. L'échantillon est surtout étudiant et clermontois, et les étudiants ont accès gratuitement à <a href="https://deliveroo.fr/fr/faq">Deliveroo Plus Argent</a>. C'est pourquoi la décision repose sur l'écart entre A et B, que le tirage au sort rend valide, plutôt que sur les niveaux absolus.</p>
   <p>Sur téléphone, les plans Deliveroo apparaissent avant l'offre de l'autre application : cet ordre, identique dans les deux versions, ne fausse pas la comparaison entre A et B, mais peut favoriser Deliveroo dans les niveaux absolus.</p>
 
   <h2>Les résultats</h2>
-  <div class="todo"><strong>À compléter après la collecte</strong> Nombre de réponses par version, écartées et gardées ; part de choix Deliveroo en A et en B, et rapport B ÷ A comparé au seuil de 90 % ; répartition entre Essentiel, Or, Famille, autre application et aucun, par version ; recette par répondant ; mêmes calculs chez les utilisateurs actuels de Deliveroo ; courbes de Van Westendorp et de Gabor-Granger par version.</div>
+  <p>Les réponses ont été analysées avec le squelette <a href="https://github.com/VincentFavarin/analyse-projet-prix">analyse-projet-prix</a> du cours d'Analyse de données (CM 3, 21 octobre 2026), dont seul le fichier de réglages a été adapté aux colonnes du questionnaire. Collecte du 20 octobre au 24 novembre 2026 ; export du tableau des réponses le 24 novembre 2026.</p>
+  <div class="kpis">
+    <div class="card"><span class="big">101</span>réponses analysées, sur 172 reçues</div>
+    <div class="card"><span class="big">✔</span>manipulation réussie : la différence de prix a été vue</div>
+    <div class="card"><span class="big">p = 0,33</span>pas d'écart significatif de choix Deliveroo entre A et B</div>
+    <div class="card"><span class="big">4,09–5,84 €</span>zone de prix acceptable pour Plus Or ; prix optimal 4,99 €</div>
+  </div>
+
+  <h3>1. Qui a répondu</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Profil (101 réponses gardées)</th><th>Répartition</th></tr>
+    <tr><td>Âge</td><td>18 à 24 ans : 77 · 25 à 34 ans : 19 · 35 à 49 ans : 2 · non renseigné : 1</td></tr>
+    <tr><td>Situation</td><td>Étudiant : 81 · en emploi : 14 · en recherche d'emploi : 5 · autre : 1</td></tr>
+    <tr><td>Usage de Deliveroo</td><td>jamais : 62 · rarement : 20 · chaque mois : 14 · chaque semaine : 5</td></tr>
+    <tr><td>Abonnements détenus</td><td>aucun : 60 · Uber One seul : 21 · Deliveroo Plus (seul ou avec un autre) : 15 · autre : 5</td></tr>
+    <tr><td>Commandes réelles sur 30 jours</td><td>médiane : 1 ; moyenne : 2,4</td></tr>
+    <tr><td>Questionnaire</td><td>ancienne version (avant le 5 novembre) : 56 · version corrigée : 45</td></tr>
+  </table></div>
+  <p>Un échantillon jeune, surtout étudiant, et en majorité non utilisateur de Deliveroo : il représente mieux les clients qu'une baisse pourrait attirer que les abonnés qu'une hausse pourrait faire partir.</p>
+
+  <h3 id="nettoyage">2. Le nettoyage</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Étape</th><th class="num">Retirées</th><th class="num">Restent</th></tr>
+    <tr><td>Réponses reçues</td><td class="num"></td><td class="num">172</td></tr>
+    <tr><td>Doublons (même identifiant)</td><td class="num">0</td><td class="num">172</td></tr>
+    <tr><td>Réponse de test du groupe (20 octobre 2026)</td><td class="num">1</td><td class="num">171</td></tr>
+    <tr><td>Van Westendorp : les quatre seuils ne montent pas</td><td class="num">65</td><td class="num">106</td></tr>
+    <tr><td>Gabor-Granger : oui à un prix plus haut qu'un prix refusé</td><td class="num">5</td><td class="num"><strong>101</strong></td></tr>
+  </table></div>
+  <p>Restent 57 réponses en version A et 44 en version B. Aucune réponse n'est retirée pour une erreur à la question de contrôle : ce serait casser le tirage au sort.</p>
+  <p><strong>Où était l'erreur.</strong> Les 65 retraits pour Van Westendorp viennent <strong>tous</strong> de l'ancienne version du questionnaire (65 sur 126 réponses) ; la version corrigée n'en a produit <strong>aucun</strong> (0 sur 46). La cause était donc dans le questionnaire, pas chez les répondants :</p>
+  <ul>
+    <li><strong>La première question de Van Westendorp était mal formulée</strong> : « <em>À partir de</em> quel prix… serait-il si bon marché que vous douteriez de sa qualité ? » au lieu de « <em>En dessous de</em> quel prix… ». 45 des 65 réponses incohérentes placent « trop bon marché » au-dessus de « bon marché » ; chez elles, la médiane de ce seuil est de 4,60 €, contre 2,00 € chez les réponses cohérentes.</li>
+    <li><strong>Rien n'empêchait un prix de descendre</strong> : chaque curseur repartait de 0 € et acceptait une valeur inférieure à la précédente.</li>
+    <li><strong>Gabor-Granger se répondait en balayant des cartes</strong>, sans retour possible : un geste involontaire suffisait à créer une incohérence (12 réponses avec l'ancienne version, 1 avec la nouvelle).</li>
+  </ul>
+  <p>Les réponses incohérentes se répartissaient également entre les versions (33 en A, 32 en B) : l'erreur ne fausse pas la comparaison. <strong>Correction le 5 novembre 2026</strong> : question reformulée, curseur qui part de la réponse précédente et refuse un prix plus bas, boutons Oui / Non avec retour en arrière.</p>
+  <p><strong>Les réponses extrêmes, signalées mais gardées.</strong> 11 réponses gardées touchent une borne des curseurs (0 € ou 20 €), et une déclare 23 commandes en 30 jours avec un seuil « trop cher » de 2,10 €. Elles sont cohérentes, donc gardées ; 9 sur 11 sont en version A, ce qui peut tirer vers le haut ses seuils de Van Westendorp. Les points de Van Westendorp reposent sur des parts de répondants, pas sur des moyennes : une valeur extrême n'y pèse pas plus qu'une autre.</p>
+
+  <h3>3. Le contrôle de manipulation</h3>
+  <p>La manipulation a fonctionné : 18 % des répondants de la version A se souviennent d'un Plus Or à 4,99 €, contre 73 % en version B (t de Welch = −5,63, p &lt; 0,001, d de Cohen = 1,29, effet fort ; 49 et 33 répondants, sans les 19 « je ne sais plus »). La différence de prix a été perçue : le test A/B se lit comme l'effet du prix.</p>
+  <figure><img src="images/02_manipulation.png" alt="Part des répondants qui se souviennent de 4,99 € : 0,18 en version A, 0,73 en version B"><figcaption>Chaque point est un répondant (0 : se souvient de 3,49 € ; 1 : de 4,99 €) ; le trait noir, la moyenne. Sortie du squelette, 101 réponses.</figcaption></figure>
+
+  <h3>4. Le tirage au sort et le test A/B</h3>
+  <p><strong>Le tirage au sort a fonctionné</strong> : les deux versions ne diffèrent ni par l'âge (χ² = 2,74, p = 0,433) ni par l'usage de Deliveroo (χ² = 3,56, p = 0,313).</p>
+  <div class="table-wrap"><table>
+    <tr><th>Variable</th><th class="num">A, prix bas</th><th class="num">B, prix hauts</th><th>Test</th><th>Conclusion</th></tr>
+    <tr><td><strong>Premier choix : un plan Deliveroo</strong> (métrique principale)</td><td class="num">60 %</td><td class="num">50 %</td><td>χ² = 0,94 ; p = 0,333 ; V de Cramer = 0,10</td><td>non significatif</td></tr>
+    <tr><td>Seuil « trop cher » (Van Westendorp)</td><td class="num">9,46 €</td><td class="num">9,29 €</td><td>t de Welch = 0,18 ; p = 0,857 ; d = 0,04</td><td>non significatif</td></tr>
+    <tr><td>Prendrait Plus Or à 4,99 € (Gabor-Granger)</td><td class="num">44 %</td><td class="num">59 %</td><td>χ² = 2,30 ; p = 0,129 ; V = 0,15</td><td>non significatif</td></tr>
+    <tr><td>Les trois autres seuils de Van Westendorp</td><td colspan="2">écarts de 0,06 € à 0,92 €</td><td>p de 0,295 à 0,897</td><td>non significatifs</td></tr>
+  </table></div>
+  <div class="table-wrap"><table>
+    <tr><th>Premier choix</th><th class="num">Essentiel</th><th class="num">Or</th><th class="num">Famille</th><th class="num">Autre application</th><th class="num">Aucun</th></tr>
+    <tr><td>Version A, prix bas</td><td class="num">14 %</td><td class="num">40 %</td><td class="num">5 %</td><td class="num">9 %</td><td class="num">32 %</td></tr>
+    <tr><td>Version B, prix hauts</td><td class="num">7 %</td><td class="num">39 %</td><td class="num">5 %</td><td class="num">7 %</td><td class="num">43 %</td></tr>
+  </table></div>
+  <p><strong>La lecture.</strong> La manipulation a réussi et le test A/B n'est pas significatif : le prix plus haut a été vu, et il ne change pas significativement le choix. Plus Or garde la même part (40 % contre 39 %) ; c'est surtout Essentiel qui recule, au profit du « sans abonnement ». <strong>L'autre application ne gagne rien</strong> : 9 % en A, 7 % en B.</p>
+  <p><strong>La puissance.</strong> Avec 57 et 44 répondants, le test détecte un effet moyen (d = 0,5) 69 fois sur 100, et un petit effet 17 fois sur 100 : l'absence de différence significative ne prouve pas l'absence d'effet. Le rapport B ÷ A de la part de choix Deliveroo est de 84 % (50,0 ÷ 59,6), sous le seuil de 90 % fixé avant la collecte : c'est une tendance, non significative, que <a href="proposition.html">la proposition</a> prend en compte dans ses scénarios.</p>
+  <p><strong>Les utilisateurs actuels de Deliveroo</strong>, ceux qu'une hausse peut faire partir, sont 39 sur 101 : 73 % choisissent un plan Deliveroo en A (19 sur 26), 77 % en B (10 sur 13). Trop peu pour conclure, mais rien n'indique qu'ils fuient les prix hauts.</p>
+
+  <h3>5. Le prix accepté : Van Westendorp</h3>
+  <figure><img src="images/04_van_westendorp.png" alt="Courbes de Van Westendorp : zone acceptable de 4,1 € à 5,8 €, prix optimal 5,0 €, prix actuel 3,49 € en dessous"><figcaption>Part des répondants qui jugent chaque prix trop bon marché, bon marché, cher ou trop cher. Zone grisée : prix acceptables. Sortie du squelette, 101 réponses ; les prix sont arrondis à 0,1 € sur le graphique.</figcaption></figure>
+  <div class="table-wrap"><table>
+    <tr><th>Point</th><th class="num">Ensemble</th><th class="num">Version A</th><th class="num">Version B</th></tr>
+    <tr><td>Bas de la zone acceptable (PMC)</td><td class="num">4,09 €</td><td class="num">3,99 €</td><td class="num">4,70 €</td></tr>
+    <tr><td>Prix d'indifférence (IPP)</td><td class="num">4,59 €</td><td class="num">4,28 €</td><td class="num">5,01 €</td></tr>
+    <tr><td><strong>Prix optimal (OPP)</strong></td><td class="num"><strong>4,99 €</strong></td><td class="num">4,84 €</td><td class="num">5,04 €</td></tr>
+    <tr><td>Haut de la zone acceptable (PME)</td><td class="num">5,84 €</td><td class="num">5,29 €</td><td class="num">6,01 €</td></tr>
+  </table></div>
+  <p><strong>Le prix actuel de 3,49 € est sous la zone acceptable</strong> : 27 % des répondants le jugent trop bon marché pour être crédible, et seulement 5 % trop cher. <strong>4,99 € est le prix optimal</strong> : 17 % le jugent trop bon marché, 12 % trop cher. Il reste dans la zone acceptable des deux versions. La zone de la version B est plus haute que celle de A : le prix vu sert d'ancre, comme prévu.</p>
+
+  <h3>6. Le prix qui rapporte : Gabor-Granger</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Prix de Plus Or</th><th class="num">2,49 €</th><th class="num">3,49 €</th><th class="num">4,49 €</th><th class="num">4,99 €</th><th class="num">5,99 €</th><th class="num">6,99 €</th></tr>
+    <tr><td>Prendraient l'abonnement</td><td class="num">95 %</td><td class="num">82 %</td><td class="num">63 %</td><td class="num">50 %</td><td class="num">30 %</td><td class="num">18 %</td></tr>
+    <tr><td>Chiffre d'affaires par répondant</td><td class="num">2,37 €</td><td class="num"><strong>2,87 €</strong></td><td class="num">2,85 €</td><td class="num">2,52 €</td><td class="num">1,78 €</td><td class="num">1,25 €</td></tr>
+    <tr><td>Marge de l'abonnement seul par répondant (coût d'un abonné : 4,63 €)</td><td class="num neg">−2,03 €</td><td class="num neg">−0,94 €</td><td class="num neg">−0,09 €</td><td class="num">+0,18 €</td><td class="num">+0,40 €</td><td class="num">+0,42 €</td></tr>
+  </table></div>
+  <figure><img src="images/04_gabor_granger.png" alt="Chiffre d'affaires et marge par répondant selon le prix ; marge positive à partir de 4,99 €"><figcaption>Sortie du squelette, 101 réponses ; les prix sont arrondis à l'euro sur le graphique (« 5 € » = 4,99 €).</figcaption></figure>
+  <p>Calcul : marge par répondant = (prix − 4,63 €) × part qui accepte ; à 4,99 € : (4,99 − 4,63) × 50,5 % = 0,18 €. La marge de l'abonnement seul ne devient positive qu'à 4,99 €. Elle continue de monter au-delà, mais 5,99 € et 6,99 € ne sont acceptés que par 30 % et 18 % des répondants, et ce calcul oublie la marge des commandes que chaque abonné perdu emporte avec lui : <a href="proposition.html">la proposition</a> l'ajoute. Ce sont des intentions déclarées, pas des achats.</p>
+
+  <h3>Ce que valent ces résultats</h3>
+  <ul>
+    <li>101 réponses analysées : une tendance plus solide qu'avec 55, mais la puissance du test A/B reste sous 80 %.</li>
+    <li>Un échantillon surtout étudiant (18 à 24 ans) et peu utilisateur de Deliveroo : 62 répondants sur 101 ne l'utilisent jamais.</li>
+    <li>Pas de contrôle d'attention ni de question « membre du M1 » dans le questionnaire.</li>
+    <li>Le questionnaire a changé le 5 novembre 2026 : les 56 réponses gardées d'avant cette date sont cohérentes, mais ont lu une première question formulée autrement.</li>
+  </ul>
 </main>
 <footer>Dossier de groupe · M1 Marketing, IAE Clermont Auvergne · Chaque chiffre porte sa source et sa date de consultation.</footer>
 </body>
