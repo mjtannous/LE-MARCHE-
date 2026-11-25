@@ -166,7 +166,8 @@ th {
   color: var(--muted);
   border-bottom-color: var(--ink);
 }
-td.num, th.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; padding-right: 0; padding-left: 14px; }
+td.num, th.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; padding-right: 14px; padding-left: 14px; }
+tr > :last-child { padding-right: 0; }
 td.neg { color: var(--neg); }
 
 footer {
